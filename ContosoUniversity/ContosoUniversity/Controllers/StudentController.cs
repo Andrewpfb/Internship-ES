@@ -87,7 +87,7 @@ namespace ContosoUniversity.Controllers
         //Если к нам придет форма с левым полем, то это поле не будет учитываться в биндинге.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,LastName,FirstMidName,EnrollmentDate")] Student student)
+        public ActionResult Create([Bind(Include = "ID,LastName,FirstMidName,EnrollmentDate,EmailAddress")] Student student)
         {
             try
             {

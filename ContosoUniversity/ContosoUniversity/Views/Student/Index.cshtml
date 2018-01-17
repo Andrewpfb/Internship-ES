@@ -11,7 +11,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-@using (Html.BeginForm("Index", "Students", FormMethod.Get))
+@using (Html.BeginForm("Index", "Student", FormMethod.Get))
 {
     <p>
         Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
@@ -29,6 +29,9 @@
         <th>
             @Html.ActionLink("Enrollment Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
+        <th>
+            Email Address
+        </th>
         <th></th>
     </tr>
 
@@ -43,6 +46,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EnrollmentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailAddress)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |

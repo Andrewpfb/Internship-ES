@@ -188,6 +188,10 @@
     <Compile Include="Migrations\201801161432445_DepartmentSP.Designer.cs">
       <DependentUpon>201801161432445_DepartmentSP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801170713264_AddRegularExpValidation.cs" />
+    <Compile Include="Migrations\201801170713264_AddRegularExpValidation.Designer.cs">
+      <DependentUpon>201801170713264_AddRegularExpValidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AssignedCourseData.cs" />
     <Compile Include="Models\Course.cs" />
@@ -292,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801161432445_DepartmentSP.resx">
       <DependentUpon>201801161432445_DepartmentSP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801170713264_AddRegularExpValidation.resx">
+      <DependentUpon>201801170713264_AddRegularExpValidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

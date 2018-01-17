@@ -28,6 +28,7 @@ namespace ContosoUniversity.DAL
                     .MapRightKey("InstructorID")
                     .ToTable("CourseInstructor"));
 
+            // Я видел, что хранимки скипнуть. Просто попробовал.
             modelBuilder.Entity<Department>().MapToStoredProcedures();
         }
     }
