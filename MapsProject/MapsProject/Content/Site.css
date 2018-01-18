@@ -15,3 +15,22 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.objectInfo {
+    height: 260px;
+    width: 250px;
+}
+.objectInfo-img{
+    height: 50px;
+    width: 250px;
+}
+
+.map {
+    height: 700px;
+    width: 800px;
+}
+
+.save-place-btn{
+    margin-top: 10px;
+}
+

@@ -19,5 +19,12 @@ namespace MapsProject
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            if (HttpContext.Current.Request.FilePath.IndexOf(".css") >= 0 ||
+                HttpContext.Current.Request.FilePath.IndexOf(".js") >= 0)
+                HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace MapsProject.Models
         public string Category { get; set; }
         public double GeoLong { get; set; }
         public double GeoLat { get; set; }
+        public string PlaceImg { get; set; }
     }
 }

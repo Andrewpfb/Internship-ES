@@ -11,10 +11,11 @@ namespace MapsProject.Controllers
 {
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public List<ObjectOnMap> Get()
+        List<ObjectOnMap> allObjectOnMap;
+        private void initlist()
         {
-            List<ObjectOnMap> allObjectOnMap = new List<ObjectOnMap>();
+            // Test suite.
+            allObjectOnMap = new List<ObjectOnMap>();
             //Столовая БелМедПрепаратов
             //улица Фабрициуса 30, Минск
             //53.886516, 27.534575
@@ -23,8 +24,9 @@ namespace MapsProject.Controllers
                 Id = 1,
                 ObjectName = "Cantine BelMedPrep",
                 Category = "Food",
-                GeoLat = 27.534575,
-                GeoLong = 53.886516
+                GeoLat = 53.886516,
+                GeoLong = 27.534575,
+                PlaceImg = "belmed.jpg"
             });
             //Штолле
             //улица Московская 22, Минск
@@ -34,8 +36,9 @@ namespace MapsProject.Controllers
                 Id = 2,
                 ObjectName = "Stolle",
                 Category = "Food",
-                GeoLat = 27.536871,
-                GeoLong = 53.886538
+                GeoLat = 53.886538,
+                GeoLong = 27.536871,
+                PlaceImg = "shtolle.jpg"
             });
             //Маргарита
             //улица Московская 12, Минск
@@ -45,9 +48,18 @@ namespace MapsProject.Controllers
                 Id = 3,
                 ObjectName = "Margarita",
                 Category = "Food",
-                GeoLat = 27.538953,
-                GeoLong = 53.889102
+                GeoLat = 53.889102,
+                GeoLong = 27.538953,
+                PlaceImg = "margo.jpg"
             });
+        }
+        // GET api/values
+        public List<ObjectOnMap> Get()
+        {
+            if (allObjectOnMap == null)
+            {
+                initlist();
+            }
             return allObjectOnMap;
         }
 
@@ -58,8 +70,12 @@ namespace MapsProject.Controllers
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public void Post([FromBody]ObjectOnMap objectOnMap)
         {
+            //for tests;
+            objectOnMap.Id = 4;
+            objectOnMap.PlaceImg = "margo.jpg";
+            allObjectOnMap.Add(objectOnMap);
         }
 
         // PUT api/values/5
