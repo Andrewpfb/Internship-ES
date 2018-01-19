@@ -158,6 +158,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ModerateController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DAL\MapContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -170,6 +171,14 @@
     <Compile Include="Migrations\201801191039455_Add attribute.cs" />
     <Compile Include="Migrations\201801191039455_Add attribute.Designer.cs">
       <DependentUpon>201801191039455_Add attribute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801191316227_Add status %28moderation%29.cs" />
+    <Compile Include="Migrations\201801191316227_Add status %28moderation%29.Designer.cs">
+      <DependentUpon>201801191316227_Add status %28moderation%29.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801191320077_Add status %28required%29.cs" />
+    <Compile Include="Migrations\201801191320077_Add status %28required%29.Designer.cs">
+      <DependentUpon>201801191320077_Add status %28required%29.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\MapObject.cs" />
@@ -219,6 +228,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\moderate.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
@@ -254,6 +264,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
+    <Content Include="Views\Home\Moderate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -267,6 +278,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801191039455_Add attribute.resx">
       <DependentUpon>201801191039455_Add attribute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801191316227_Add status %28moderation%29.resx">
+      <DependentUpon>201801191316227_Add status %28moderation%29.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801191320077_Add status %28required%29.resx">
+      <DependentUpon>201801191320077_Add status %28required%29.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

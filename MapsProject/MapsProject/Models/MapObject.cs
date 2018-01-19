@@ -18,6 +18,11 @@ namespace MapsProject.Models
 
         [Required]
         public double GeoLat { get; set; }
+
+        [Required]
+        public string Status { get; set; }
+
+
         //public string PlaceImg { get; set; }
     }
 }

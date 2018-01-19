@@ -33,3 +33,8 @@
         </datalist>
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/mapjsscript.js")
+    @Scripts.Render("https://maps.googleapis.com/maps/api/js?key=AIzaSyDIwQLQ2XIYDNt6OQz9ACI89t5UaRf0d9c&callback=initMap");
+}

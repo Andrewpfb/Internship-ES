@@ -16,23 +16,28 @@ namespace MapsProject.Controllers
         {
             if (category == "")
             {
-                return db.MapsObjects;
+                return db.MapsObjects.Where(s => s.Status == "Approved");
             }
             else
             {
-                return db.MapsObjects.Where(c =>c.Category==category);
+                return db.MapsObjects.Where(s =>s.Status== "Approved").Where(c =>c.Category==category);
             }
         }
 
         // GET api/values/5
         public MapObject Get(int id)
         {
-                return db.MapsObjects.Find(id);
+            if (db.MapsObjects.Find(id).Status != "Approved")
+            {
+                return null;
+            }
+            return db.MapsObjects.Find(id);
         }
 
         // POST api/values
         public async Task<IHttpActionResult> Post([FromBody]MapObject mapObject)
         {
+            mapObject.Status = "Need moderate";
             db.MapsObjects.Add(mapObject);
             await db.SaveChangesAsync();
             return Ok();
@@ -51,8 +56,11 @@ namespace MapsProject.Controllers
         }
 
         // DELETE api/values/5
-        public void Delete(int id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
+            db.MapsObjects.Remove(db.MapsObjects.Find(id));
+            await db.SaveChangesAsync();
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)

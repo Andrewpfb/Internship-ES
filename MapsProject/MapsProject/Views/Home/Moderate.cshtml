@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Moderate";
+}
+
+<h2>Moderate</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover" id="moderateTable">
+            <tbody>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Latitude
+                    </th>
+                    <th>
+                        Longitude
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Delete
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/moderate.js")
+}

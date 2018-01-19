@@ -14,5 +14,10 @@ namespace MapsProject.Controllers
 
             return View();
         }
+
+        public ActionResult Moderate()
+        {
+            return View();
+        }
     }
 }
