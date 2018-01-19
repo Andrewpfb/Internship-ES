@@ -12,12 +12,18 @@
     <div class="col-md-2">
         <h2>Place info</h2>
         <table cellpadding="2">
-            <tr><td><input type="hidden" id="editPlaceId" /></td><td></td></tr>
-            <tr><td><label>Place name: </label></td><td><input type="text" id="addPlaceName" /></td></tr>
-            <tr><td><label>Category: </label></td><td><input type="text" id="addPlaceCategory" /></td></tr>
-            <tr><td><label>Latitude: </label></td><td><input type="number" step="any" id="addPlaceLatitude" /></td></tr>
-            <tr><td><label>Longitude: </label></td><td><input type="number" step="any" id="addPlaceLongitude" /></td></tr>
+            <tr><td><input type="hidden" id="savePlaceId" /></td><td></td></tr>
+            <tr><td><label>Place name: </label></td><td><input type="text" id="savePlaceName"/></td></tr>
+            @*<tr><td><label>Category: </label></td><td><input type="text" id="savePlaceCategory" /></td></tr>*@
+            <tr><td><label>Category: </label></td><td><input list="categories" id="savePlaceCategory" /></td></tr>
+            <tr><td><label>Latitude: </label></td><td><input type="number" step="any" id="savePlaceLatitude" /></td></tr>
+            <tr><td><label>Longitude: </label></td><td><input type="number" step="any" id="savePlaceLongitude" /></td></tr>
         </table>
-            <button id="savePlace" class="save-place-btn">Save place</button>
+            <button id="savePlace" class="save-place-btn btn btn-primary">Save place</button>
+        <div class="alert alert-success" role="alert" id="savePlaceInfo" style="display: none">
+        </div>
+        <datalist id="categories">
+            <option value="0">Enter category</option>
+        </datalist>
     </div>
 </div>
