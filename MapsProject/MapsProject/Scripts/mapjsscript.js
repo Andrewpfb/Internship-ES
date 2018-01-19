@@ -1,15 +1,20 @@
 ﻿var map;
+var markers = [];
 var idValueIsEmpty;
 
 $(document).ready(function () {
     initMap();
-    getMapDataByServer();
+    getMapDataByServer("");
     getCategories();
 });
 
 $("#savePlace").click(function (event) {
     event.preventDefault();
     savePlace();
+});
+$('#searchPlacesByCategory').click(function (event) {
+    event.preventDefault();
+    showPlaceByCategory();
 });
 
 function initMap() {
@@ -29,14 +34,22 @@ function initMap() {
     });
 }
 
-function getMapDataByServer() {
-    $.getJSON('/api/values/', function (data) {
+function getMapDataByServer(category) {
+    clearMapFromMarker();
+    var url;
+    if (category == "" || category == undefined) {
+        url = '/api/values';
+    } else {
+        url = '/api/values?category=' + category;
+    }
+    $.getJSON(url, function (data) {
         $.each(data, function (i, item) {
             var marker = new google.maps.Marker({
                 'position': new google.maps.LatLng(item.GeoLat, item.GeoLong),
                 'map': map,
                 'title': item.ObjectName
             });
+            markers.push(marker);
 
             //TODO: Сделать прилично. Обертки jquery.
             var infowindow = new google.maps.InfoWindow({
@@ -77,7 +90,6 @@ function savePlace() {
         GeoLat: $('#savePlaceLatitude').val(),
         GeoLong: $("#savePlaceLongitude").val()
     };
-    debugger;
     var requestType;
     var url;
     var idValue = $('#savePlaceId').val();
@@ -95,9 +107,9 @@ function savePlace() {
         type: requestType,
         data: JSON.stringify(place),
         contentType: "application/json;charset=utf-8",
-        success: showSuccess(),
+        success: showSuccessSaveOrChange(),
         error: function (x, y, z) {
-            showError(x, y, z)
+            showErrorSaveOrChange(x, y, z)
         }
     });
 }
@@ -105,7 +117,6 @@ function savePlace() {
 function getCategories() {
     var dynamicSelect = $('#categories');
     dynamicSelect.empty();
-    debugger;
     $.ajax({
         url: 'api/category',
         type: 'GET',
@@ -118,14 +129,27 @@ function getCategories() {
     });
 }
 
-function showError(x, y, z) {
+function showPlaceByCategory() {
+    debugger;
+    var tt = $('#searchPlaceCategory').val();
+    getMapDataByServer(tt);
+}
+
+function clearMapFromMarker() {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
+
+function showErrorSaveOrChange(x, y, z) {
     $("#savePlaceInfo").attr('class', 'alert alert-danger');
     $("#savePlaceInfo").text(x + " " + y + " " + z);
     $("#savePlaceInfo").show('slow');
     setTimeout(function () { $("#savePlaceInfo").hide('slow'); }, 2000);
 }
 
-function showSuccess() {
+function showSuccessSaveOrChange() {
     $("#savePlaceInfo").attr('class', 'alert alert-success');
     if (idValueIsEmpty) {
         $("#savePlaceInfo").text('Place added for moderation.');
@@ -134,5 +158,5 @@ function showSuccess() {
     }
     $("#savePlaceInfo").show('slow');
     setTimeout(function () { $("#savePlaceInfo").hide('slow'); }, 2000);
-    getMapDataByServer();
+    getMapDataByServer("");
 }

@@ -1,6 +1,7 @@
 ﻿using MapsProject.DAL;
 using MapsProject.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -11,15 +12,22 @@ namespace MapsProject.Controllers
         MapContext db = new MapContext();
 
         // GET api/values
-        public IEnumerable<MapObject> Get()
+        public IEnumerable<MapObject> Get(string category = "")
         {
-            return db.MapsObjects;
+            if (category == "")
+            {
+                return db.MapsObjects;
+            }
+            else
+            {
+                return db.MapsObjects.Where(c =>c.Category==category);
+            }
         }
 
         // GET api/values/5
         public MapObject Get(int id)
         {
-            return db.MapsObjects.Find(id);
+                return db.MapsObjects.Find(id);
         }
 
         // POST api/values
