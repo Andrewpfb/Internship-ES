@@ -48,6 +48,11 @@ namespace MapsProject.Controllers
         {
             if(id == mapObject.Id)
             {
+                if(mapObject.Status == "Approved")
+                {
+                    mapObject = await db.MapsObjects.FindAsync(id);
+                    mapObject.Status = "Approved";
+                }
                 db.Entry(mapObject).State = System.Data.Entity.EntityState.Modified;
                 await db.SaveChangesAsync();
                 return Ok();

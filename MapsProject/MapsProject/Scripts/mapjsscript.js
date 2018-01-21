@@ -132,7 +132,7 @@ function getCategories() {
 function showPlaceByCategory() {
     debugger;
     var tt = $('#searchPlaceCategory').val();
-    getMapDataByServer(tt);
+    getMapDataByServer($('#searchPlaceCategory').val());
 }
 
 function clearMapFromMarker() {
