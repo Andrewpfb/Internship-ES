@@ -1,6 +1,8 @@
 ﻿var map;
 var markers = [];
 var idValueIsEmpty;
+var infowindow;
+var marker;
 
 $(document).ready(function () {
     initMap();
@@ -30,6 +32,9 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("canvas"), mapOptions);
 
     map.addListener('click', function (e) {
+        if (infowindow) {
+            infowindow.close();
+        }
         placeMarkerAndPanTo(e.latLng, map);
     });
 }
@@ -51,15 +56,18 @@ function getMapDataByServer(category) {
             });
             markers.push(marker);
 
-            //TODO: Сделать прилично. Обертки jquery.
-            var infowindow = new google.maps.InfoWindow({
-                content: "<div class='objectInfo'><h2>Place: " + item.ObjectName + "</h2>"
-                + "<div><h4>Category: " + item.Category + "</h4></div>"
-                + "</div>"
-                //+ "<div><img src=/Content/images/" + item.PlaceImg + " style=height:150px;width:250px;></src></div>"
-            });
-
             google.maps.event.addListener(marker, 'click', function () {
+                if (infowindow) {
+                    infowindow.close();
+                }
+                //TODO: Сделать прилично. Обертки jquery.
+                infowindow = new google.maps.InfoWindow({
+                    content: "<div class='objectInfo'><h2>Place: " + item.ObjectName + "</h2>"
+                    + "<div><h4>Category: " + item.Category + "</h4></div>"
+                    + "</div>"
+                    //+ "<div><img src=/Content/images/" + item.PlaceImg + " style=height:150px;width:250px;></src></div>"
+                });
+
                 infowindow.open(map, marker);
                 $('#savePlaceId').val(item.Id);
                 $("#savePlaceName").val(item.ObjectName);
@@ -72,7 +80,10 @@ function getMapDataByServer(category) {
 }
 
 function placeMarkerAndPanTo(latLng, map) {
-    var marker = new google.maps.Marker({
+    if (marker) {
+        marker.setMap(null);
+    }
+    marker = new google.maps.Marker({
         position: latLng,
         map: map
     });
