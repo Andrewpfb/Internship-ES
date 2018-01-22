@@ -13,7 +13,7 @@ namespace MapsProject.Controllers
         // GET api/moderate
         public IEnumerable<MapObject> Get()
         {
-                return db.MapsObjects.Where(s => s.Status != "Approved");
+            return db.MapsObjects.Where(s => s.Status != "Approved");
         }
     }
 }

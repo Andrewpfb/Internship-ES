@@ -13,7 +13,7 @@ namespace MapsProject.Controllers
         public IEnumerable<string> Get()
         {
             HashSet<string> categories = new HashSet<string>();
-            foreach (var cat in db.MapsObjects.Where(s =>s.Status== "Approved"))
+            foreach (var cat in db.MapsObjects.Where(s => s.Status == "Approved"))
             {
                 categories.Add("<option>" + cat.Category + "</option>");
                 //categories.Add(cat.Category);

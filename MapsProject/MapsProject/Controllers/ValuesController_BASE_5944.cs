@@ -35,11 +35,12 @@ namespace MapsProject.Controllers
         }
 
         // POST api/values
-        //public async Task<IHttpActionResult> Post([FromBody]MapObject mapObject)
-        public void Post([FromBody]MapObject mapObject)
+        public async Task<IHttpActionResult> Post([FromBody]MapObject mapObject)
         {
+            mapObject.Status = "Need moderate";
             db.MapsObjects.Add(mapObject);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+            return Ok();
         }
 
         // PUT api/values/5
@@ -47,11 +48,6 @@ namespace MapsProject.Controllers
         {
             if(id == mapObject.Id)
             {
-                if(mapObject.Status == "Approved")
-                {
-                    mapObject = await db.MapsObjects.FindAsync(id);
-                    mapObject.Status = "Approved";
-                }
                 db.Entry(mapObject).State = System.Data.Entity.EntityState.Modified;
                 await db.SaveChangesAsync();
                 return Ok();

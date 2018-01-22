@@ -17,7 +17,9 @@ textarea {
 }
 
 .objectInfo {
-    height: 260px;
+    /*height: 260px;
+    width: 250px;*/
+    height: 120px;
     width: 250px;
 }
 .objectInfo-img{

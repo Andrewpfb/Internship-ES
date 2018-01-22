@@ -47,10 +47,9 @@ namespace MapsProject.Controllers
         {
             if(id == mapObject.Id)
             {
-                if(mapObject.Status == "Approved")
+                if (mapObject.Status == string.Empty || mapObject.Status == "")
                 {
-                    mapObject = await db.MapsObjects.FindAsync(id);
-                    mapObject.Status = "Approved";
+                    mapObject.Status = "Need moderate";
                 }
                 db.Entry(mapObject).State = System.Data.Entity.EntityState.Modified;
                 await db.SaveChangesAsync();
