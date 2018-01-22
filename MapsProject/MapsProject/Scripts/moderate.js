@@ -10,7 +10,7 @@ $(document).ready(function () {
 // Функция для получения данных из сервера.
 function getData() {
     debugger;
-    $("#moderateTable > tbody").empty();
+    $('#moderateTable > tbody').empty();
     $.getJSON('/api/moderate/', function (data) {
         $.each(data, function (i, item) {
             $('#moderateTable > tbody:last-child').append(
@@ -43,7 +43,7 @@ function deletePlace(id) {
     $.ajax({
         url: '/api/values/' + id,
         type: 'DELETE',
-        contentType: "application/json;charset=utf-8",
+        contentType: 'application/json;charset=utf-8',
         success: function (data) {
             getData();
         },
@@ -62,7 +62,7 @@ function approvedPlace(id) {
         url: '/api/moderate/' + id,
         type: 'PUT',
         data: JSON.stringify(place),
-        contentType: "application/json;charset=utf-8",
+        contentType: 'application/json;charset=utf-8',
         success: function (data) {
             getData();
         },
