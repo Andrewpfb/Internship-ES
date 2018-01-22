@@ -7,7 +7,7 @@ namespace MapsProject.Controllers
 {
     /// <summary>
     /// Контроллер для категорий. Имеет метод для возврата всех категорий, которые принадлежат
-    /// подтвержденным объекта.
+    /// подтвержденным объектам.
     /// </summary>
     public class CategoryController : ApiController
     {
