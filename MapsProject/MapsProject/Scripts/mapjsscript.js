@@ -99,8 +99,6 @@ function placeMarkerAndPanTo(latLng, map) {
     //Удаляем предыдущий маркер.
     if (marker) {
         var index = markers.indexOf(marker);
-        markers.splice(index, 1);
-        markers.length = markers.length - 1;
         marker.setMap(null);
     }
     marker = new google.maps.Marker({
