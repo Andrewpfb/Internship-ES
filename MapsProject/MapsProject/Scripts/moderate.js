@@ -1,7 +1,13 @@
-﻿$(document).ready(function () {
+﻿/**
+    * Скрипт для отрисовки таблицы неподтвержденных объектов.
+    * Содержит методы для удаления и подтверждения объектов.
+*/
+
+$(document).ready(function () {
     getData();
 });
 
+// Функция для получения данных из сервера.
 function getData() {
     debugger;
     $("#moderateTable > tbody").empty();
@@ -53,7 +59,7 @@ function approvedPlace(id) {
         Status: 'Approved'
     };
     $.ajax({
-        url: '/api/values/' + id,
+        url: '/api/moderate/' + id,
         type: 'PUT',
         data: JSON.stringify(place),
         contentType: "application/json;charset=utf-8",

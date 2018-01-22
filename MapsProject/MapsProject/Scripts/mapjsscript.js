@@ -1,4 +1,11 @@
-﻿var map;
+﻿/**
+    * Скрипт для отрисовки карты, маркеров, действий с объектами.
+    * Содержит методы инициализации карты, отрисовки маркеров, добавления и редактирования объектов,
+    * отображения объектов по категориям, поиска объекта по адресу.
+ */
+
+var map;
+var geocoder;
 var markers = [];
 var idValueIsEmpty;
 var infowindow;
@@ -18,8 +25,15 @@ $('#searchPlacesByCategory').click(function (event) {
     event.preventDefault();
     showPlaceByCategory();
 });
+$('#searchPlaceByAdress').click(function (event) {
+    event.preventDefault();
+    getPlaceByAdress();
+});
 
+//Функция инициализация карты.
 function initMap() {
+    markers = [];
+    geocoder = new google.maps.Geocoder();
     google.maps.visualRefresh = true;
 
     var Minsk = new google.maps.LatLng(53.887895, 27.538710);
@@ -39,9 +53,11 @@ function initMap() {
     });
 }
 
+// Функция получения данных от сервера.
 function getMapDataByServer(category) {
     clearMapFromMarker();
     var url;
+    //Если в функцию передана категория, то получим список объектов данной категории.
     if (category == "" || category == undefined) {
         url = '/api/values';
     } else {
@@ -60,12 +76,11 @@ function getMapDataByServer(category) {
                 if (infowindow) {
                     infowindow.close();
                 }
-                //TODO: Сделать прилично. Обертки jquery.
+
                 infowindow = new google.maps.InfoWindow({
                     content: "<div class='objectInfo'><h2>Place: " + item.ObjectName + "</h2>"
                     + "<div><h4>Category: " + item.Category + "</h4></div>"
                     + "</div>"
-                    //+ "<div><img src=/Content/images/" + item.PlaceImg + " style=height:150px;width:250px;></src></div>"
                 });
 
                 infowindow.open(map, marker);
@@ -79,14 +94,20 @@ function getMapDataByServer(category) {
     });
 }
 
+// Функция отрисовки маркеров.
 function placeMarkerAndPanTo(latLng, map) {
+    //Удаляем предыдущий маркер.
     if (marker) {
+        var index = markers.indexOf(marker);
+        markers.splice(index, 1);
+        markers.length = markers.length - 1;
         marker.setMap(null);
     }
     marker = new google.maps.Marker({
         position: latLng,
         map: map
     });
+    $('#savePlaceId').val("");
     $("#savePlaceName").val("Enter name");
     $("#savePlaceCategory").val("Enter category");
     $("#savePlaceLatitude").val(latLng.lat());
@@ -94,12 +115,14 @@ function placeMarkerAndPanTo(latLng, map) {
     map.panTo(latLng);
 }
 
+// Функция для сохранения или редактирования объекта.
 function savePlace() {
     var place = {
         ObjectName: $('#savePlaceName').val(),
         Category: $('#savePlaceCategory').val(),
         GeoLat: $('#savePlaceLatitude').val(),
-        GeoLong: $("#savePlaceLongitude").val()
+        GeoLong: $("#savePlaceLongitude").val(),
+        Status: 'Need moderate'
     };
     var requestType;
     var url;
@@ -123,13 +146,15 @@ function savePlace() {
             showErrorSaveOrChange(x, y, z)
         }
     });
+    
 }
 
+//Функция для получения категорий.
 function getCategories() {
     var dynamicSelect = $('#categories');
     dynamicSelect.empty();
     $.ajax({
-        url: 'api/category',
+        url: '/api/category',
         type: 'GET',
         success: function (data) {
             dynamicSelect.append(data);
@@ -141,14 +166,27 @@ function getCategories() {
 }
 
 function showPlaceByCategory() {
-    debugger;
-    var tt = $('#searchPlaceCategory').val();
     getMapDataByServer($('#searchPlaceCategory').val());
+}
+
+function getPlaceByAdress() {
+    var address = $('#searchPlaceAdress').val();
+    geocoder.geocode({ 'address': address }, function (results, status) {
+        if (status == 'OK') {
+            map.setCenter(results[0].geometry.location);
+            markers.push(marker);
+            placeMarkerAndPanTo(results[0].geometry.location, map);
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
 }
 
 function clearMapFromMarker() {
     for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
+        if (markers[i]) {
+            markers[i].setMap(null);
+        }
     }
     markers = [];
 }

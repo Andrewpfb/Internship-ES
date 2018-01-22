@@ -7,11 +7,20 @@ using System.Web.Http;
 
 namespace MapsProject.Controllers
 {
+    /// <summary>
+    /// Контроллер для работы с объектами. Имеет методы для получения всех подтвержденных объектов, 
+    /// конкретного объекта, для добавления, редактирования, удаления объектов.
+    /// </summary>
     public class ValuesController : ApiController
     {
         MapContext db = new MapContext();
 
-        // GET api/values
+        /// <summary>
+        /// Метод возвращает все подтвержденные объекты. Если указана категория, то объекты будут
+        /// этой категории.
+        /// </summary>
+        /// <param name="category">Категория объектов. Если пусто, то вернется список всех объектов.</param>
+        /// <returns>Список подтвержденных объектов.</returns>
         public IEnumerable<MapObject> Get(string category = "")
         {
             if (category == "")
@@ -20,11 +29,15 @@ namespace MapsProject.Controllers
             }
             else
             {
-                return db.MapsObjects.Where(s =>s.Status== "Approved").Where(c =>c.Category==category);
+                return db.MapsObjects.Where(s => s.Status == "Approved").Where(c => c.Category == category);
             }
         }
 
-        // GET api/values/5
+        /// <summary>
+        /// Возвращает конкретный подтвержденный объект.
+        /// </summary>
+        /// <param name="id">Идентификатор возвращаемого объекта.</param>
+        /// <returns>Возвращает объект MapObject.</returns>
         public MapObject Get(int id)
         {
             if (db.MapsObjects.Find(id).Status != "Approved")
@@ -34,37 +47,69 @@ namespace MapsProject.Controllers
             return db.MapsObjects.Find(id);
         }
 
-        // POST api/values
-        //public async Task<IHttpActionResult> Post([FromBody]MapObject mapObject)
-        public void Post([FromBody]MapObject mapObject)
+        /// <summary>
+        /// Метод для добавления объекта в базу. Асинхронный.
+        /// </summary>
+        /// <param name="mapObject">Добавляемый объект.</param>
+        /// <returns>В случае успешного добавления возвращает OkResult. 
+        /// Если возникло исключение, то BadRequest.</returns>
+        public async Task<IHttpActionResult> Post([FromBody]MapObject mapObject)
         {
-            db.MapsObjects.Add(mapObject);
-            db.SaveChanges();
-        }
-
-        // PUT api/values/5
-        public async Task<IHttpActionResult> Put(int id, [FromBody]MapObject mapObject)
-        {
-            if(id == mapObject.Id)
+            try
             {
-                if(mapObject.Status == "Approved")
-                {
-                    mapObject = await db.MapsObjects.FindAsync(id);
-                    mapObject.Status = "Approved";
-                }
-                db.Entry(mapObject).State = System.Data.Entity.EntityState.Modified;
+                db.MapsObjects.Add(mapObject);
                 await db.SaveChangesAsync();
                 return Ok();
             }
-            return BadRequest();
+            catch
+            {
+                return BadRequest();
+            }
         }
 
-        // DELETE api/values/5
+        /// <summary>
+        /// Метод для обновления объекта в БД. Асинхронный.
+        /// </summary>
+        /// <param name="id">Идентификатор обновляемого объекта.</param>
+        /// <param name="mapObject">Обновленный объект.</param>
+        /// <returns>В случае успешного обновления возвращает OkResult.
+        /// Если обновление не прошло, то BadRequest.</returns>
+        public async Task<IHttpActionResult> Put(int id, [FromBody]MapObject mapObject)
+        {
+            try
+            {
+                if (id == mapObject.Id)
+                {
+                    db.Entry(mapObject).State = System.Data.Entity.EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Метод для удаления объекта из БД. Асинхронный.
+        /// </summary>
+        /// <param name="id">Идентификатор обновляемого объекта.</param>
+        /// <returns>В случае успешного удаления возвращает OkResult. 
+        /// Если возникло исключение, то BadRequest.</returns>
         public async Task<IHttpActionResult> Delete(int id)
         {
-            db.MapsObjects.Remove(db.MapsObjects.Find(id));
-            await db.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                db.MapsObjects.Remove(db.MapsObjects.Find(id));
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         protected override void Dispose(bool disposing)
