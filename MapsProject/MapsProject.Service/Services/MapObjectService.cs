@@ -20,84 +20,49 @@ namespace MapsProject.Service.Services
         }
         public void AddMapObject(MapObjectDTO mapObjectDTO)
         {
-            //    try
-            //    {
-            //        MapObject mapObject = new MapObject
-            //        {
-            //            Id = mapObjectDTO.Id,
-            //            ObjectName = mapObjectDTO.ObjectName,
-            //            Tags = mapObjectDTO.Tags,
-            //            GeoLong = mapObjectDTO.GeoLong,
-            //            GeoLat = mapObjectDTO.GeoLat,
-            //            Status = mapObjectDTO.Status
-            //        };
-            //        Database.MapObjects.Create(mapObject);
-            //        Database.Save();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        throw new ValidationException("Create complete with error ", e.Message);
-            //    }
+            try
+            {
+                MapObject mapObject = new MapObject
+                {
+                    Id = mapObjectDTO.Id,
+                    ObjectName = mapObjectDTO.ObjectName,
+                    Tags = mapObjectDTO.Tags,
+                    GeoLong = mapObjectDTO.GeoLong,
+                    GeoLat = mapObjectDTO.GeoLat,
+                    Status = mapObjectDTO.Status
+                };
+                Database.MapObjects.Create(mapObject);
+                Database.Save();
+            }
+            catch (Exception e)
+            {
+                throw new ValidationException("Create complete with error ", e.Message);
+            }
         }
 
         public void DeleteMapObject(MapObjectDTO mapObjectDTO)
         {
-            //    try
-            //    {
-            //        Database.MapObjects.Delete(mapObjectDTO.Id);
-            //        Database.Save();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        throw new ValidationException("Delete complete with error ", e.Message);
-            //    }
+            try
+            {
+                Database.MapObjects.Delete(mapObjectDTO.Id);
+                Database.Save();
+            }
+            catch (Exception e)
+            {
+                throw new ValidationException("Delete complete with error ", e.Message);
+            }
         }
 
         public IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string byTag)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<MapObject, MapObjectDTO>());
              return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
                Database.MapObjects.GetAll().Where(s => s.Status == "Approved"));
-            //List<MapObject> tt = Database.MapObjects.GetAll().ToList();
-            //List<MapObjectDTO> tmp = new List<MapObjectDTO>();
-            //tmp.Add(new MapObjectDTO()
-            //{
-            //    Id = tt[0].Id,
-            //    ObjectName = tt[0].ObjectName,
-            //    GeoLat = tt[0].GeoLat,
-            //    GeoLong = tt[0].GeoLong,
-            //    Status = tt[0].Status,
-            //    Tags = tt[0].Tags
-            //});
-            //tmp.Add(new MapObjectDTO()
-            //{
-            //    Id = 1,
-            //    ObjectName = "Cantine BelMedPrep",
-            //    GeoLat = 53.886516,
-            //    GeoLong = 27.534575,
-            //    Status = "Approved",
-            //    Tags = "Food"
-            //});
-            //return tmp;
-
         }
 
         public IEnumerable<MapObjectDTO> GetAllModerateMapObject()
         {
-            //Mapper.Initialize(cfg => cfg.CreateMap<MapObject, MapObjectDTO>());
-            //return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-            //    Database.MapObjects.GetAll().Where(s => s.Status == "Need moderate"));
-            List<MapObjectDTO> tmp = new List<MapObjectDTO>();
-            tmp.Add(new MapObjectDTO()
-            {
-                Id = 1,
-                ObjectName = "tr",
-                GeoLat = 12.2,
-                GeoLong = 13.3,
-                Status = "f",
-                Tags = "ff"
-            });
-            return tmp;
+            return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
+                Database.MapObjects.GetAll().Where(s => s.Status == "Need moderate"));
         }
 
         public IEnumerable<string> GetAllTags()
@@ -120,40 +85,37 @@ namespace MapsProject.Service.Services
 
         public MapObjectDTO GetMapObject(int id)
         {
-            //try
-            //{
-            //    var mapObject = Database.MapObjects.Get(id);
-            //    Mapper.Initialize(cfg => cfg.CreateMap<MapObject, MapObjectDTO>());
-            //    return Mapper.Map<MapObject, MapObjectDTO>(mapObject);
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new ValidationException("Error ", e.Message);
-            //}
-            return new MapObjectDTO();
+            try
+            {
+                var mapObject = Database.MapObjects.Get(id);
+                return Mapper.Map<MapObject, MapObjectDTO>(mapObject);
+            }
+            catch (Exception e)
+            {
+                throw new ValidationException("Error ", e.Message);
+            }
         }
 
         public void UpdateMapObject(MapObjectDTO mapObjectDTO)
         {
-            //try
-            //{
-            //    MapObject mapObject = new MapObject
-            //    {
-            //        Id = mapObjectDTO.Id,
-            //        ObjectName = mapObjectDTO.ObjectName,
-            //        Tags = mapObjectDTO.Tags,
-            //        GeoLong = mapObjectDTO.GeoLong,
-            //        GeoLat = mapObjectDTO.GeoLat,
-            //        Status = mapObjectDTO.Status
-            //    };
-            //    Database.MapObjects.Update(mapObject);
-            //    Database.Save();
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new ValidationException("Update complete with error ", e.Message);
-            //}
-
+            try
+            {
+                MapObject mapObject = new MapObject
+                {
+                    Id = mapObjectDTO.Id,
+                    ObjectName = mapObjectDTO.ObjectName,
+                    Tags = mapObjectDTO.Tags,
+                    GeoLong = mapObjectDTO.GeoLong,
+                    GeoLat = mapObjectDTO.GeoLat,
+                    Status = mapObjectDTO.Status
+                };
+                Database.MapObjects.Update(mapObject);
+                Database.Save();
+            }
+            catch (Exception e)
+            {
+                throw new ValidationException("Update complete with error ", e.Message);
+            }
         }
     }
 }

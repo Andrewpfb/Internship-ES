@@ -28,24 +28,25 @@ namespace MapsProject.WEB.Controllers
         /// </summary>
         /// <param name="category">Категория объектов. Если пусто, то вернется список всех объектов.</param>
         /// <returns>Список подтвержденных объектов.</returns>
-        public IEnumerable<Service.Models.MapObjectDTO> Get(string category = "")
+        public IEnumerable<MapObjectViewModel> Get(string category = "")
         {
-            IEnumerable<Service.Models.MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects("");
+           // IEnumerable<Service.Models.MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects("");
 
             if (category == "")
             {
-               // IEnumerable<Service.Models.MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects("");
-                //Mapper.Initialize(cfg => cfg.CreateMap<Service.Models.MapObjectDTO, MapObjectViewModel>());
-                //var mapObjects = Mapper
-                //    .Map<IEnumerable<Service.Models.MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
-                //return mapObjects;
-                return mapObjectsDTOs;
+                IEnumerable<Service.Models.MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects("");
+                var mapObjects = Mapper
+                    .Map<IEnumerable<Service.Models.MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
+                return mapObjects;
+                //return mapObjectsDTOs;
                 //return db.MapsObjects.Where(s => s.Status == "Approved");
             }
             else
             {
-                //return db.MapsObjects.Where(s => s.Status == "Approved").Where(c => c.Category == category);
-                return mapObjectsDTOs;
+                IEnumerable<Service.Models.MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects(category);
+                var mapObjects = Mapper
+                    .Map<IEnumerable<Service.Models.MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
+                return mapObjects;
             }
         }
 

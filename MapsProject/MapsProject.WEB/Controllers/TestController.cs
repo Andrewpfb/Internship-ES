@@ -33,7 +33,7 @@ namespace MapsProject.WEB.Controllers
             }
             catch(Exception e)
             {
-                return e.InnerException.Message;
+                return e.Message;
             }
         }
     }
