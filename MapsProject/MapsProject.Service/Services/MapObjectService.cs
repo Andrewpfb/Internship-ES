@@ -22,16 +22,18 @@ namespace MapsProject.Service.Services
         {
             try
             {
-                MapObject mapObject = new MapObject
-                {
-                    Id = mapObjectDTO.Id,
-                    ObjectName = mapObjectDTO.ObjectName,
-                    Tags = mapObjectDTO.Tags,
-                    GeoLong = mapObjectDTO.GeoLong,
-                    GeoLat = mapObjectDTO.GeoLat,
-                    Status = mapObjectDTO.Status
-                };
-                Database.MapObjects.Create(mapObject);
+                var addMapObject = Mapper
+                    .Map<MapObjectDTO, MapObject>(mapObjectDTO);
+                //MapObject mapObject = new MapObject
+                //{
+                //    Id = mapObjectDTO.Id,
+                //    ObjectName = mapObjectDTO.ObjectName,
+                //    Tags = mapObjectDTO.Tags,
+                //    GeoLong = mapObjectDTO.GeoLong,
+                //    GeoLat = mapObjectDTO.GeoLat,
+                //    Status = mapObjectDTO.Status
+                //};
+                Database.MapObjects.Create(addMapObject);
                 Database.Save();
             }
             catch (Exception e)
@@ -40,11 +42,11 @@ namespace MapsProject.Service.Services
             }
         }
 
-        public void DeleteMapObject(MapObjectDTO mapObjectDTO)
+        public void DeleteMapObject(int id)
         {
             try
             {
-                Database.MapObjects.Delete(mapObjectDTO.Id);
+                Database.MapObjects.Delete(id);
                 Database.Save();
             }
             catch (Exception e)
@@ -55,8 +57,17 @@ namespace MapsProject.Service.Services
 
         public IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string byTag)
         {
-             return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-               Database.MapObjects.GetAll().Where(s => s.Status == "Approved"));
+            if (byTag == "")
+            {
+                return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
+                  Database.MapObjects.GetAll().Where(s => s.Status == "Approved"));
+            }
+            else
+            {
+                //TODO: use method contains? 
+                return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
+                  Database.MapObjects.GetAll().Where(s => s.Status == "Approved").Where(t =>t.Tags == byTag));
+            }
         }
 
         public IEnumerable<MapObjectDTO> GetAllModerateMapObject()
@@ -67,20 +78,17 @@ namespace MapsProject.Service.Services
 
         public IEnumerable<string> GetAllTags()
         {
-            //HashSet<string> tags = new HashSet<string>();
-            //IEnumerable<MapObject> mapObjectsList = Database.MapObjects.GetAll().Where(s => s.Status == "Approved");
-            //foreach (var mapObject in mapObjectsList)
-            //{
-            //    string[] tmpTags = mapObject.Tags.Split(new char[] { ';' });
-            //    foreach (var tag in tmpTags)
-            //    {
-            //        tags.Add("<option>" + tag + "</option>");
-            //    }
-            //}
-            //return tags;
-            List<string> tmp = new List<string>();
-            tmp.Add("fff");
-            return tmp;
+            HashSet<string> tags = new HashSet<string>();
+            IEnumerable<MapObject> mapObjectsList = Database.MapObjects.GetAll().Where(s => s.Status == "Approved");
+            foreach (var mapObject in mapObjectsList)
+            {
+                string[] tmpTags = mapObject.Tags.Split(new char[] { ';' });
+                foreach (var tag in tmpTags)
+                {
+                    tags.Add("<option>" + tag + "</option>");
+                }
+            }
+            return tags;
         }
 
         public MapObjectDTO GetMapObject(int id)
@@ -100,16 +108,9 @@ namespace MapsProject.Service.Services
         {
             try
             {
-                MapObject mapObject = new MapObject
-                {
-                    Id = mapObjectDTO.Id,
-                    ObjectName = mapObjectDTO.ObjectName,
-                    Tags = mapObjectDTO.Tags,
-                    GeoLong = mapObjectDTO.GeoLong,
-                    GeoLat = mapObjectDTO.GeoLat,
-                    Status = mapObjectDTO.Status
-                };
-                Database.MapObjects.Update(mapObject);
+                var updateMapObject = Mapper
+                    .Map<MapObjectDTO, MapObject>(mapObjectDTO);
+                Database.MapObjects.Update(updateMapObject);
                 Database.Save();
             }
             catch (Exception e)

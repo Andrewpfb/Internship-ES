@@ -5,9 +5,7 @@
  */
 
 var map;
-var geocoder;
 var markers = [];
-var idValueIsEmpty;
 var infowindow;
 var marker;
 
@@ -21,9 +19,9 @@ $('#savePlace').click(function (event) {
     event.preventDefault();
     savePlace();
 });
-$('#searchPlacesByCategory').click(function (event) {
+$('#searchPlacesByTags').click(function (event) {
     event.preventDefault();
-    showPlaceByCategory();
+    showPlaceByTags();
 });
 $('#searchPlaceByAdress').click(function (event) {
     event.preventDefault();
@@ -33,7 +31,7 @@ $('#searchPlaceByAdress').click(function (event) {
 //Функция инициализация карты.
 function initMap() {
     markers = [];
-    geocoder = new google.maps.Geocoder();
+    
     google.maps.visualRefresh = true;
 
     var Minsk = new google.maps.LatLng(53.887895, 27.538710);
@@ -45,23 +43,25 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('canvas'), mapOptions);
 
-    map.addListener('click', function (e) {
+    map.addListener('dblclick', function (e) {
         if (infowindow) {
             infowindow.close();
         }
         placeMarkerAndPanTo(e.latLng, map);
+        $('#PlaceSaveBlock').attr('class', 'visible');
+        preventDefault();
     });
 }
 
 // Функция получения данных от сервера.
-function getMapDataByServer(category) {
+function getMapDataByServer(tags) {
     clearMapFromMarker();
     var url;
-    //Если в функцию передана категория, то получим список объектов данной категории.
-    if (category == '' || category == undefined) {
+    //Если в функцию переданы тэги, то получим список объектов с такими тэгами.
+    if (tags == '' || tags == undefined) {
         url = '/api/values';
     } else {
-        url = '/api/values?category=' + category;
+        url = '/api/values?tags=' + tags;
     }
     $.getJSON(url, function (data) {
         $.each(data, function (i, item) {
@@ -73,20 +73,21 @@ function getMapDataByServer(category) {
             markers.push(marker);
 
             google.maps.event.addListener(marker, 'click', function () {
+                $('#PlaceSaveBlock').attr('class', 'visible');
                 if (infowindow) {
                     infowindow.close();
                 }
 
                 infowindow = new google.maps.InfoWindow({
                     content: '<div class="objectInfo"><h2>Place: ' + item.ObjectName + '</h2>'
-                    + '<div><h4>Category: ' + item.Category + '</h4></div>'
+                    + '<div><h4>Tags: ' + item.Tags + '</h4></div>'
                     + '</div>'
                 });
 
                 infowindow.open(map, marker);
                 $('#savePlaceId').val(item.Id);
                 $('#savePlaceName').val(item.ObjectName);
-                $('#savePlaceCategory').val(item.Category);
+                $('#savePlaceTags').val(item.Tags);
                 $('#savePlaceLatitude').val(marker.getPosition().lat());
                 $('#savePlaceLongitude').val(marker.getPosition().lng());
             });
@@ -106,7 +107,7 @@ function placeMarkerAndPanTo(latLng, map) {
     });
     $('#savePlaceId').val('');
     $('#savePlaceName').val('Enter name');
-    $('#savePlaceCategory').val('Enter category');
+    $('#savePlaceTags').val('Enter tags');
     $('#savePlaceLatitude').val(latLng.lat());
     $('#savePlaceLongitude').val(latLng.lng());
     map.panTo(latLng);
@@ -116,7 +117,7 @@ function placeMarkerAndPanTo(latLng, map) {
 function savePlace() {
     var place = {
         ObjectName: $('#savePlaceName').val(),
-        Category: $('#savePlaceCategory').val(),
+        Tags: $('#savePlaceTags').val(),
         GeoLat: $('#savePlaceLatitude').val(),
         GeoLong: $('#savePlaceLongitude').val(),
         Status: 'Need moderate'
@@ -124,7 +125,7 @@ function savePlace() {
     var requestType;
     var url;
     var idValue = $('#savePlaceId').val();
-    idValueIsEmpty = idValue == "" ? true : false;
+    var idValueIsEmpty = idValue == "" ? true : false;
     if (idValueIsEmpty) {
         requestType = 'POST';
         url = '/api/values/';
@@ -143,15 +144,15 @@ function savePlace() {
             showErrorSaveOrChange(x, y, z)
         }
     });
-    
+
 }
 
 //Функция для получения категорий.
 function getCategories() {
-    var dynamicSelect = $('#categories');
+    var dynamicSelect = $('#tags');
     dynamicSelect.empty();
     $.ajax({
-        url: '/api/category',
+        url: '/api/tags',
         type: 'GET',
         success: function (data) {
             dynamicSelect.append(data);
@@ -162,14 +163,15 @@ function getCategories() {
     });
 }
 
-function showPlaceByCategory() {
+function showPlaceByTags() {
     clearMapFromMarker();
-    getMapDataByServer($('#searchPlaceCategory').val());
+    getMapDataByServer($('#searchPlaceTags').val());
 }
 
 function getPlaceByAdress() {
     clearMapFromMarker();
     var address = $('#searchPlaceAdress').val();
+    var geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': address }, function (results, status) {
         if (status == 'OK') {
             map.setCenter(results[0].geometry.location);
@@ -195,16 +197,15 @@ function showErrorSaveOrChange(x, y, z) {
     $('#savePlaceInfo').text(x + " " + y + " " + z);
     $('#savePlaceInfo').show('slow');
     setTimeout(function () { $('#savePlaceInfo').hide('slow'); }, 2000);
+    $('#PlaceSaveBlock').attr('class', 'invisible');
 }
 
 function showSuccessSaveOrChange() {
+    $('#PlaceSaveBlock').attr('class', 'invisible');
     $('#savePlaceInfo').attr('class', 'alert alert-success');
-    if (idValueIsEmpty) {
-        $('#savePlaceInfo').text('Place added for moderation.');
-    } else {
-        $('#savePlaceInfo').text('Changes added for moderation.');
-    }
+    $('#savePlaceInfo').text('Place added for moderation.');
     $('#savePlaceInfo').show('slow');
     setTimeout(function () { $('#savePlaceInfo').hide('slow'); }, 2000);
+    $('#PlaceSaveBlock').attr('class', 'invisible');
     getMapDataByServer("");
 }

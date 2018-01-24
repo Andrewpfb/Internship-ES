@@ -23,7 +23,7 @@ namespace MapsProject.WEB.Models
         /// Категория объекта. Является обязательным, длина не более 50 символов.
         /// </summary>
         [Required, MaxLength(50)]
-        public string Category { get; set; }
+        public string Tags { get; set; }
 
         /// <summary>
         /// Долгота объекта. Является обязательным.

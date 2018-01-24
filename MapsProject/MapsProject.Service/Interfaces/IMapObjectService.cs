@@ -16,6 +16,6 @@ namespace MapsProject.Service.Interfaces
         MapObjectDTO GetMapObject(int id);
         void AddMapObject(MapObjectDTO mapObjectDTO);
         void UpdateMapObject(MapObjectDTO mapObjectDTO);
-        void DeleteMapObject(MapObjectDTO mapObjectDTO);
+        void DeleteMapObject(int id);
     }
 }

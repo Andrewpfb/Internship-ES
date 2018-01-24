@@ -1,11 +1,10 @@
-﻿using MapsProject.WEB.Models;
+﻿using AutoMapper;
+using MapsProject.Service.Interfaces;
+using MapsProject.Service.Models;
+using MapsProject.WEB.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using MapsProject.Service.Interfaces;
-using MapsProject.Service.Infrastructure;
-using AutoMapper;
 
 namespace MapsProject.WEB.Controllers
 {
@@ -26,116 +25,105 @@ namespace MapsProject.WEB.Controllers
         /// Метод возвращает все подтвержденные объекты. Если указана категория, то объекты будут
         /// этой категории.
         /// </summary>
-        /// <param name="category">Категория объектов. Если пусто, то вернется список всех объектов.</param>
+        /// <param name="tags">Категория объектов. Если пусто, то вернется список всех объектов.</param>
         /// <returns>Список подтвержденных объектов.</returns>
-        public IEnumerable<MapObjectViewModel> Get(string category = "")
+        public IEnumerable<MapObjectViewModel> Get(string tags = "")
         {
-           // IEnumerable<Service.Models.MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects("");
-
-            if (category == "")
+            if (tags == "")
             {
-                IEnumerable<Service.Models.MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects("");
+                IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects("");
                 var mapObjects = Mapper
-                    .Map<IEnumerable<Service.Models.MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
+                    .Map<IEnumerable<MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
                 return mapObjects;
-                //return mapObjectsDTOs;
-                //return db.MapsObjects.Where(s => s.Status == "Approved");
             }
             else
             {
-                IEnumerable<Service.Models.MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects(category);
+                IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects(tags);
                 var mapObjects = Mapper
-                    .Map<IEnumerable<Service.Models.MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
+                    .Map<IEnumerable<MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
                 return mapObjects;
             }
         }
 
-    //    /// <summary>
-    //    /// Возвращает конкретный подтвержденный объект.
-    //    /// </summary>
-    //    /// <param name="id">Идентификатор возвращаемого объекта.</param>
-    //    /// <returns>Возвращает объект MapObject.</returns>
-    //    public MapObjectViewModel Get(int id)
-    //    {
-    //        if (db.MapsObjects.Find(id).Status != "Approved")
-    //        {
-    //            return null;
-    //        }
-    //        return db.MapsObjects.Find(id);
-    //    }
+        //    /// <summary>
+        //    /// Возвращает конкретный подтвержденный объект.
+        //    /// </summary>
+        //    /// <param name="id">Идентификатор возвращаемого объекта.</param>
+        //    /// <returns>Возвращает объект MapObject.</returns>
+        public MapObjectViewModel Get(int id)
+        {
+            var findMapObject = Mapper
+                .Map<MapObjectDTO, MapObjectViewModel>(mapObjectService.GetMapObject(id));
+            if (findMapObject.Status != "Approved")
+            {
+                return null;
+            }
+            return findMapObject;
+        }
 
-    //    /// <summary>
-    //    /// Метод для добавления объекта в базу. Асинхронный.
-    //    /// </summary>
-    //    /// <param name="mapObject">Добавляемый объект.</param>
-    //    /// <returns>В случае успешного добавления возвращает OkResult. 
-    //    /// Если возникло исключение, то BadRequest.</returns>
-    //    public async Task<IHttpActionResult> Post([FromBody]MapObjectViewModel mapObject)
-    //    {
-    //        try
-    //        {
-    //            db.MapsObjects.Add(mapObject);
-    //            await db.SaveChangesAsync();
-    //            return Ok();
-    //        }
-    //        catch
-    //        {
-    //            return BadRequest();
-    //        }
-    //    }
+        //    /// <summary>
+        //    /// Метод для добавления объекта в базу. Асинхронный.
+        //    /// </summary>
+        //    /// <param name="mapObject">Добавляемый объект.</param>
+        //    /// <returns>В случае успешного добавления возвращает OkResult. 
+        //    /// Если возникло исключение, то BadRequest.</returns>
+        public async Task<IHttpActionResult> Post([FromBody]MapObjectViewModel mapObject)
+        {
+            try
+            {
+                var addMapObject = Mapper.Map<MapObjectViewModel, MapObjectDTO>(mapObject);
+                mapObjectService.AddMapObject(addMapObject);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
-    //    /// <summary>
-    //    /// Метод для обновления объекта в БД. Асинхронный.
-    //    /// </summary>
-    //    /// <param name="id">Идентификатор обновляемого объекта.</param>
-    //    /// <param name="mapObject">Обновленный объект.</param>
-    //    /// <returns>В случае успешного обновления возвращает OkResult.
-    //    /// Если обновление не прошло, то BadRequest.</returns>
-    //    public async Task<IHttpActionResult> Put(int id, [FromBody]MapObjectViewModel mapObject)
-    //    {
-    //        try
-    //        {
-    //            if (id == mapObject.Id)
-    //            {
-    //                db.Entry(mapObject).State = System.Data.Entity.EntityState.Modified;
-    //                await db.SaveChangesAsync();
-    //                return Ok();
-    //            }
-    //            return BadRequest();
-    //        }
-    //        catch
-    //        {
-    //            return BadRequest();
-    //        }
-    //    }
+        //    /// <summary>
+        //    /// Метод для обновления объекта в БД. Асинхронный.
+        //    /// </summary>
+        //    /// <param name="id">Идентификатор обновляемого объекта.</param>
+        //    /// <param name="mapObject">Обновленный объект.</param>
+        //    /// <returns>В случае успешного обновления возвращает OkResult.
+        //    /// Если обновление не прошло, то BadRequest.</returns>
+        public async Task<IHttpActionResult> Put(int id, [FromBody]MapObjectViewModel mapObject)
+        {
+            try
+            {
+                if (id == mapObject.Id)
+                {
+                    var updateMapObject = Mapper
+                        .Map<MapObjectViewModel, MapObjectDTO>(mapObject);
+                    mapObjectService.UpdateMapObject(updateMapObject);
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
-    //    /// <summary>
-    //    /// Метод для удаления объекта из БД. Асинхронный.
-    //    /// </summary>
-    //    /// <param name="id">Идентификатор обновляемого объекта.</param>
-    //    /// <returns>В случае успешного удаления возвращает OkResult. 
-    //    /// Если возникло исключение, то BadRequest.</returns>
-    //    public async Task<IHttpActionResult> Delete(int id)
-    //    {
-    //        try
-    //        {
-    //            db.MapsObjects.Remove(db.MapsObjects.Find(id));
-    //            await db.SaveChangesAsync();
-    //            return Ok();
-    //        }
-    //        catch
-    //        {
-    //            return BadRequest();
-    //        }
-    //    }
-
-    //    protected override void Dispose(bool disposing)
-    //    {
-    //        if (disposing)
-    //        {
-    //            db.Dispose();
-    //        }
-    //        base.Dispose(disposing);
-    //    }
+        //    /// <summary>
+        //    /// Метод для удаления объекта из БД. Асинхронный.
+        //    /// </summary>
+        //    /// <param name="id">Идентификатор обновляемого объекта.</param>
+        //    /// <returns>В случае успешного удаления возвращает OkResult. 
+        //    /// Если возникло исключение, то BadRequest.</returns>
+        public async Task<IHttpActionResult> Delete(int id)
+        {
+            try
+            {
+                mapObjectService.DeleteMapObject(id);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }

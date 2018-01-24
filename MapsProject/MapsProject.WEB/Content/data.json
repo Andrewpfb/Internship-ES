@@ -1,0 +1,26 @@
+﻿[
+  {
+    "Id": 23,
+    "ObjectName": "Galileo",
+    "Tags": "Shop Center",
+    "GeoLong": 27.553882598876953,
+    "GeoLat": 53.890303768314688,
+    "Status": "Need moderate"
+  },
+  {
+    "Id": 53,
+    "ObjectName": "Enter name",
+    "Tags": "Enter tags",
+    "GeoLong": 27.547295093536377,
+    "GeoLat": 53.881906169324296,
+    "Status": "Need moderate"
+  },
+  {
+    "Id": 54,
+    "ObjectName": "ada",
+    "Tags": "Enter tags",
+    "GeoLong": 27.54098653793335,
+    "GeoLat": 53.877580241725163,
+    "Status": "Need moderate"
+  }
+]

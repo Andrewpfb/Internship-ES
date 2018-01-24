@@ -4,34 +4,63 @@
 */
 
 $(document).ready(function () {
-    getData();
+    $("#moderateTable").dataTable({
+        "ajax": {
+            "url": '/api/moderate',
+            "dataSrc": ''
+        },
+        "columns": [
+            { data: 'Id' },
+            { data: 'ObjectName' },
+            { data: 'Tags' },
+            { data: 'GeoLong' },
+            { data: 'GeoLat' },
+            { data: 'Status' } //где добавить?
+        ]
+    });
+}); 
+
+$('confirmAction').click(function (event) {
+    var id = $(el).attr('data-item-id');
+    deletePlace(id);
 });
 
-// Функция для получения данных из сервера.
 function getData() {
-    debugger;
-    $('#moderateTable > tbody').empty();
-    $.getJSON('/api/moderate/', function (data) {
-        $.each(data, function (i, item) {
-            $('#moderateTable > tbody:last-child').append(
-                '<tr>'
-                + '<th>' + item.Id + '</th>'
-                + '<th>' + item.ObjectName + '</th>'
-                + '<th>' + item.Category + '</th>'
-                + '<th>' + item.GeoLat + '</th>'
-                + '<th>' + item.GeoLong + '</th>'
-                + '<th>' + item.Status + '</th>'
-                + '<th>' + '<a id="deletePlaceLink" data-item-id="' + item.Id + '"onclick="delPlace(this)">Delete</a></th>'
-                + '<th>' + '<a id="approvedPlaceLink" data-item-id="' + item.Id + '"onclick="appPlace(this)">Approve</a></th>'
-                + '</tr > '
-            );
-        });
+    $.getJSON('/api/moderate', function (response) {
+        $('#moderateTable').dataTable(
+            {
+                processing: true,
+                data: JSON.parse(response.data)
+            });
+        window.someGlobalOrWhatever = response.balance
     });
 }
 
+// Функция для получения данных из сервера.
+//function getData() {
+//    $('#moderateTable > tbody').empty();
+//    $.getJSON('/api/moderate/', function (data) {
+//        $.each(data, function (i, item) {
+//            $('#moderateTable > tbody:last-child').append(
+//                '<tr>'
+//                + '<th>' + item.Id + '</th>'
+//                + '<th>' + item.ObjectName + '</th>'
+//                + '<th>' + item.Tags + '</th>'
+//                + '<th>' + item.GeoLat + '</th>'
+//                + '<th>' + item.GeoLong + '</th>'
+//                + '<th>' + item.Status + '</th>'
+//                + '<th>' + '<a id="deletePlaceLink" data-item-id="' + item.Id + '"onclick="delPlace(this)">Delete</a></th>'
+//                + '<th>' + '<a id="approvedPlaceLink" data-item-id="' + item.Id + '"onclick="appPlace(this)">Approve</a></th>'
+//                + '</tr > '
+//            );
+//        });
+//    });
+//}
+
 function delPlace(el) {
-    var id = $(el).attr('data-item-id');
-    deletePlace(id);
+    $("#myModalBox").modal('show');
+    //var id = $(el).attr('data-item-id');
+    //deletePlace(id);
 }
 
 function appPlace(el) {

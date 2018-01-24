@@ -40,3 +40,10 @@ textarea {
 .info-div-style-default {
     display: none;
 }
+
+.invisible {
+    visibility: hidden;
+}
+.visible {
+    visibility: visible;
+}

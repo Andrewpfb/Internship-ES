@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using MapsProject.Service.Interfaces;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace MapsProject.WEB.Controllers
@@ -8,9 +8,14 @@ namespace MapsProject.WEB.Controllers
     /// Контроллер для категорий. Имеет метод для возврата всех категорий, которые принадлежат
     /// подтвержденным объектам.
     /// </summary>
-    public class CategoryController : ApiController
+    public class TagsController : ApiController
     {
-        //MapContext db = new MapContext();
+        IMapObjectService mapObjectService;
+
+        public TagsController(IMapObjectService mapObjServ)
+        {
+            mapObjectService = mapObjServ;
+        }
 
         /// <summary>
         /// Метод для получения всех категорий подтвержденных объектов.
@@ -19,12 +24,7 @@ namespace MapsProject.WEB.Controllers
         /// обернуты в тэг <option></option></returns>
         public IEnumerable<string> Get()
         {
-            HashSet<string> categories = new HashSet<string>();
-            //foreach (var cat in db.MapsObjects.Where(s => s.Status == "Approved"))
-            //{
-            //    categories.Add("<option>" + cat.Category + "</option>");
-            //}
-            return categories;
+            return mapObjectService.GetAllTags();
         }
     }
 }

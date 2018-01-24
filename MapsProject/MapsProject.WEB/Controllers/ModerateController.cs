@@ -1,6 +1,8 @@
-﻿using MapsProject.WEB.Models;
+﻿using AutoMapper;
+using MapsProject.Service.Interfaces;
+using MapsProject.Service.Models;
+using MapsProject.WEB.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -12,14 +14,24 @@ namespace MapsProject.WEB.Controllers
     /// </summary>
     public class ModerateController : ApiController
     {
+        IMapObjectService mapObjectService;
+
+        public ModerateController(IMapObjectService mapObjServ)
+        {
+            mapObjectService = mapObjServ;
+        }
+
         /// <summary>
         /// Метод для получения всех неподтвержденных объектов.
         /// </summary>
         /// <returns>Возвращает список неподтвержденных объектов.</returns>
-        //public IEnumerable<MapObjectViewModel> Get()
-        //{
-        //    return db.MapsObjects.Where(s => s.Status != "Approved");
-        //}
+        public IEnumerable<MapObjectViewModel> Get()
+        {
+            IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllModerateMapObject();
+            var mapModerateObjects = Mapper
+                .Map<IEnumerable<MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
+            return mapModerateObjects;
+        }
 
         /// <summary>
         /// Метод для подтверждения объекта.
@@ -28,30 +40,32 @@ namespace MapsProject.WEB.Controllers
         /// <param name="mapObject">Подтверждаемый объект.</param>
         /// <returns>В случае успешного подтверждения возвращает OkResult. 
         /// Если возникло исключение, то BadRequest.</returns>
-        //public async Task<IHttpActionResult> Put(int id, [FromBody]MapObjectViewModel mapObject)
-       // {
-            //try
-            //{
-            //    if (id == mapObject.Id)
-            //    {
-            //        //Это для подтверждения администратором. Со страницы подтверждения
-            //        //приходит mapObject с полями Id и Status. Находим объект в бд, загружаем,
-            //        //меняем ему статус и сохраняем.
-            //        if (mapObject.Status == "Approved")
-            //        {
-            //            mapObject = await db.MapsObjects.FindAsync(id);
-            //            mapObject.Status = "Approved";
-            //        }
-            //        db.Entry(mapObject).State = System.Data.Entity.EntityState.Modified;
-            //        await db.SaveChangesAsync();
-            //        return Ok();
-            //    }
-            //    return BadRequest();
-            //}
-            //catch
-            //{
-            //    return BadRequest();
-            //}
-       // }
+        public async Task<IHttpActionResult> Put(int id, [FromBody]MapObjectViewModel mapObject)
+        {
+            try
+            {
+                if (id == mapObject.Id)
+                {
+                    //Это для подтверждения администратором. Со страницы подтверждения
+                    //приходит mapObject с полями Id и Status. Находим объект в бд, загружаем,
+                    //меняем ему статус и сохраняем.
+                    if (mapObject.Status == "Approved")
+                    {
+                        mapObject = Mapper
+                            .Map<MapObjectDTO,MapObjectViewModel>(mapObjectService.GetMapObject(id));
+                        mapObject.Status = "Approved";
+                    }
+                    var approvedMapObject = Mapper
+                        .Map<MapObjectViewModel, MapObjectDTO>(mapObject);
+                    mapObjectService.UpdateMapObject(approvedMapObject);
+                    return Ok();
+                }
+                return BadRequest();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }

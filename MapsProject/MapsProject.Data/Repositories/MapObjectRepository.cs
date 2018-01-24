@@ -3,6 +3,7 @@ using MapsProject.Data.Interfaces;
 using MapsProject.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace MapsProject.Data.Repositories
@@ -46,7 +47,15 @@ namespace MapsProject.Data.Repositories
 
         public void Update(MapObject item)
         {
-            db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+            //При обновлении через db.Entry(tmp).State = EntityState.Modified;
+            // выбивало ошибку, мол такой элемент существует уже. Поэтому так. 
+            MapObject tmp = db.MapsObjects.Find(item.Id);
+            tmp.ObjectName = item.ObjectName;
+            tmp.Tags = item.Tags;
+            tmp.GeoLong = item.GeoLong;
+            tmp.GeoLat = item.GeoLat;
+            tmp.Status = item.Status;
+            db.Entry(tmp).State = EntityState.Modified;
         }
     }
 }
