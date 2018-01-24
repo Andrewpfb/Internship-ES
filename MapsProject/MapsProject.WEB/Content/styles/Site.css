@@ -1,0 +1,42 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.objectInfo {
+    /*height: 260px;
+    width: 250px;*/
+    height: 120px;
+    width: 250px;
+}
+
+.objectInfo-img {
+    height: 50px;
+    width: 250px;
+}
+
+.map {
+    height: 700px;
+    width: 800px;
+}
+
+.save-search-place-btn {
+    margin-top: 10px;
+}
+
+.info-div-style-default {
+    display: none;
+}
