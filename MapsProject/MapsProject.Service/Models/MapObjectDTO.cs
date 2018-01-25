@@ -33,6 +33,6 @@
         /// <summary>
         /// Object's status.
         /// </summary>
-        public string Status { get; set; }
+        public int Status { get; set; }
     }
 }

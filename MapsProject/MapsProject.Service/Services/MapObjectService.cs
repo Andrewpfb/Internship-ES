@@ -72,7 +72,7 @@ namespace MapsProject.Service.Services
             if (byTag == "")
             {
                 return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                  Database.MapObjects.GetAll().Where(s => s.Status == "Approved"));
+                  Database.MapObjects.GetAll().Where(s => s.Status == 1));
             }
             else
             {
@@ -85,7 +85,7 @@ namespace MapsProject.Service.Services
                 // Если сделать сразу проверку mapObject.Tags.Contains(byTags) -
                 // то объект с тэгами "Food; Bar" войдет в итоговый список, а с тэгами "Bar; Food" - нет.
                 var mapObjects = Database.MapObjects.GetAll()
-                  .Where(s => s.Status == "Approved");
+                  .Where(s => s.Status == 1);
                 List<MapObject> mapObjectByTags = new List<MapObject>();
                 string[] tags = byTag.Split(';');
                 int i = 0;
@@ -115,7 +115,7 @@ namespace MapsProject.Service.Services
         public IEnumerable<MapObjectDTO> GetAllModerateMapObject()
         {
             return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                Database.MapObjects.GetAll().Where(s => s.Status == "Need moderate"));
+                Database.MapObjects.GetAll().Where(s => s.Status == 0));
         }
 
         /// <summary>
@@ -125,7 +125,8 @@ namespace MapsProject.Service.Services
         public IEnumerable<string> GetAllTags()
         {
             HashSet<string> tags = new HashSet<string>();
-            IEnumerable<MapObject> mapObjectsList = Database.MapObjects.GetAll().Where(s => s.Status == "Approved");
+            IEnumerable<MapObject> mapObjectsList = Database.MapObjects.GetAll()
+                .Where(s => s.Status == 1);
             foreach (var mapObject in mapObjectsList)
             {
                 string[] tmpTags = mapObject.Tags.Split(new char[] { ';' });

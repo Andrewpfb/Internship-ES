@@ -41,6 +41,6 @@ namespace MapsProject.Data.Models
         /// Object's status. Is required.
         /// </summary>
         [Required]
-        public string Status { get; set; }
+        public int Status { get; set; }
     }
 }
