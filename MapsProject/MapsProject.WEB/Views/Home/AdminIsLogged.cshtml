@@ -3,26 +3,9 @@
     ViewBag.Title = "AdminIsLogged";
 }
 
-<div id="myModalBox" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Заголовок модального окна -->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Are you sure?</h4>
-            </div>
-            <!-- Основное содержимое модального окна -->
-            <div class="modal-body">
-                Delete this place?
-            </div>
-            <!-- Футер модального окна -->
-            <div class="modal-footer">
-                <button id="cancelAction" type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                <button id="confirmAction" type="button" class="btn btn-primary">Yes</button>
-            </div>
-        </div>
-    </div>
-</div>
+@section css{
+    @Styles.Render("~/Content/dataTables")
+}
 
 <h2>Moderate</h2>
 
@@ -49,6 +32,12 @@
                     <th>
                         Status
                     </th>
+                    <th>
+                        Delete
+                    </th>
+                    <th>
+                        Approve
+                    </th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -58,11 +47,5 @@
 
 @section Scripts {
     @Scripts.Render("~/Content/scripts/moderate.js")
+    @Scripts.Render("~/bundles/dataTables")
 }
-
-@*<th>
-    Delete
-</th>
-<th>
-    Approve
-</th>*@

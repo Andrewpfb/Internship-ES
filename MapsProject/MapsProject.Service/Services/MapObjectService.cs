@@ -24,15 +24,6 @@ namespace MapsProject.Service.Services
             {
                 var addMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
-                //MapObject mapObject = new MapObject
-                //{
-                //    Id = mapObjectDTO.Id,
-                //    ObjectName = mapObjectDTO.ObjectName,
-                //    Tags = mapObjectDTO.Tags,
-                //    GeoLong = mapObjectDTO.GeoLong,
-                //    GeoLat = mapObjectDTO.GeoLat,
-                //    Status = mapObjectDTO.Status
-                //};
                 Database.MapObjects.Create(addMapObject);
                 Database.Save();
             }

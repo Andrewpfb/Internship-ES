@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MapsProject.Service.Models;
 
-
 namespace MapsProject.Service.Interfaces
 {
+    /// <summary>
+    /// Interface for working with MapsProject.Data.
+    /// </summary>
     public interface IMapObjectService
     {
         IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string byTag);

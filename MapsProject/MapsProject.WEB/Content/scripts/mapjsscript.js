@@ -12,26 +12,23 @@ var marker;
 $(document).ready(function () {
     initMap();
     getMapDataByServer('');
-    getCategories();
+    getTags();
 });
 
-$('#savePlace').click(function (event) {
-    event.preventDefault();
+$('#savePlace').click(function () {
     savePlace();
 });
-$('#searchPlacesByTags').click(function (event) {
-    event.preventDefault();
+$('#searchPlacesByTags').click(function () {
     showPlaceByTags();
 });
-$('#searchPlaceByAdress').click(function (event) {
-    event.preventDefault();
+$('#searchPlaceByAdress').click(function () {
     getPlaceByAdress();
 });
 
 //Функция инициализация карты.
 function initMap() {
     markers = [];
-    
+
     google.maps.visualRefresh = true;
 
     var Minsk = new google.maps.LatLng(53.887895, 27.538710);
@@ -147,8 +144,8 @@ function savePlace() {
 
 }
 
-//Функция для получения категорий.
-function getCategories() {
+//Функция для получения тэгов.
+function getTags() {
     var dynamicSelect = $('#tags');
     dynamicSelect.empty();
     $.ajax({
@@ -176,6 +173,8 @@ function getPlaceByAdress() {
         if (status == 'OK') {
             map.setCenter(results[0].geometry.location);
             markers.push(marker);
+            debugger;
+            $('#PlaceSaveBlock').attr('class', 'visible');
             placeMarkerAndPanTo(results[0].geometry.location, map);
         } else {
             alert('Geocode was not successful for the following reason: ' + status);

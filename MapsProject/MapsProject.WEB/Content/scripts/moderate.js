@@ -4,6 +4,10 @@
 */
 
 $(document).ready(function () {
+    loadTable();
+});
+
+function loadTable() {
     $("#moderateTable").dataTable({
         "ajax": {
             "url": '/api/moderate',
@@ -15,57 +19,26 @@ $(document).ready(function () {
             { data: 'Tags' },
             { data: 'GeoLong' },
             { data: 'GeoLat' },
-            { data: 'Status' } //где добавить?
+            { data: 'Status' },
+            { data: 'DeleteLink' },
+            { data: 'ApprovedLink' }
         ]
-    });
-}); 
-
-$('confirmAction').click(function (event) {
-    var id = $(el).attr('data-item-id');
-    deletePlace(id);
-});
-
-function getData() {
-    $.getJSON('/api/moderate', function (response) {
-        $('#moderateTable').dataTable(
-            {
-                processing: true,
-                data: JSON.parse(response.data)
-            });
-        window.someGlobalOrWhatever = response.balance
     });
 }
 
-// Функция для получения данных из сервера.
-//function getData() {
-//    $('#moderateTable > tbody').empty();
-//    $.getJSON('/api/moderate/', function (data) {
-//        $.each(data, function (i, item) {
-//            $('#moderateTable > tbody:last-child').append(
-//                '<tr>'
-//                + '<th>' + item.Id + '</th>'
-//                + '<th>' + item.ObjectName + '</th>'
-//                + '<th>' + item.Tags + '</th>'
-//                + '<th>' + item.GeoLat + '</th>'
-//                + '<th>' + item.GeoLong + '</th>'
-//                + '<th>' + item.Status + '</th>'
-//                + '<th>' + '<a id="deletePlaceLink" data-item-id="' + item.Id + '"onclick="delPlace(this)">Delete</a></th>'
-//                + '<th>' + '<a id="approvedPlaceLink" data-item-id="' + item.Id + '"onclick="appPlace(this)">Approve</a></th>'
-//                + '</tr > '
-//            );
-//        });
-//    });
-//}
-
 function delPlace(el) {
-    $("#myModalBox").modal('show');
-    //var id = $(el).attr('data-item-id');
-    //deletePlace(id);
+    if (confirm("Do you want to delete this place?")) {
+        var id = $(el).attr('data-item-id');
+        deletePlace(id);
+    }
+
 }
 
 function appPlace(el) {
-    var id = $(el).attr('data-item-id');
-    approvedPlace(id);
+    if (confirm("Do you want to approve this place?")) {
+        var id = $(el).attr('data-item-id');
+        approvedPlace(id);
+    }
 }
 
 function deletePlace(id) {
@@ -74,7 +47,7 @@ function deletePlace(id) {
         type: 'DELETE',
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
-            getData();
+            $("#moderateTable").dataTable().api().ajax.reload();
         },
         error: function (x, y, z) {
             alert(x + '\n' + y + '\n' + z);
@@ -93,7 +66,7 @@ function approvedPlace(id) {
         data: JSON.stringify(place),
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
-            getData();
+            $("#moderateTable").dataTable().api().ajax.reload();
         },
         error: function (x, y, z) {
             alert(x + '\n' + y + '\n' + z);

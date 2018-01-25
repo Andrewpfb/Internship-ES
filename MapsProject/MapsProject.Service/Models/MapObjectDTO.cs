@@ -2,30 +2,33 @@
 {
     public class MapObjectDTO
     {
+        /// <summary>
+        /// Object id.
+        /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Имя объекта. Является обязательным, длина не более 50 символов.
+        /// Object's name.
         /// </summary>
         public string ObjectName { get; set; }
 
         /// <summary>
-        /// Категория объекта. Является обязательным, длина не более 50 символов.
+        /// Object tag list.
         /// </summary>
         public string Tags { get; set; }
 
         /// <summary>
-        /// Долгота объекта. Является обязательным.
+        /// Longitude of the object.
         /// </summary>
         public double GeoLong { get; set; }
 
         /// <summary>
-        /// Широта объекта. Является обязательным.
+        /// Latitude of the object.
         /// </summary>
         public double GeoLat { get; set; }
 
         /// <summary>
-        /// Статус объекта. Является обязательным.
+        /// Object status.
         /// </summary>
         public string Status { get; set; }
     }

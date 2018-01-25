@@ -4,15 +4,19 @@ using System.Data.Entity;
 namespace MapsProject.Data.EF
 {
     /// <summary>
-    /// Класс контекста для БД.
+    /// The context class for database.
     /// </summary>
     public class MapObjectContext : DbContext
     {
         /// <summary>
-        /// Объекты в БД.
+        /// Object in database.
         /// </summary>
         public DbSet<MapObject> MapsObjects { get; set; }
 
+        /// <summary>
+        /// Context class constructor.Accepts the connection string.
+        /// </summary>
+        /// <param name="connectionString">Connection string from MapsProject.WEB</param>
         public MapObjectContext(string connectionString)
             : base(connectionString) { }
     }

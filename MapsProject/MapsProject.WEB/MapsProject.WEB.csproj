@@ -193,6 +193,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MapObjectModerateViewModel.cs" />
     <Compile Include="Models\MapObjectViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -239,7 +240,6 @@
     <Content Include="Content\lib\Bootstrap\bootstrap.js" />
     <Content Include="Content\lib\Bootstrap\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config" />
-    <Content Include="Content\data.json" />
     <None Include="Content\lib\JQuery\jquery-1.10.2-vsdoc.js" />
     <Content Include="Content\lib\JQuery\jquery-1.10.2.js" />
     <Content Include="Content\lib\JQuery\jquery-1.10.2.min.js" />

@@ -20,6 +20,7 @@ namespace MapsProject.WEB
                     cfg.CreateMap<MapObjectDTO, MapObjectViewModel>();
                     cfg.CreateMap<MapObjectViewModel, MapObjectDTO>();
                     cfg.CreateMap<MapObjectDTO, MapObject>();
+                    cfg.CreateMap<MapObjectDTO, MapObjectModerateViewModel>();
                 });
         }
     }

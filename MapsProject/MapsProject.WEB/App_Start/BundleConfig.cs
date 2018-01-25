@@ -9,8 +9,7 @@ namespace MapsProject.WEB
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Content/lib/JQuery/jquery-{version}.js",
-                        "~/Content/lib/DataTables/js/*.js"));
+                        "~/Content/lib/JQuery/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Content/lib/JQuery/jquery.validate*"));
@@ -22,18 +21,18 @@ namespace MapsProject.WEB
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Content/lib/Bootstrap/bootstrap.js",
-                       "~/Content/lib/DataTables/js/*.js", //HERE
                       "~/Content/lib/Bootstrap/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/lib/Bootstrap/bootstrap.css",
                       "~/Content/styles/site.css"));
 
-            //bundles.Add(new ScriptBundle("~/bundles/dataTablesScript").Include(
-            //    "~/Content/lib/DataTables/js/*.js"));
+            // DataTables plugin bundle.
+            bundles.Add(new ScriptBundle("~/bundles/dataTables").Include(
+                "~/Content/lib/DataTables/js/*.js"));
 
-            //bundles.Add(new StyleBundle("~/Content/dataTablesCss").Include(
-            //               "~/Content/lib/DataTables/css/*.css"));
+            bundles.Add(new StyleBundle("~/Content/dataTables").Include(
+                           "~/Content/lib/DataTables/css/*.css"));
         }
     }
 }
