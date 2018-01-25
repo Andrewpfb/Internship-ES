@@ -5,8 +5,7 @@ using System.Web.Http;
 namespace MapsProject.WEB.Controllers
 {
     /// <summary>
-    /// Контроллер для категорий. Имеет метод для возврата всех категорий, которые принадлежат
-    /// подтвержденным объектам.
+    /// Controller for tags. Has a method for returning all categories that belong to confirmed objects.
     /// </summary>
     public class TagsController : ApiController
     {
@@ -18,10 +17,9 @@ namespace MapsProject.WEB.Controllers
         }
 
         /// <summary>
-        /// Метод для получения всех категорий подтвержденных объектов.
+        /// Method for obtaining all tags of approved objects..
         /// </summary>
-        /// <returns>Возвращает список категорий подвержденных объектов. Категории по отдельности
-        /// обернуты в тэг <option></option></returns>
+        /// <returns>IEnumerable(string) tags.</returns>
         public IEnumerable<string> Get()
         {
             return mapObjectService.GetAllTags();

@@ -3,14 +3,14 @@ using MapsProject.Service.Interfaces;
 using MapsProject.Service.Models;
 using MapsProject.WEB.Models;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace MapsProject.WEB.Controllers
 {
     /// <summary>
-    /// Контроллер для работы с объектами. Имеет методы для получения всех подтвержденных объектов, 
-    /// конкретного объекта, для добавления, редактирования, удаления объектов.
+    /// Controller for working with objects. 
+    /// It has methods for obtaining all confirmed objects, a specific object, 
+    /// for adding, editing, deleting objects.
     /// </summary>
     public class ValuesController : ApiController
     {
@@ -22,11 +22,11 @@ namespace MapsProject.WEB.Controllers
         }
 
         /// <summary>
-        /// Метод возвращает все подтвержденные объекты. Если указана категория, то объекты будут
-        /// этой категории.
+        /// The method returns all approved objects to the specified tags.
+        /// If no tags are specified, it returns all objects.
         /// </summary>
-        /// <param name="tags">Категория объектов. Если пусто, то вернется список всех объектов.</param>
-        /// <returns>Список подтвержденных объектов.</returns>
+        /// <param name="tags">Tags.</param>
+        /// <returns>IEnumerable(MapObjectViewModel) objects.</returns>
         public IEnumerable<MapObjectViewModel> Get(string tags = "")
         {
             if (tags == "")
@@ -45,11 +45,11 @@ namespace MapsProject.WEB.Controllers
             }
         }
 
-        //    /// <summary>
-        //    /// Возвращает конкретный подтвержденный объект.
-        //    /// </summary>
-        //    /// <param name="id">Идентификатор возвращаемого объекта.</param>
-        //    /// <returns>Возвращает объект MapObject.</returns>
+        /// <summary>
+        /// Returns a particular approved object.
+        /// </summary>
+        /// <param name="id">Object's ID.</param>
+        /// <returns>MapObjectViewModel object.</returns>
         public MapObjectViewModel Get(int id)
         {
             var findMapObject = Mapper
@@ -61,13 +61,13 @@ namespace MapsProject.WEB.Controllers
             return findMapObject;
         }
 
-        //    /// <summary>
-        //    /// Метод для добавления объекта в базу. Асинхронный.
-        //    /// </summary>
-        //    /// <param name="mapObject">Добавляемый объект.</param>
-        //    /// <returns>В случае успешного добавления возвращает OkResult. 
-        //    /// Если возникло исключение, то BadRequest.</returns>
-        public async Task<IHttpActionResult> Post([FromBody]MapObjectViewModel mapObject)
+        /// <summary>
+        /// Method for adding an object to the database.
+        /// </summary>
+        /// <param name="mapObject">Adding object.</param>
+        /// <returns>In case of successful addition, returns OkResult(). 
+        /// If an exception occurs, then BadRequest().</returns>
+        public IHttpActionResult Post([FromBody]MapObjectViewModel mapObject)
         {
             try
             {
@@ -81,14 +81,14 @@ namespace MapsProject.WEB.Controllers
             }
         }
 
-        //    /// <summary>
-        //    /// Метод для обновления объекта в БД. Асинхронный.
-        //    /// </summary>
-        //    /// <param name="id">Идентификатор обновляемого объекта.</param>
-        //    /// <param name="mapObject">Обновленный объект.</param>
-        //    /// <returns>В случае успешного обновления возвращает OkResult.
-        //    /// Если обновление не прошло, то BadRequest.</returns>
-        public async Task<IHttpActionResult> Put(int id, [FromBody]MapObjectViewModel mapObject)
+        /// <summary>
+        /// Method for updating the object in the database.
+        /// </summary>
+        /// <param name="id">Object's ID.</param>
+        /// <param name="mapObject">Updating object.</param>
+        /// <returns> If the update is successful, it returns OkResult().
+        /// If an exception occurs, then BadRequest.</returns>
+        public IHttpActionResult Put(int id, [FromBody]MapObjectViewModel mapObject)
         {
             try
             {
@@ -107,13 +107,13 @@ namespace MapsProject.WEB.Controllers
             }
         }
 
-        //    /// <summary>
-        //    /// Метод для удаления объекта из БД. Асинхронный.
-        //    /// </summary>
-        //    /// <param name="id">Идентификатор обновляемого объекта.</param>
-        //    /// <returns>В случае успешного удаления возвращает OkResult. 
-        //    /// Если возникло исключение, то BadRequest.</returns>
-        public async Task<IHttpActionResult> Delete(int id)
+        /// <summary>
+        /// Method for removing an object from the database.
+        /// </summary>
+        /// <param name="id">Object's ID.</param>
+        /// <returns>In case of successful deletion, returns OkResult(). 
+        /// If an exception occurs, then BadRequest.</returns>
+        public IHttpActionResult Delete(int id)
         {
             try
             {

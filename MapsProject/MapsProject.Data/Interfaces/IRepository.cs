@@ -45,7 +45,7 @@ namespace MapsProject.Data.Interfaces
         /// <summary>
         /// Method for deleting object from database.
         /// </summary>
-        /// <param name="id">Deleting object</param>
+        /// <param name="id">Object's ID.</param>
         void Delete(int id);
     }
 }

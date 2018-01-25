@@ -1,6 +1,6 @@
 ﻿/**
-    * Скрипт для отрисовки таблицы неподтвержденных объектов.
-    * Содержит методы для удаления и подтверждения объектов.
+    * Script for rendering the table of disapproved objects.
+    * Contains methods for deleting and confirming objects.
 */
 
 $(document).ready(function () {

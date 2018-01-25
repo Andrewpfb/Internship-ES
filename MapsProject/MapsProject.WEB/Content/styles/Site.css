@@ -44,6 +44,13 @@ textarea {
 .invisible {
     visibility: hidden;
 }
+
 .visible {
     visibility: visible;
+}
+
+.checkbox-list {
+    width: 200px;
+    height: 200px;
+    overflow: auto;
 }

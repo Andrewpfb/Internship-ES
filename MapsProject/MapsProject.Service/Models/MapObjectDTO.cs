@@ -1,9 +1,12 @@
 ﻿namespace MapsProject.Service.Models
 {
+    /// <summary>
+    /// Class for transfer between Data and WEB.
+    /// </summary>
     public class MapObjectDTO
     {
         /// <summary>
-        /// Object id.
+        /// Object's ID.
         /// </summary>
         public int Id { get; set; }
 
@@ -13,22 +16,22 @@
         public string ObjectName { get; set; }
 
         /// <summary>
-        /// Object tag list.
+        /// Object's tag list.
         /// </summary>
         public string Tags { get; set; }
 
         /// <summary>
-        /// Longitude of the object.
+        /// Object's longitude.
         /// </summary>
         public double GeoLong { get; set; }
 
         /// <summary>
-        /// Latitude of the object.
+        /// Object's latitude.
         /// </summary>
         public double GeoLat { get; set; }
 
         /// <summary>
-        /// Object status.
+        /// Object's status.
         /// </summary>
         public string Status { get; set; }
     }

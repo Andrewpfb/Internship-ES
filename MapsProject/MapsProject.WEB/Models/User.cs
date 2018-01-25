@@ -3,22 +3,22 @@
 namespace MapsProject.WEB.Models
 {
     /// <summary>
-    /// Класс пользователя. 
+    /// Class for user. 
     /// </summary>
     public class User
     {
         /// <summary>
-        /// Имя пользователя. Является обязательным, длина не более 20 символов, может содержать 
-        /// только латинские буквы и цифры.
+        /// Username. Is required, the length must be less than 20 characters, 
+        /// can only contain Latin letters and numbers.
         /// </summary>
-        [Required(ErrorMessage ="Username is required")]
-        [MaxLength(20, ErrorMessage ="Username must be less than 20 characters")]
-        [RegularExpression("^[a-zA-Z0-9]+$",ErrorMessage ="Username has invalid symbol")]
+        [Required(ErrorMessage = "Username is required")]
+        [MaxLength(20, ErrorMessage = "Username must be less than 20 characters")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Username has invalid symbol")]
         public string Username { get; set; }
 
         /// <summary>
-        /// Пароль пользователя. Является обязательным, длина не более 20 символов, может содержать 
-        /// только латинские буквы и цифры.
+        /// User's password. Is required, the length must be less than 20 characters, 
+        /// can only contain Latin letters and numbers.
         /// </summary>
         [Required(ErrorMessage = "Password is required")]
         [MaxLength(20, ErrorMessage = "Password must be less than 20 characters")]

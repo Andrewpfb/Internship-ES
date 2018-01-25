@@ -8,37 +8,37 @@ namespace MapsProject.WEB.Models
     public class MapObjectViewModel
     {
         /// <summary>
-        /// Идентификатор объекта. Является обязательным.
+        /// Object's ID. Is Required.
         /// </summary>
         [Required]
         public int Id { get; set; }
 
         /// <summary>
-        /// Имя объекта. Является обязательным, длина не более 50 символов.
+        /// Object's name. Is required, length is not more than 50 characters.
         /// </summary>
         [Required, MaxLength(50)]
         public string ObjectName { get; set; }
 
         /// <summary>
-        /// Категория объекта. Является обязательным, длина не более 50 символов.
+        /// Object's tags. Is required, length is not more than 50 characters.
         /// </summary>
-        [Required, MaxLength(50)]
+        [Required, MaxLength(200)]
         public string Tags { get; set; }
 
         /// <summary>
-        /// Долгота объекта. Является обязательным.
+        /// Object's longitude. Is required.
         /// </summary>
         [Required]
         public double GeoLong { get; set; }
 
         /// <summary>
-        /// Широта объекта. Является обязательным.
+        /// Object's latitude. Is required.
         /// </summary>
         [Required]
         public double GeoLat { get; set; }
 
         /// <summary>
-        /// Статус объекта. Является обязательным.
+        /// Object's status. Is required.
         /// </summary>
         [Required]
         public string Status { get; set; }

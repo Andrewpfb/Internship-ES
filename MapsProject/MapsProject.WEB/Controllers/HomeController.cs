@@ -4,15 +4,15 @@ using System.Web.Mvc;
 namespace MapsProject.WEB.Controllers
 {
     /// <summary>
-    /// Контроллер для вызова страниц. Имеет методы для вызоваглавной страницы 
-    /// и страницы авторизации для модерации. 
+    /// Controller for page call. 
+    /// Has methods for calling the main page and authorization page. 
     /// </summary>
     public class HomeController : Controller
     {
         /// <summary>
-        /// Метод для вызова главной страницы. GET-версия.
+        /// Method for calling main page. GET-version.
         /// </summary>
-        /// <returns>Возвращает View() для главной страницы.</returns>
+        /// <returns>View() for main page.</returns>
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
@@ -21,9 +21,9 @@ namespace MapsProject.WEB.Controllers
         }
 
         /// <summary>
-        /// Метод для вызова страницы авторизации. GET-версия.
+        /// Method for calling authorization page. GET-version.
         /// </summary>
-        /// <returns>Возвращает View() для страницы авторизации.</returns>
+        /// <returns>View() for authorization page.</returns>
         [HttpGet]
         public ActionResult Moderate()
         {
@@ -31,11 +31,12 @@ namespace MapsProject.WEB.Controllers
         }
 
         /// <summary>
-        /// Метод для вызова страницы авторизации. POST-версия.
+        /// Method for calling authorization page. POST-version.
         /// </summary>
-        /// <param name="user">Авторизируемый пользователь.</param>
-        /// <returns>Если авторизация пройдена, то возвращает страницу с неподтвержденными объектами.
-        /// Если не пройдена, то вызывается GET-версия метода и в неё передаётся сообщение об ошибке.</returns>
+        /// <param name="user">Authorized user.</param>
+        /// <returns>If authorization is passed, then returns a page with unapproved objects.
+        /// If it is not passed, then the GET-version of the method is called 
+        /// and an error message is sent to it.</returns>
         [HttpPost, ValidateAntiForgeryToken, ActionName("Moderate")]
         public ActionResult ConfirmModerate([Bind(Include = "Username, Password")]User user)
         {

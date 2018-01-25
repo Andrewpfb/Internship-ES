@@ -1,11 +1,16 @@
 ﻿/**
-    * Скрипт для отрисовки карты, маркеров, действий с объектами.
-    * Содержит методы инициализации карты, отрисовки маркеров, добавления и редактирования объектов,
-    * отображения объектов по категориям, поиска объекта по адресу.
+    * Script for drawing a map, markers, actions with objects.
+    * Contains methods for initializing the map, drawing markers, adding and editing objects,
+    * displaying objects by category, searching for an object at the address.
  */
+
+
 
 var map;
 var markers = [];
+
+// Глобальные потому что используются в разных участках кода. Например, перед отрисовкой нового маркера 
+// убрать старый, перед отрисовкой infowindow убрать старое и т.д.
 var infowindow;
 var marker;
 
@@ -25,7 +30,6 @@ $('#searchPlaceByAdress').click(function () {
     getPlaceByAdress();
 });
 
-//Функция инициализация карты.
 function initMap() {
     markers = [];
 
@@ -50,11 +54,9 @@ function initMap() {
     });
 }
 
-// Функция получения данных от сервера.
 function getMapDataByServer(tags) {
     clearMapFromMarker();
     var url;
-    //Если в функцию переданы тэги, то получим список объектов с такими тэгами.
     if (tags == '' || tags == undefined) {
         url = '/api/values';
     } else {
@@ -92,9 +94,8 @@ function getMapDataByServer(tags) {
     });
 }
 
-// Функция отрисовки маркеров.
 function placeMarkerAndPanTo(latLng, map) {
-    //Удаляем предыдущий маркер.
+    //Remove old marker.
     if (marker) {
         marker.setMap(null);
     }
@@ -110,7 +111,7 @@ function placeMarkerAndPanTo(latLng, map) {
     map.panTo(latLng);
 }
 
-// Функция для сохранения или редактирования объекта.
+// Save or edit object.
 function savePlace() {
     var place = {
         ObjectName: $('#savePlaceName').val(),
@@ -144,19 +145,97 @@ function savePlace() {
 
 }
 
-//Функция для получения тэгов.
 function getTags() {
-    var dynamicSelect = $('#tags');
-    dynamicSelect.empty();
     $.ajax({
         url: '/api/tags',
         type: 'GET',
         success: function (data) {
-            dynamicSelect.append(data);
+            setTagList(data);
         },
         error: function (x, y, z) {
             alert(x + '\n' + y + '\n' + z)
         }
+    });
+}
+
+function setTagList(val_data) {
+
+    var input = $('#searchPlaceTags');
+
+    // Создаем общий блок с классом
+    var val_cont = document.createElement('div');
+    $(val_cont).addClass("dropdown");
+
+    // Создаем кнопку открытия списка и поле для записи значений
+    $(val_cont).append("<a href='javascript:void(0);'><span class='open'>Select tags</span><span class='value'></span></a>");
+
+
+    // Создаем выпадающий список и вкладываем в общий блок
+    var ul = document.createElement('ul');
+
+    for (elem in val_data) {
+        $(ul).append("<li><input type='checkbox' value='" + val_data[elem] + "' id='" + val_data[elem] + "'><label for='" + val_data[elem] + "'>" + val_data[elem] + "</label></li>");
+    }
+    $(ul).appendTo(val_cont);
+    $(ul).hide();
+
+    // Размещаем общий блок после нужного input-а
+    $(input).after(val_cont);
+
+    // Скрываем/открываем выпадающий список
+    $(".dropdown a").on('click', function () {
+        $(".dropdown ul").slideToggle('fast');
+        $(val_cont).toggleClass("checkbox-list");
+    });
+
+    $('.dropdown ul input[type="checkbox"]').on('click', function () {
+        var inputValue, innerObj = {};
+
+        /* проверяем value текстового инпута. это необходимо для очистки
+           от лишних запятых при удалении всех элементов и накликивания
+           чекбоксов заново. если эту проверку не делать, то пустой инпут
+           добавляется как пустой элемент массива */
+        if (input.val()) {
+            /* если инпут не пустой, то закидываем данные из него в массив
+               по разделителю "; " */
+            inputValue = input.val().split(';')
+        } else {
+            inputValue = []; // если пустой - присваиваем переменно пустой массив
+        };
+
+        /* промежуточный объект нам необходим для составления массива
+           только с уникальными элементами */
+        inputValue.forEach(function (item) {
+            innerObj[item] = true;
+        });
+
+        /* если чекбокс активен — добавляем его value как ключ к объекту, 
+           а если нет — удаляем этот ключ */
+        if ($(this).is(':checked')) {
+            innerObj[$(this).val()] = true;
+        } else {
+            delete innerObj[$(this).val()];
+        }
+
+        inputValue = Object.keys(innerObj); // преобразуем ключи объекта в массив
+        input.val(inputValue.join(';')); // преобразуем массив в строку, разделяя элементы "; " и записываем в value инпута
+    });
+
+    $('.check').click(function () {
+        var valuesArray = input.val().split(';'), // собираем данные из инпута в массив, разделитель "; "
+            $checkboxes = $(ul).find('li input').removeClass('protected'); // удаляем со всех инпутов класс
+
+        $.each(valuesArray, function (index, value) { // проходимся циклом по собранному массиву из инпутов
+            $checkboxes.each(function () { // для каждого значение запускаем цикл по всем чекбоксам
+                if ($(this).val() === value) { // и если value инпута равно элементу из собранного массива 
+                    $(this).prop('checked', true).addClass('protected'); // "чекаем" чекбокс и добавляем ему класс, чтобы на следующем условии чекбокс не стал обратно не выделенным
+
+                    return true; // уходим на следующую итерацию
+                } else if (!$(this).hasClass('protected')) { // если у чекбокса нет класса protected
+                    $(this).prop('checked', false); // то снимаем выделение с чекбокса
+                }
+            });
+        });
     });
 }
 
