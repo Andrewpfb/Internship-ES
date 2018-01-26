@@ -49,7 +49,7 @@ function initMap() {
             infowindow.close();
         }
         placeMarkerAndPanTo(e.latLng, map);
-        $('#PlaceSaveBlock').attr('class', 'visible');
+        $('#savePlaceModalWin').modal('show');
         preventDefault();
     });
 }
@@ -72,7 +72,6 @@ function getMapDataByServer(tags) {
             markers.push(marker);
 
             google.maps.event.addListener(marker, 'click', function () {
-                $('#PlaceSaveBlock').attr('class', 'visible');
                 if (infowindow) {
                     infowindow.close();
                 }
@@ -89,6 +88,14 @@ function getMapDataByServer(tags) {
                 $('#savePlaceTags').val(item.Tags);
                 $('#savePlaceLatitude').val(marker.getPosition().lat());
                 $('#savePlaceLongitude').val(marker.getPosition().lng());
+            });
+            google.maps.event.addListener(marker, 'dblclick', function () {
+                $('#savePlaceId').val(item.Id);
+                $('#savePlaceName').val(item.ObjectName);
+                $('#savePlaceTags').val(item.Tags);
+                $('#savePlaceLatitude').val(marker.getPosition().lat());
+                $('#savePlaceLongitude').val(marker.getPosition().lng());
+                $('#savePlaceModalWin').modal('show');
             });
         });
     });
@@ -137,9 +144,12 @@ function savePlace() {
         type: requestType,
         data: JSON.stringify(place),
         contentType: 'application/json;charset=utf-8',
-        success: showSuccessSaveOrChange(),
+        success: function () {
+            $('#savePlaceModalWin').modal('hide');
+            showSuccessSaveOrChange();
+        },
         error: function (x, y, z) {
-            showErrorSaveOrChange(x, y, z)
+            showErrorSaveOrChange(x, y, z);
         }
     });
 
@@ -252,8 +262,6 @@ function getPlaceByAdress() {
         if (status == 'OK') {
             map.setCenter(results[0].geometry.location);
             markers.push(marker);
-            debugger;
-            $('#PlaceSaveBlock').attr('class', 'visible');
             placeMarkerAndPanTo(results[0].geometry.location, map);
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
@@ -275,15 +283,12 @@ function showErrorSaveOrChange(x, y, z) {
     $('#savePlaceInfo').text(x + " " + y + " " + z);
     $('#savePlaceInfo').show('slow');
     setTimeout(function () { $('#savePlaceInfo').hide('slow'); }, 2000);
-    $('#PlaceSaveBlock').attr('class', 'invisible');
 }
 
 function showSuccessSaveOrChange() {
-    $('#PlaceSaveBlock').attr('class', 'invisible');
     $('#savePlaceInfo').attr('class', 'alert alert-success');
     $('#savePlaceInfo').text('Place added for moderation.');
     $('#savePlaceInfo').show('slow');
     setTimeout(function () { $('#savePlaceInfo').hide('slow'); }, 2000);
-    $('#PlaceSaveBlock').attr('class', 'invisible');
     getMapDataByServer("");
 }

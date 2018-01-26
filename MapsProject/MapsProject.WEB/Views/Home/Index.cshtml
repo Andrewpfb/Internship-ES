@@ -23,16 +23,31 @@
         </table>
         <button id="searchPlaceByAdress" class="save-search-place-btn btn btn-primary">Search</button>
         <div class="alert alert-success" role="alert" id="savePlaceInfo" style="display: none; margin-top: 15px;"></div>
-        <div id="PlaceSaveBlock" class="invisible">
-            <h2>Place info</h2>
-            <table cellpadding="2">
-                <tr><td><input type="hidden" id="savePlaceId" /></td><td></td></tr>
-                <tr><td><label>Place name: </label></td><td><input type="text" id="savePlaceName" /></td></tr>
-                <tr><td><label>Tags: </label></td><td><input type="text" id="savePlaceTags" /></td></tr>
-                <tr><td><label>Latitude: </label></td><td><input type="number" step="any" id="savePlaceLatitude" /></td></tr>
-                <tr><td><label>Longitude: </label></td><td><input type="number" step="any" id="savePlaceLongitude" /></td></tr>
-            </table>
-            <button id="savePlace" class="save-search-place-btn btn btn-primary">Save place</button>
+    </div>
+</div>
+
+
+<div class="modal fade" id="savePlaceModalWin">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h2 class="modal-title">Place info</h2>
+            </div>
+            <div class="modal-body">
+                <form id="savePlaceForm" action="javascript:void(null);">
+                    <table cellpadding="2">
+                        <tr><td><input type="hidden" id="savePlaceId" /></td><td></td></tr>
+                        <tr><td><label>Place name: </label></td><td><input type="text" id="savePlaceName" /></td></tr>
+                        <tr><td><label>Tags: </label></td><td><input type="text" id="savePlaceTags" /></td></tr>
+                        <tr><td><label>Latitude: </label></td><td><input type="number" step="any" id="savePlaceLatitude" /></td></tr>
+                        <tr><td><label>Longitude: </label></td><td><input type="number" step="any" id="savePlaceLongitude" /></td></tr>
+                    </table>
+                    <button id="savePlace" type="submit" class="save-search-place-btn btn btn-primary">Save place</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
