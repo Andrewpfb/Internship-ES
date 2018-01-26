@@ -27,7 +27,6 @@ function loadTable() {
 }
 
 function delPlace(el) {
-    debugger;
     $('#confirmDelModalWin').modal('show');
     $('#deletePlace').click(function () {
         var id = $(el).attr('data-item-id');
