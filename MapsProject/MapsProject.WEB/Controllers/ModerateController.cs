@@ -30,15 +30,6 @@ namespace MapsProject.WEB.Controllers
             IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllModerateMapObject();
             var mapModerateObjects = Mapper
                 .Map<IEnumerable<MapObjectDTO>, List<MapObjectModerateViewModel>>(mapObjectsDTOs);
-            foreach (var mapObject in mapModerateObjects)
-            {
-                mapObject.DeleteLink = "<a id='deletePlaceLink' data-item-id='"
-                    + mapObject.Id
-                    + "'onclick='delPlace(this)'>Delete</a>";
-                mapObject.ApprovedLink = "<a id='approvedPlaceLink' data-item-id='"
-                    + mapObject.Id
-                    + "'onclick='appPlace(this)'>Approved</a>";
-            }
             return mapModerateObjects;
         }
 

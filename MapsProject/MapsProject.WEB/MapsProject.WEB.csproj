@@ -263,6 +263,7 @@
     <Content Include="Views\Home\AdminIsLogged.cshtml" />
     <Content Include="Views\Home\ErrorAuth.cshtml" />
     <Content Include="Views\Home\Moderate.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

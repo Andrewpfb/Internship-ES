@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using MapsProject.Data.Models;
 using MapsProject.Service.Models;
 using MapsProject.WEB.Models;
@@ -22,81 +21,84 @@ namespace MapsProject.WEB
                 {
                     cfg.CreateMap<MapObject, MapObjectDTO>();
                     cfg.CreateMap<MapObjectDTO, MapObjectViewModel>()
-                    .ConvertUsing(new MapObjectConverter());
+                   .ForMember(x => x.Status, opt => opt.ResolveUsing<DTOToViewModelResolver, int>(src => src.Status));
                     cfg.CreateMap<MapObjectViewModel, MapObjectDTO>()
-                     .ConvertUsing(new MapObjectToDTOConverter());
+                    .ForMember(x => x.Status, opt => opt.ResolveUsing<ViewModelToDTOResolver, string>(src => src.Status));
                     cfg.CreateMap<MapObjectDTO, MapObject>();
                     cfg.CreateMap<MapObjectDTO, MapObjectModerateViewModel>()
-                    .ConvertUsing(new MapObjectModerateConverter());
+                    .ForMember(x => x.Status, opt => opt.ResolveUsing<DTOToModerateViewModelResolver, int>(src => src.Status))
+                    .ForMember(x => x.ApprovedLink, opt => opt.ResolveUsing<SetApprovedLink, int>(src => src.Id))
+                    .ForMember(x => x.DeleteLink, opt => opt.ResolveUsing<SetDeleteLink, int>(src => src.Id));
                 });
         }
 
-
-        //TODO: переделать.
-        class MapObjectConverter : ITypeConverter<MapObjectDTO, MapObjectViewModel>
+        class SetApprovedLink : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
         {
-            public MapObjectViewModel Convert(MapObjectDTO source, MapObjectViewModel destination, ResolutionContext context)
+            public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, int sourceMember, string destMember, ResolutionContext context)
             {
-                destination = new MapObjectViewModel();
-                destination.Id = source.Id;
-                destination.ObjectName = source.ObjectName;
-                destination.Tags = source.Tags;
-                destination.GeoLong = source.GeoLong;
-                destination.GeoLat = source.GeoLat;
-                if (source.Status == 1)
-                {
-                    destination.Status = Status.Approved.ToString();
-                }
-                else
-                {
-                    destination.Status = Status.NeedModerate.ToString();
-                }
-                return destination;
+                return destination.ApprovedLink = "<a id='approvedPlaceLink' data-item-id='"
+                     + source.Id
+                     + "'onclick='appPlace(this)'>Approved</a>";
             }
         }
 
-        class MapObjectModerateConverter : ITypeConverter<MapObjectDTO, MapObjectModerateViewModel>
+        class SetDeleteLink : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
         {
-            public MapObjectModerateViewModel Convert(MapObjectDTO source, MapObjectModerateViewModel destination, ResolutionContext context)
+            public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, int sourceMember, string destMember, ResolutionContext context)
             {
-                destination = new MapObjectModerateViewModel();
-                destination.Id = source.Id;
-                destination.ObjectName = source.ObjectName;
-                destination.Tags = source.Tags;
-                destination.GeoLong = source.GeoLong;
-                destination.GeoLat = source.GeoLat;
-                if (source.Status == 1)
-                {
-                    destination.Status = Status.Approved.ToString();
-                }
-                else
-                {
-                    destination.Status = Status.NeedModerate.ToString();
-                }
-                return destination;
+                return destination.DeleteLink = "<a id='deletePlaceLink' data-item-id='"
+                    + source.Id
+                    + "'onclick='delPlace(this)'>Delete</a>";
             }
         }
 
-        class MapObjectToDTOConverter : ITypeConverter<MapObjectViewModel, MapObjectDTO>
+        class DTOToViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectViewModel, int, string>
         {
-            public MapObjectDTO Convert(MapObjectViewModel source, MapObjectDTO destination, ResolutionContext context)
+            public string Resolve(MapObjectDTO source, MapObjectViewModel destination, int sourceMember, string destMember, ResolutionContext context)
             {
+                return EnumConverter.IntToString(source.Status);
+            }
+        }
 
-                destination = new MapObjectDTO();
-                destination.Id = source.Id;
-                destination.ObjectName = source.ObjectName;
-                destination.Tags = source.Tags;
-                destination.GeoLong = source.GeoLong;
-                destination.GeoLat = source.GeoLat;
-                if (source.Status == Status.Approved.ToString())
+        class DTOToModerateViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
+        {
+            public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, int sourceMember, string destMember, ResolutionContext context)
+            {
+                return EnumConverter.IntToString(source.Status);
+            }
+        }
+
+        class ViewModelToDTOResolver : IMemberValueResolver<MapObjectViewModel, MapObjectDTO, string, int>
+        {
+            public int Resolve(MapObjectViewModel source, MapObjectDTO destination, string sourceMember, int destMember, ResolutionContext context)
+            {
+                return EnumConverter.StringToInt(source.Status);
+            }
+        }
+
+        static class EnumConverter
+        {
+            public static int StringToInt(string status)
+            {
+                if (status == Status.Approved.ToString())
                 {
-                    destination.Status = 1;
+                    return (int)Status.Approved;
                 }
                 else
                 {
-                    destination.Status = 0;
+                    return (int)Status.NeedModerate;
                 }
-                return destination;
+            }
+            public static string IntToString(int status)
+            {
+                if (status == (int)Status.Approved)
+                {
+                    return Status.Approved.ToString();
+                }
+                else
+                {
+                    return Status.NeedModerate.ToString();
+                }
             }
         }
     }
