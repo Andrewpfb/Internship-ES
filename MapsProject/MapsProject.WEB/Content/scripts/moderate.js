@@ -27,18 +27,22 @@ function loadTable() {
 }
 
 function delPlace(el) {
-    if (confirm("Do you want to delete this place?")) {
+    debugger;
+    $('#confirmDelModalWin').modal('show');
+    $('#deletePlace').click(function () {
         var id = $(el).attr('data-item-id');
         deletePlace(id);
-    }
-
+        $('#confirmDelModalWin').modal('hide');
+    });
 }
 
 function appPlace(el) {
-    if (confirm("Do you want to approve this place?")) {
+    $('#confirmAppModalWin').modal('show');
+    $('#approvePlace').click(function () {
         var id = $(el).attr('data-item-id');
         approvedPlace(id);
-    }
+        $('#confirmAppModalWin').modal('hide');
+    });
 }
 
 function deletePlace(id) {

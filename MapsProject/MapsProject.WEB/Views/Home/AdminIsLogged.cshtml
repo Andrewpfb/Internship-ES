@@ -45,6 +45,47 @@
     </div>
 </div>
 
+<div class="modal fade" id="confirmAppModalWin">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h2 class="modal-title">Confirm your choice</h2>
+            </div>
+            <div id="modalBodyId" class="modal-body">
+                Do you want to approve this place?
+            </div>
+            <div class="modal-footer">
+                <button id="approvePlace" type="button" class="btn btn-primary">Approve a place</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmDelModalWin">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h2 class="modal-title">Confirm your choice</h2>
+            </div>
+            <div id="modalBodyId" class="modal-body">
+                Do you want to delete this place?
+            </div>
+            <div class="modal-footer">
+                <button id="deletePlace" type="button" class="btn btn-primary">Delete a place</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
     @Scripts.Render("~/Content/scripts/moderate.js")
     @Scripts.Render("~/bundles/dataTables")
