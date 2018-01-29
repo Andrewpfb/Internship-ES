@@ -70,7 +70,6 @@
   <ItemGroup>
     <Compile Include="Infrastructure\ValidationException.cs" />
     <Compile Include="Interfaces\IMapObjectService.cs" />
-    <Compile Include="Models\MapObjectDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MapObjectService.cs" />
   </ItemGroup>
@@ -78,6 +77,10 @@
     <ProjectReference Include="..\MapsProject.Data\MapsProject.Data.csproj">
       <Project>{ec8590a1-b25f-420c-ab81-d0bbced826f7}</Project>
       <Name>MapsProject.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapsProject.Models\MapsProject.Models.csproj">
+      <Project>{188f6c18-cae5-4cd7-a4bf-332547ef46a8}</Project>
+      <Name>MapsProject.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

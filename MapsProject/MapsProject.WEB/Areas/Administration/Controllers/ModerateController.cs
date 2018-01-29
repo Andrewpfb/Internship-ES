@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using MapsProject.Models.Enums;
+using MapsProject.Models.Enums.Extensions;
+using MapsProject.Models.Models;
 using MapsProject.Service.Interfaces;
-using MapsProject.Service.Models;
+using MapsProject.WEB.Areas.Administration.Models;
 using MapsProject.WEB.Models;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace MapsProject.WEB.Controllers
+namespace MapsProject.WEB.Areas.Administration.Controllers
 {
     /// <summary>
     /// Controller for the administrator. It has methods for obtaining all unconfirmed objects
@@ -30,6 +32,10 @@ namespace MapsProject.WEB.Controllers
             IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllModerateMapObject();
             var mapModerateObjects = Mapper
                 .Map<IEnumerable<MapObjectDTO>, List<MapObjectModerateViewModel>>(mapObjectsDTOs);
+            foreach (var moderateObject in mapModerateObjects)
+            {
+                moderateObject.Status = Status.NeedModerate.GetDescription();
+            }
             return mapModerateObjects;
         }
 
@@ -49,11 +55,11 @@ namespace MapsProject.WEB.Controllers
                     // This is for confirmation by the administrator.
                     // From the confirmation page comes the mapObject with the fields Id and Status.
                     // We find the object in the database, load it, change its status and save it.
-                    if (mapObject.Status == "Approved")
+                    if (mapObject.Status == Status.Approved)
                     {
                         mapObject = Mapper
                             .Map<MapObjectDTO, MapObjectViewModel>(mapObjectService.GetMapObject(id));
-                        mapObject.Status = "Approved";
+                        mapObject.Status = Status.Approved;
                     }
                     var approvedMapObject = Mapper
                         .Map<MapObjectViewModel, MapObjectDTO>(mapObject);

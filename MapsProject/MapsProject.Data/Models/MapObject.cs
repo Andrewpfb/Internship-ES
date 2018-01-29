@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MapsProject.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace MapsProject.Data.Models
 {
@@ -41,6 +42,12 @@ namespace MapsProject.Data.Models
         /// Object's status. Is required.
         /// </summary>
         [Required]
-        public int Status { get; set; }
+        public Status Status { get; set; }
+
+        /// <summary>
+        /// Object's delete status. Is required.
+        /// </summary>
+        [Required]
+        public DeleteStatus DeleteStatus { get; set; }
     }
 }

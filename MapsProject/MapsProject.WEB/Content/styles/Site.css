@@ -13,12 +13,14 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    width: 90%;
+}
+
+table{
+    width:100%;
 }
 
 .objectInfo {
-    /*height: 260px;
-    width: 250px;*/
     height: 120px;
     width: 250px;
 }
@@ -30,7 +32,7 @@ textarea {
 
 .map {
     height: 700px;
-    width: 800px;
+    width:100%;
 }
 
 .save-search-place-btn {
@@ -39,18 +41,4 @@ textarea {
 
 .info-div-style-default {
     display: none;
-}
-
-.invisible {
-    visibility: hidden;
-}
-
-.visible {
-    visibility: visible;
-}
-
-.checkbox-list {
-    width: 200px;
-    height: 200px;
-    overflow: auto;
 }

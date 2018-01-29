@@ -61,6 +61,24 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -69,6 +87,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -186,18 +207,19 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
+    <Compile Include="Areas\Administration\Controllers\AuthController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ModerateController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Areas\Administration\Controllers\ModerateController.cs" />
+    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\MapObjectModerateViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\MapObjectModerateViewModel.cs" />
     <Compile Include="Models\MapObjectViewModel.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Areas\Administration\Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\Status.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\lib\Bootstrap\bootstrap-theme.css" />
@@ -233,6 +255,12 @@
     <Content Include="Content\lib\DataTables\js\dataTables.semanticui.min.js" />
     <Content Include="Content\lib\DataTables\js\jquery.dataTables.js" />
     <Content Include="Content\lib\DataTables\js\jquery.dataTables.min.js" />
+    <Content Include="Content\lib\Select2\css\select2.css" />
+    <Content Include="Content\lib\Select2\css\select2.min.css" />
+    <Content Include="Content\lib\Select2\js\select2.full.js" />
+    <Content Include="Content\lib\Select2\js\select2.full.min.js" />
+    <Content Include="Content\lib\Select2\js\select2.js" />
+    <Content Include="Content\lib\Select2\js\select2.min.js" />
     <Content Include="Content\scripts\mapjsscript.js" />
     <Content Include="Content\scripts\moderate.js" />
     <Content Include="favicon.ico" />
@@ -241,6 +269,9 @@
     <Content Include="Content\lib\Bootstrap\bootstrap.js" />
     <Content Include="Content\lib\Bootstrap\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config" />
+    <Content Include="Areas\Administration\Views\web.config" />
+    <Content Include="Areas\Administration\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <None Include="Content\lib\JQuery\jquery-1.10.2-vsdoc.js" />
     <Content Include="Content\lib\JQuery\jquery-1.10.2.js" />
     <Content Include="Content\lib\JQuery\jquery-1.10.2.min.js" />
@@ -260,9 +291,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\AdminIsLogged.cshtml" />
-    <Content Include="Views\Home\ErrorAuth.cshtml" />
-    <Content Include="Views\Home\Moderate.cshtml" />
+    <Content Include="Areas\Administration\Views\Auth\AdminIsLogged.cshtml" />
+    <Content Include="Areas\Administration\Views\Auth\Moderate.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +317,10 @@
     <ProjectReference Include="..\MapsProject.Data\MapsProject.Data.csproj">
       <Project>{ec8590a1-b25f-420c-ab81-d0bbced826f7}</Project>
       <Name>MapsProject.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapsProject.Models\MapsProject.Models.csproj">
+      <Project>{188f6c18-cae5-4cd7-a4bf-332547ef46a8}</Project>
+      <Name>MapsProject.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapsProject.Service\MapsProject.Service.csproj">
       <Project>{c7713985-2b1a-402b-a465-afd5cee6bb3f}</Project>

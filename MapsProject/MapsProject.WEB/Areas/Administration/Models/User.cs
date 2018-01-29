@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MapsProject.WEB.Models
+namespace MapsProject.WEB.Areas.Administration.Models
 {
     /// <summary>
     /// Class for user. 

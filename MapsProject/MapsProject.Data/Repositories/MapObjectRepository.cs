@@ -88,6 +88,7 @@ namespace MapsProject.Data.Repositories
             tmp.GeoLong = item.GeoLong;
             tmp.GeoLat = item.GeoLat;
             tmp.Status = item.Status;
+            tmp.DeleteStatus = item.DeleteStatus;
             db.Entry(tmp).State = EntityState.Modified;
         }
     }

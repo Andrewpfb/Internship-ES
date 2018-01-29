@@ -1,4 +1,5 @@
 using MapsProject.Data.Interfaces;
+using MapsProject.Data.Models;
 using MapsProject.Data.Repositories;
 using MapsProject.Service.Interfaces;
 using MapsProject.Service.Services;
@@ -25,8 +26,17 @@ namespace MapsProject.WEB
             // it is NOT necessary to register your controllers
 
             // e.g. container.RegisterType<ITestService, TestService>();
+
+            //UOW
             container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("MapContext"));
+
+            //Repositories
+            //container.RegisterType<IRepository<MapObject>, MapObjectRepository>();
+
+            //Service
             container.RegisterType<IMapObjectService, MapObjectService>();
+
+            //Resolver
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }

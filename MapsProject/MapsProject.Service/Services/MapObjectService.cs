@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using MapsProject.Data.Interfaces;
 using MapsProject.Data.Models;
+using MapsProject.Models.Enums;
+using MapsProject.Models.Models;
 using MapsProject.Service.Infrastructure;
 using MapsProject.Service.Interfaces;
-using MapsProject.Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace MapsProject.Service.Services
             {
                 var addMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
+                addMapObject.DeleteStatus = DeleteStatus.Exist;
                 Database.MapObjects.Create(addMapObject);
                 Database.Save();
             }
@@ -53,7 +55,10 @@ namespace MapsProject.Service.Services
         {
             try
             {
-                Database.MapObjects.Delete(id);
+                //Database.MapObjects.Delete(id);
+                var deleteObject = Database.MapObjects.Get(id);
+                deleteObject.DeleteStatus = DeleteStatus.Removed;
+                Database.MapObjects.Update(deleteObject);
                 Database.Save();
             }
             catch (Exception e)
@@ -72,7 +77,9 @@ namespace MapsProject.Service.Services
             if (byTag == "")
             {
                 return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                  Database.MapObjects.GetAll().Where(s => s.Status == 1));
+                  Database.MapObjects.GetAll()
+                  .Where(s => s.Status == Status.Approved)
+                  .Where(ds =>ds.DeleteStatus == DeleteStatus.Exist));
             }
             else
             {
@@ -85,7 +92,8 @@ namespace MapsProject.Service.Services
                 // Если сделать сразу проверку mapObject.Tags.Contains(byTags) -
                 // то объект с тэгами "Food; Bar" войдет в итоговый список, а с тэгами "Bar; Food" - нет.
                 var mapObjects = Database.MapObjects.GetAll()
-                  .Where(s => s.Status == 1);
+                  .Where(s => s.Status == Status.Approved)
+                  .Where(ds => ds.DeleteStatus == DeleteStatus.Exist);
                 List<MapObject> mapObjectByTags = new List<MapObject>();
                 string[] tags = byTag.Split(';');
                 int i = 0;
@@ -115,7 +123,9 @@ namespace MapsProject.Service.Services
         public IEnumerable<MapObjectDTO> GetAllModerateMapObject()
         {
             return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                Database.MapObjects.GetAll().Where(s => s.Status == 0));
+                Database.MapObjects.GetAll()
+                .Where(s => s.Status == Status.NeedModerate)
+                .Where(ds =>ds.DeleteStatus == DeleteStatus.Exist));
         }
 
         /// <summary>
@@ -126,7 +136,8 @@ namespace MapsProject.Service.Services
         {
             HashSet<string> tags = new HashSet<string>();
             IEnumerable<MapObject> mapObjectsList = Database.MapObjects.GetAll()
-                .Where(s => s.Status == 1);
+                .Where(s => s.Status == Status.Approved)
+                .Where(ds =>ds.DeleteStatus == DeleteStatus.Exist);
             foreach (var mapObject in mapObjectsList)
             {
                 string[] tmpTags = mapObject.Tags.Split(new char[] { ';' });
@@ -148,7 +159,14 @@ namespace MapsProject.Service.Services
             try
             {
                 var mapObject = Database.MapObjects.Get(id);
-                return Mapper.Map<MapObject, MapObjectDTO>(mapObject);
+                if (mapObject.DeleteStatus == DeleteStatus.Exist)
+                {
+                    return Mapper.Map<MapObject, MapObjectDTO>(mapObject);
+                }
+                else
+                {
+                    throw new ValidationException("Error ", "Object was delete");
+                }
             }
             catch (Exception e)
             {

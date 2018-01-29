@@ -1,4 +1,6 @@
-﻿namespace MapsProject.Service.Models
+﻿using MapsProject.Models.Enums;
+
+namespace MapsProject.Models.Models
 {
     /// <summary>
     /// Class for transfer between Data and WEB.
@@ -33,6 +35,6 @@
         /// <summary>
         /// Object's status.
         /// </summary>
-        public int Status { get; set; }
+        public Status Status { get; set; }
     }
 }

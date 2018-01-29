@@ -32,6 +32,13 @@ namespace MapsProject.WEB
 
             bundles.Add(new StyleBundle("~/Content/dataTables").Include(
                            "~/Content/lib/DataTables/css/*.css"));
+
+            // Select2 plugin bundle.
+            bundles.Add(new ScriptBundle("~/bundles/select2").Include(
+                "~/Content/lib/Select2/js/*.js"));
+
+            bundles.Add(new StyleBundle("~/Content/select2").Include(
+                "~/Content/lib/Select2/css/*.css"));
         }
     }
 }

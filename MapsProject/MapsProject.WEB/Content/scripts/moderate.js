@@ -46,7 +46,7 @@ function appPlace(el) {
 
 function deletePlace(id) {
     $.ajax({
-        url: '/api/values/' + id,
+        url: '/api/map/' + id,
         type: 'DELETE',
         contentType: 'application/json;charset=utf-8',
         success: function (data) {

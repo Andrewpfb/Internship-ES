@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using MapsProject.Models.Enums;
+using MapsProject.Models.Models;
 using MapsProject.Service.Interfaces;
-using MapsProject.Service.Models;
 using MapsProject.WEB.Models;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -12,11 +13,11 @@ namespace MapsProject.WEB.Controllers
     /// It has methods for obtaining all confirmed objects, a specific object, 
     /// for adding, editing, deleting objects.
     /// </summary>
-    public class ValuesController : ApiController
+    public class MapController : ApiController
     {
         IMapObjectService mapObjectService;
 
-        public ValuesController(IMapObjectService mapObjServ)
+        public MapController(IMapObjectService mapObjServ)
         {
             mapObjectService = mapObjServ;
         }
@@ -54,7 +55,7 @@ namespace MapsProject.WEB.Controllers
         {
             var findMapObject = Mapper
                 .Map<MapObjectDTO, MapObjectViewModel>(mapObjectService.GetMapObject(id));
-            if (findMapObject.Status != "Approved")
+            if (findMapObject.Status != Status.Approved)
             {
                 return null;
             }

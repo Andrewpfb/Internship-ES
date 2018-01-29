@@ -12,6 +12,7 @@ namespace MapsProject.Data.Repositories
     {
         private MapObjectContext db;
         private MapObjectRepository mapObjectRepository;
+        //private IRepository<MapObject> mapObjectRepository;
         private bool disposed = false;
 
         /// <summary>

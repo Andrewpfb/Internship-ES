@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MapsProject.Data.Models;
-using MapsProject.Service.Models;
+using MapsProject.Models.Models;
 using MapsProject.WEB.Models;
-using MapsProject.WEB.Util;
+using MapsProject.WEB.Areas.Administration.Models;
 
 namespace MapsProject.WEB
 {
@@ -19,14 +19,16 @@ namespace MapsProject.WEB
             Mapper.Initialize(
                 cfg =>
                 {
-                    cfg.CreateMap<MapObject, MapObjectDTO>();
-                    cfg.CreateMap<MapObjectDTO, MapObjectViewModel>()
-                   .ForMember(x => x.Status, opt => opt.ResolveUsing<DTOToViewModelResolver, int>(src => src.Status));
-                    cfg.CreateMap<MapObjectViewModel, MapObjectDTO>()
-                    .ForMember(x => x.Status, opt => opt.ResolveUsing<ViewModelToDTOResolver, string>(src => src.Status));
-                    cfg.CreateMap<MapObjectDTO, MapObject>();
+                    cfg.CreateMap<MapObject, MapObjectDTO>()
+                    .ForSourceMember(x => x.DeleteStatus, y => y.Ignore());
+                    cfg.CreateMap<MapObjectDTO, MapObjectViewModel>();
+                    //.ForMember(x => x.Status, opt => opt.ResolveUsing<DTOToViewModelResolver, Status>(src => src.Status));
+                    cfg.CreateMap<MapObjectViewModel, MapObjectDTO>();
+                    //.ForMember(x => x.Status, opt => opt.ResolveUsing<ViewModelToDTOResolver, string>(src => src.Status));
+                    cfg.CreateMap<MapObjectDTO, MapObject>()
+                    .ForMember(x =>x.DeleteStatus, y=>y.Ignore());
                     cfg.CreateMap<MapObjectDTO, MapObjectModerateViewModel>()
-                    .ForMember(x => x.Status, opt => opt.ResolveUsing<DTOToModerateViewModelResolver, int>(src => src.Status))
+                    // .ForMember(x => x.Status, opt => opt.ResolveUsing<DTOToModerateViewModelResolver, int>(src => src.Status))
                     .ForMember(x => x.ApprovedLink, opt => opt.ResolveUsing<SetApprovedLink, int>(src => src.Id))
                     .ForMember(x => x.DeleteLink, opt => opt.ResolveUsing<SetDeleteLink, int>(src => src.Id));
                 });
@@ -52,54 +54,54 @@ namespace MapsProject.WEB
             }
         }
 
-        class DTOToViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectViewModel, int, string>
-        {
-            public string Resolve(MapObjectDTO source, MapObjectViewModel destination, int sourceMember, string destMember, ResolutionContext context)
-            {
-                return EnumConverter.IntToString(source.Status);
-            }
-        }
+        //class DTOToViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectViewModel, Status, string>
+        //{
+        //    public string Resolve(MapObjectDTO source, MapObjectViewModel destination, Status sourceMember, string destMember, ResolutionContext context)
+        //    {
+        //        return "";
+        //    }
+        //}
 
-        class DTOToModerateViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
-        {
-            public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, int sourceMember, string destMember, ResolutionContext context)
-            {
-                return EnumConverter.IntToString(source.Status);
-            }
-        }
+        //class DTOToModerateViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
+        //{
+        //    public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, int sourceMember, string destMember, ResolutionContext context)
+        //    {
+        //        return EnumConverter.IntToString(source.Status);
+        //    }
+        //}
 
-        class ViewModelToDTOResolver : IMemberValueResolver<MapObjectViewModel, MapObjectDTO, string, int>
-        {
-            public int Resolve(MapObjectViewModel source, MapObjectDTO destination, string sourceMember, int destMember, ResolutionContext context)
-            {
-                return EnumConverter.StringToInt(source.Status);
-            }
-        }
+        //class ViewModelToDTOResolver : IMemberValueResolver<MapObjectViewModel, MapObjectDTO, string, int>
+        //{
+        //    public int Resolve(MapObjectViewModel source, MapObjectDTO destination, string sourceMember, int destMember, ResolutionContext context)
+        //    {
+        //        return EnumConverter.StringToInt(source.Status);
+        //    }
+        //}
 
-        static class EnumConverter
-        {
-            public static int StringToInt(string status)
-            {
-                if (status == Status.Approved.ToString())
-                {
-                    return (int)Status.Approved;
-                }
-                else
-                {
-                    return (int)Status.NeedModerate;
-                }
-            }
-            public static string IntToString(int status)
-            {
-                if (status == (int)Status.Approved)
-                {
-                    return Status.Approved.ToString();
-                }
-                else
-                {
-                    return Status.NeedModerate.ToString();
-                }
-            }
-        }
+        //static class EnumConverter
+        //{
+        //    public static int StringToInt(string status)
+        //    {
+        //        if (status == Status.Approved.ToString())
+        //        {
+        //            return (int)Status.Approved;
+        //        }
+        //        else
+        //        {
+        //            return (int)Status.NeedModerate;
+        //        }
+        //    }
+        //    public static string IntToString(int status)
+        //    {
+        //        if (status == (int)Status.Approved)
+        //        {
+        //            return Status.Approved.ToString();
+        //        }
+        //        else
+        //        {
+        //            return Status.NeedModerate.ToString();
+        //        }
+        //    }
+        //}
     }
 }

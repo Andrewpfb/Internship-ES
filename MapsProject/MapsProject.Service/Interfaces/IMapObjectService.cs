@@ -1,4 +1,4 @@
-﻿using MapsProject.Service.Models;
+﻿using MapsProject.Models.Models;
 using System.Collections.Generic;
 
 namespace MapsProject.Service.Interfaces
