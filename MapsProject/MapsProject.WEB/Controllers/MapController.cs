@@ -3,6 +3,7 @@ using MapsProject.Models.Enums;
 using MapsProject.Models.Models;
 using MapsProject.Service.Interfaces;
 using MapsProject.WEB.Models;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -30,20 +31,10 @@ namespace MapsProject.WEB.Controllers
         /// <returns>IEnumerable(MapObjectViewModel) objects.</returns>
         public IEnumerable<MapObjectViewModel> Get(string tags = "")
         {
-            if (tags == "")
-            {
-                IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects("");
-                var mapObjects = Mapper
-                    .Map<IEnumerable<MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
-                return mapObjects;
-            }
-            else
-            {
-                IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects(tags);
-                var mapObjects = Mapper
-                    .Map<IEnumerable<MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
-                return mapObjects;
-            }
+            IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllApprovedMapObjects(tags);
+            var mapObjects = Mapper
+                .Map<IEnumerable<MapObjectDTO>, List<MapObjectViewModel>>(mapObjectsDTOs);
+            return mapObjects;
         }
 
         /// <summary>

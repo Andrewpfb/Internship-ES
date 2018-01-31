@@ -1,4 +1,5 @@
 ﻿using MapsProject.Models.Enums;
+using System.Collections.Generic;
 
 namespace MapsProject.Models.Models
 {
@@ -18,11 +19,6 @@ namespace MapsProject.Models.Models
         public string ObjectName { get; set; }
 
         /// <summary>
-        /// Object's tag list.
-        /// </summary>
-        public string Tags { get; set; }
-
-        /// <summary>
         /// Object's longitude.
         /// </summary>
         public double GeoLong { get; set; }
@@ -36,5 +32,7 @@ namespace MapsProject.Models.Models
         /// Object's status.
         /// </summary>
         public Status Status { get; set; }
+
+        public List<TagDTO> Tags { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MapsProject.Command.Handlers;
 using MapsProject.Data.Interfaces;
 using MapsProject.Data.Models;
 using MapsProject.Models.Enums;
@@ -16,15 +17,17 @@ namespace MapsProject.Service.Services
     /// </summary>
     public class MapObjectService : IMapObjectService
     {
-        private IUnitOfWork Database { get; set; }
+        private IUnitOfWork database { get; set; }
+        private ITagService tagService { get; set; }
 
         /// <summary>
         /// MapObjectService's constructor.
         /// </summary>
         /// <param name="uow">IUnitOfWork object.</param>
-        public MapObjectService(IUnitOfWork uow)
+        public MapObjectService(IUnitOfWork uow, ITagService ts)
         {
-            Database = uow;
+            database = uow;
+            tagService = ts;
         }
 
         /// <summary>
@@ -37,9 +40,24 @@ namespace MapsProject.Service.Services
             {
                 var addMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
+                addMapObject.Tags = new List<Tag>();
+                foreach (var tag in mapObjectDTO.Tags)
+                {
+                    var tagFromDb = database.Tags.GetAll().Where(t => t.TagName == tag.TagName);
+                    if (tagFromDb.Count() != 0)
+                    {
+                        addMapObject.Tags.Add(tagFromDb.First());
+                    }
+                    else
+                    {
+                        tagService.AddTag(tag);
+                        var newTag = database.Tags.GetAll().Where(t => t.TagName == tag.TagName);
+                        addMapObject.Tags.Add(newTag.First());
+                    }
+                }
                 addMapObject.DeleteStatus = DeleteStatus.Exist;
-                Database.MapObjects.Create(addMapObject);
-                Database.Save();
+                database.MapObjects.Create(addMapObject);
+                database.Save();
             }
             catch (Exception e)
             {
@@ -55,11 +73,10 @@ namespace MapsProject.Service.Services
         {
             try
             {
-                //Database.MapObjects.Delete(id);
-                var deleteObject = Database.MapObjects.Get(id);
+                var deleteObject = database.MapObjects.Get(id);
                 deleteObject.DeleteStatus = DeleteStatus.Removed;
-                Database.MapObjects.Update(deleteObject);
-                Database.Save();
+                database.MapObjects.Update(deleteObject);
+                database.Save();
             }
             catch (Exception e)
             {
@@ -72,47 +89,26 @@ namespace MapsProject.Service.Services
         /// </summary>
         /// <param name="byTag">Sampling tags</param>
         /// <returns></returns>
-        public IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string byTag)
+        public IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string tags)
         {
-            if (byTag == "")
+            if (tags == "")
             {
                 return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                  Database.MapObjects.GetAll()
+                  database.MapObjects.GetAll()
                   .Where(s => s.Status == Status.Approved)
-                  .Where(ds =>ds.DeleteStatus == DeleteStatus.Exist));
+                  .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
             }
             else
             {
-                // Получаем список всех объектов из БД.
-                // Потом делим пришедшую строку тэгов на отдельные.
-                // Просматриваем по очереди тэги у каждого объекта.
-                // Если тэг из пришедшей строки есть у объекта - счетчик увеличивается на 1.
-                // Если количество вхождений тэгов в объект равно количеству тэгов в строке - добавляем
-                // этот объект в выходной список.
-                // Если сделать сразу проверку mapObject.Tags.Contains(byTags) -
-                // то объект с тэгами "Food; Bar" войдет в итоговый список, а с тэгами "Bar; Food" - нет.
-                var mapObjects = Database.MapObjects.GetAll()
-                  .Where(s => s.Status == Status.Approved)
-                  .Where(ds => ds.DeleteStatus == DeleteStatus.Exist);
-                List<MapObject> mapObjectByTags = new List<MapObject>();
-                string[] tags = byTag.Split(';');
-                int i = 0;
-                foreach (var mapObject in mapObjects)
-                {
-                    foreach (var tag in tags)
-                    {
-                        if (mapObject.Tags.Contains(tag))
-                        {
-                            i++;
-                        }
-                    }
-                    if (i == tags.Length)
-                    {
-                        mapObjectByTags.Add(mapObject);
-                    }
-                    i = 0;
-                }
-                return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(mapObjectByTags);
+                List<string> byTags = TagStringHandler.SplitAndTrimTagsString(tags);
+                var mapsObjectByTags = database.Tags.GetAll()
+                    .Where(s => s.DeleteStatus == DeleteStatus.Exist)
+                    .Where(tag => byTags.Contains(tag.TagName))
+                    .SelectMany(tag => tag.MapObjects)
+                    .Distinct();
+                return Mapper
+                    .Map<IEnumerable<MapObject>, IEnumerable<MapObjectDTO>>(mapsObjectByTags
+                    .Where(s => s.Status == Status.Approved));
             }
         }
 
@@ -123,30 +119,9 @@ namespace MapsProject.Service.Services
         public IEnumerable<MapObjectDTO> GetAllModerateMapObject()
         {
             return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                Database.MapObjects.GetAll()
+                database.MapObjects.GetAll()
                 .Where(s => s.Status == Status.NeedModerate)
-                .Where(ds =>ds.DeleteStatus == DeleteStatus.Exist));
-        }
-
-        /// <summary>
-        /// Method for obtaining all tags from approved objects.
-        /// </summary>
-        /// <returns>IEnumerable(string)</returns>
-        public IEnumerable<string> GetAllTags()
-        {
-            HashSet<string> tags = new HashSet<string>();
-            IEnumerable<MapObject> mapObjectsList = Database.MapObjects.GetAll()
-                .Where(s => s.Status == Status.Approved)
-                .Where(ds =>ds.DeleteStatus == DeleteStatus.Exist);
-            foreach (var mapObject in mapObjectsList)
-            {
-                string[] tmpTags = mapObject.Tags.Split(new char[] { ';' });
-                foreach (var tag in tmpTags)
-                {
-                    tags.Add(tag);
-                }
-            }
-            return tags;
+                .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
         }
 
         /// <summary>
@@ -158,7 +133,7 @@ namespace MapsProject.Service.Services
         {
             try
             {
-                var mapObject = Database.MapObjects.Get(id);
+                var mapObject = database.MapObjects.Get(id);
                 if (mapObject.DeleteStatus == DeleteStatus.Exist)
                 {
                     return Mapper.Map<MapObject, MapObjectDTO>(mapObject);
@@ -184,8 +159,8 @@ namespace MapsProject.Service.Services
             {
                 var updateMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
-                Database.MapObjects.Update(updateMapObject);
-                Database.Save();
+                database.MapObjects.Update(updateMapObject);
+                database.Save();
             }
             catch (Exception e)
             {

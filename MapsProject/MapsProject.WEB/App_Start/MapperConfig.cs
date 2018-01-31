@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using MapsProject.Command.Handlers;
 using MapsProject.Data.Models;
 using MapsProject.Models.Models;
-using MapsProject.WEB.Models;
 using MapsProject.WEB.Areas.Administration.Models;
+using MapsProject.WEB.Models;
+using System.Collections.Generic;
 
 namespace MapsProject.WEB
 {
@@ -19,22 +21,36 @@ namespace MapsProject.WEB
             Mapper.Initialize(
                 cfg =>
                 {
+                    //MapObject to DTO and back.
                     cfg.CreateMap<MapObject, MapObjectDTO>()
-                    .ForSourceMember(x => x.DeleteStatus, y => y.Ignore());
-                    cfg.CreateMap<MapObjectDTO, MapObjectViewModel>();
-                    //.ForMember(x => x.Status, opt => opt.ResolveUsing<DTOToViewModelResolver, Status>(src => src.Status));
-                    cfg.CreateMap<MapObjectViewModel, MapObjectDTO>();
-                    //.ForMember(x => x.Status, opt => opt.ResolveUsing<ViewModelToDTOResolver, string>(src => src.Status));
+                    .ForSourceMember(x => x.DeleteStatus, y => y.Ignore())
+                    .ForMember(x => x.Tags, opt => opt.ResolveUsing<MapObjectToDTOResolver, ICollection<Tag>>(src => src.Tags));
                     cfg.CreateMap<MapObjectDTO, MapObject>()
-                    .ForMember(x =>x.DeleteStatus, y=>y.Ignore());
+                    .ForMember(x => x.DeleteStatus, y => y.Ignore())
+                    .ForMember(x => x.Tags, y => y.Ignore());
+
+                    //Tag to DTO and back.
+                    cfg.CreateMap<Tag, TagDTO>();
+                    cfg.CreateMap<TagDTO, Tag>()
+                    .ForMember(x => x.MapObjects, y => y.Ignore())
+                    .ForSourceMember(x => x.MapObjects, y => y.Ignore());
+
+                    //MapObjectDTO to ViewModel and back.
+                    cfg.CreateMap<MapObjectDTO, MapObjectViewModel>()
+                    .ForMember(x => x.Tags, opt => opt.ResolveUsing<DTOToViewModelResolver, List<TagDTO>>(src => src.Tags));
+                    cfg.CreateMap<MapObjectViewModel, MapObjectDTO>()
+                    .ForMember(x => x.Tags, opt => opt.ResolveUsing<ViewModelToDTOResolver, string>(src => src.Tags));
+
+                    //MapObjectDTO to ModerateViewModel.
                     cfg.CreateMap<MapObjectDTO, MapObjectModerateViewModel>()
-                    // .ForMember(x => x.Status, opt => opt.ResolveUsing<DTOToModerateViewModelResolver, int>(src => src.Status))
-                    .ForMember(x => x.ApprovedLink, opt => opt.ResolveUsing<SetApprovedLink, int>(src => src.Id))
-                    .ForMember(x => x.DeleteLink, opt => opt.ResolveUsing<SetDeleteLink, int>(src => src.Id));
+                    .ForMember(x => x.Tags, opt => opt.ResolveUsing<DTOToModerateViewModelResolver, List<TagDTO>>(src => src.Tags))
+                    .ForMember(x => x.ApprovedLink, opt => opt.ResolveUsing<SetApprovedLinkResolver, int>(src => src.Id))
+                    .ForMember(x => x.DeleteLink, opt => opt.ResolveUsing<SetDeleteLinkResolver, int>(src => src.Id));
                 });
         }
 
-        class SetApprovedLink : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
+        //Resolvers for MapObjectDTO to ModerateViewModel.
+        class SetApprovedLinkResolver : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
         {
             public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, int sourceMember, string destMember, ResolutionContext context)
             {
@@ -44,7 +60,7 @@ namespace MapsProject.WEB
             }
         }
 
-        class SetDeleteLink : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
+        class SetDeleteLinkResolver : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
         {
             public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, int sourceMember, string destMember, ResolutionContext context)
             {
@@ -54,54 +70,67 @@ namespace MapsProject.WEB
             }
         }
 
-        //class DTOToViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectViewModel, Status, string>
-        //{
-        //    public string Resolve(MapObjectDTO source, MapObjectViewModel destination, Status sourceMember, string destMember, ResolutionContext context)
-        //    {
-        //        return "";
-        //    }
-        //}
+        class DTOToModerateViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, List<TagDTO>, string>
+        {
+            public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, List<TagDTO> sourceMember, string destMember, ResolutionContext context)
+            {
+                destination.Tags = "";
+                foreach (var tag in source.Tags)
+                {
+                    destination.Tags += tag.TagName + ";";
+                }
+                return destination.Tags;
+            }
+        }
 
-        //class DTOToModerateViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectModerateViewModel, int, string>
-        //{
-        //    public string Resolve(MapObjectDTO source, MapObjectModerateViewModel destination, int sourceMember, string destMember, ResolutionContext context)
-        //    {
-        //        return EnumConverter.IntToString(source.Status);
-        //    }
-        //}
+        //Resolvers for MapObjectDTO to ViewModel and back.
+        class DTOToViewModelResolver : IMemberValueResolver<MapObjectDTO, MapObjectViewModel, List<TagDTO>, string>
+        {
+            public string Resolve(MapObjectDTO source, MapObjectViewModel destination, List<TagDTO> sourceMember, string destMember, ResolutionContext context)
+            {
+                destination.Tags = "";
+                foreach (var tag in source.Tags)
+                {
+                    destination.Tags += tag.TagName + ";";
+                }
+                return destination.Tags;
+            }
+        }
 
-        //class ViewModelToDTOResolver : IMemberValueResolver<MapObjectViewModel, MapObjectDTO, string, int>
-        //{
-        //    public int Resolve(MapObjectViewModel source, MapObjectDTO destination, string sourceMember, int destMember, ResolutionContext context)
-        //    {
-        //        return EnumConverter.StringToInt(source.Status);
-        //    }
-        //}
+        class ViewModelToDTOResolver : IMemberValueResolver<MapObjectViewModel, MapObjectDTO, string, List<TagDTO>>
+        {
+            public List<TagDTO> Resolve(MapObjectViewModel source, MapObjectDTO destination, string sourceMember, List<TagDTO> destMember, ResolutionContext context)
+            {
+                destination.Tags = new List<TagDTO>();
+                var tags = TagStringHandler.SplitAndTrimTagsString(source.Tags);
+                foreach (var tag in tags)
+                {
+                    destination.Tags.Add(new TagDTO
+                    {
+                        Id = 0,
+                        TagName = tag
+                    });
+                }
+                return destination.Tags;
+            }
+        }
 
-        //static class EnumConverter
-        //{
-        //    public static int StringToInt(string status)
-        //    {
-        //        if (status == Status.Approved.ToString())
-        //        {
-        //            return (int)Status.Approved;
-        //        }
-        //        else
-        //        {
-        //            return (int)Status.NeedModerate;
-        //        }
-        //    }
-        //    public static string IntToString(int status)
-        //    {
-        //        if (status == (int)Status.Approved)
-        //        {
-        //            return Status.Approved.ToString();
-        //        }
-        //        else
-        //        {
-        //            return Status.NeedModerate.ToString();
-        //        }
-        //    }
-        //}
+        //Resolver for MapObject to DTO.
+        class MapObjectToDTOResolver : IMemberValueResolver<MapObject, MapObjectDTO, ICollection<Tag>, List<TagDTO>>
+        {
+            public List<TagDTO> Resolve(MapObject source, MapObjectDTO destination, ICollection<Tag> sourceMember, List<TagDTO> destMember, ResolutionContext context)
+            {
+                destination.Tags = new List<TagDTO>();
+                foreach (var tag in source.Tags)
+                {
+                    destination.Tags.Add(new TagDTO
+                    {
+                        Id = tag.Id,
+                        TagName = tag.TagName
+                    });
+                }
+                return destination.Tags;
+            }
+        }
     }
 }

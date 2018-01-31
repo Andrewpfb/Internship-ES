@@ -28,13 +28,14 @@ namespace MapsProject.WEB
             // e.g. container.RegisterType<ITestService, TestService>();
 
             //UOW
-            container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("MapContext"));
+            container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("MapContext1"));
 
             //Repositories
             //container.RegisterType<IRepository<MapObject>, MapObjectRepository>();
 
             //Service
             container.RegisterType<IMapObjectService, MapObjectService>();
+            container.RegisterType<ITagService, TagService>();
 
             //Resolver
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);

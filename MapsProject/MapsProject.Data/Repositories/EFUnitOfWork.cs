@@ -12,6 +12,7 @@ namespace MapsProject.Data.Repositories
     {
         private MapObjectContext db;
         private MapObjectRepository mapObjectRepository;
+        private TagRepository tagRepository;
         //private IRepository<MapObject> mapObjectRepository;
         private bool disposed = false;
 
@@ -36,6 +37,18 @@ namespace MapsProject.Data.Repositories
                     mapObjectRepository = new MapObjectRepository(db);
                 }
                 return mapObjectRepository;
+            }
+        }
+
+        public IRepository<Tag> Tags
+        {
+            get
+            {
+                if (tagRepository == null)
+                {
+                    tagRepository = new TagRepository(db);
+                }
+                return tagRepository;
             }
         }
 

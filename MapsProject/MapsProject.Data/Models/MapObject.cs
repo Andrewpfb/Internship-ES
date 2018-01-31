@@ -1,4 +1,5 @@
 ﻿using MapsProject.Models.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MapsProject.Data.Models
@@ -19,12 +20,6 @@ namespace MapsProject.Data.Models
         /// </summary>
         [Required, MaxLength(50)]
         public string ObjectName { get; set; }
-
-        /// <summary>
-        /// Object's tags. Is required, length is not more than 50 characters.
-        /// </summary>
-        [Required, MaxLength(200)]
-        public string Tags { get; set; }
 
         /// <summary>
         /// Object's longitude. Is required.
@@ -49,5 +44,12 @@ namespace MapsProject.Data.Models
         /// </summary>
         [Required]
         public DeleteStatus DeleteStatus { get; set; }
+
+        public virtual ICollection<Tag> Tags { get; set; }
+
+        public MapObject()
+        {
+            Tags = new List<Tag>();
+        }
     }
 }

@@ -13,19 +13,13 @@ namespace MapsProject.Service.Interfaces
         /// </summary>
         /// <param name="byTag">Sampling tags. If empty - return all objects</param>
         /// <returns>IEnumerable(MapObjectDTO) objects</returns>
-        IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string byTag);
+        IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string tags);
 
         /// <summary>
         /// Method for obtaining all objects for moderate.
         /// </summary>
         /// <returns>IEnumerable(MapObjectDTO) objects</returns>
         IEnumerable<MapObjectDTO> GetAllModerateMapObject();
-
-        /// <summary>
-        /// Method for obtaining all tags.
-        /// </summary>
-        /// <returns>IEnumerable(string)</returns>
-        IEnumerable<string> GetAllTags();
 
         /// <summary>
         /// Method for obtaining an object.

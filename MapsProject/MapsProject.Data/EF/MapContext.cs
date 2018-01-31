@@ -1,4 +1,5 @@
 ﻿using MapsProject.Data.Models;
+using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace MapsProject.Data.EF
@@ -12,6 +13,7 @@ namespace MapsProject.Data.EF
         /// Object in database.
         /// </summary>
         public DbSet<MapObject> MapsObjects { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         /// <summary>
         /// Context class constructor.Accepts the connection string.

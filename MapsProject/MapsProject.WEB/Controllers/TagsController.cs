@@ -1,4 +1,5 @@
-﻿using MapsProject.Service.Interfaces;
+﻿using MapsProject.Models.Models;
+using MapsProject.Service.Interfaces;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -9,20 +10,20 @@ namespace MapsProject.WEB.Controllers
     /// </summary>
     public class TagsController : ApiController
     {
-        IMapObjectService mapObjectService;
+        ITagService tagService;
 
-        public TagsController(IMapObjectService mapObjServ)
+        public TagsController(ITagService tagServ)
         {
-            mapObjectService = mapObjServ;
+            tagService = tagServ;
         }
 
         /// <summary>
         /// Method for obtaining all tags of approved objects..
         /// </summary>
         /// <returns>IEnumerable(string) tags.</returns>
-        public IEnumerable<string> Get()
+        public IEnumerable<TagDTO> Get()
         {
-            return mapObjectService.GetAllTags();
+            return tagService.GetAllTags();
         }
     }
 }

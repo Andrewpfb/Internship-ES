@@ -70,10 +70,16 @@
   <ItemGroup>
     <Compile Include="Infrastructure\ValidationException.cs" />
     <Compile Include="Interfaces\IMapObjectService.cs" />
+    <Compile Include="Interfaces\ITagService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MapObjectService.cs" />
+    <Compile Include="Services\TagService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MapsProject.Command\MapsProject.Command.csproj">
+      <Project>{3d765f99-bfe0-478d-ac1e-4bb7c9964c3c}</Project>
+      <Name>MapsProject.Command</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MapsProject.Data\MapsProject.Data.csproj">
       <Project>{ec8590a1-b25f-420c-ab81-d0bbced826f7}</Project>
       <Name>MapsProject.Data</Name>

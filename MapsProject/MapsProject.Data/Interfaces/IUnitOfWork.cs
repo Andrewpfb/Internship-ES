@@ -12,7 +12,7 @@ namespace MapsProject.Data.Interfaces
         /// MapObject repository.
         /// </summary>
         IRepository<MapObject> MapObjects { get; }
-
+        IRepository<Tag> Tags { get; }
         /// <summary>
         /// Save changes in database.
         /// </summary>

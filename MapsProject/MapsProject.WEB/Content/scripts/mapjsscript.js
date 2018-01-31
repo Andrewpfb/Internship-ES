@@ -170,7 +170,7 @@ function getTags() {
 function setTagList(val_data) {
 
     for (elem in val_data) {
-        $('.js-example-basic-multiple').append('<option>' + val_data[elem] + '</option>');
+        $('.js-example-basic-multiple').append('<option>' + val_data[elem].TagName + '</option>');
     }
 
     $('.js-example-basic-multiple').select2({
@@ -188,6 +188,7 @@ function getTagsFromSelect(elementId) {
     var requestTagString = '';
     for (tag in tags) {
         if (typeof (tags[tag].nodeName) == 'undefined') {
+            requestTagString = requestTagString.slice(0, -2);
             break;
         }
         requestTagString += tags[tag].innerText + "; ";

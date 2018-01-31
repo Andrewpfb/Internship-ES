@@ -44,6 +44,7 @@
     <Compile Include="Enums\Extensions\EnumExtensions.cs" />
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Models\MapObjectDTO.cs" />
+    <Compile Include="Models\TagDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
