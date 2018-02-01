@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace MapsProject.Service.Interfaces
 {
     /// <summary>
-    /// Interface for working with MapsProject.Data.
+    /// Interface for working with MapsProject.Data MapObject.
     /// </summary>
     public interface IMapObjectService
     {

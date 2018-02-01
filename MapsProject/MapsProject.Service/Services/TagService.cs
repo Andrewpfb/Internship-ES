@@ -11,15 +11,26 @@ using System.Linq;
 
 namespace MapsProject.Service.Services
 {
+    /// <summary>
+    /// Service for Tag. Implements interface ITagService. 
+    /// </summary>
     public class TagService : ITagService
     {
         private IUnitOfWork database { get; set; }
 
+        /// <summary>
+        /// MapObjectService's constructor.
+        /// </summary>
+        /// <param name="uow">IUnitOfWork object.</param>
         public TagService(IUnitOfWork uow)
         {
             database = uow;
         }
 
+        /// <summary>
+        /// Method for adding tag.
+        /// </summary>
+        /// <param name="tagDTO">Adding tag.</param>
         public void AddTag(TagDTO tagDTO)
         {
             try
@@ -36,6 +47,10 @@ namespace MapsProject.Service.Services
             }
         }
 
+        /// <summary>
+        /// Method for deleting tag.
+        /// </summary>
+        /// <param name="id">Tag's ID.</param>
         public void DeleteTag(int id)
         {
             try
@@ -50,16 +65,23 @@ namespace MapsProject.Service.Services
                 throw new ValidationException("Delete complete with error ", e.Message);
             }
         }
-
+        /// <summary>
+        /// Method for obtaining all tags.
+        /// </summary>
+        /// <returns>IEnumerable(TagDTO) object.</returns>
         public IEnumerable<TagDTO> GetAllTags()
         {
             return Mapper
                 .Map<IEnumerable<Tag>, List<TagDTO>>(
                 database.Tags.GetAll()
-                .Where(ds => ds.DeleteStatus == DeleteStatus.Exist)
-                .Where(ms => ms.MapObjects.Where(s => s.Status == Status.Approved).Any()));
+                .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
         }
 
+        /// <summary>
+        /// Method for obtaining a tag.
+        /// </summary>
+        /// <param name="id">Tag's ID.</param>
+        /// <returns>TagDTO object</returns>
         public TagDTO GetTag(int id)
         {
             try
@@ -81,6 +103,10 @@ namespace MapsProject.Service.Services
             }
         }
 
+        /// <summary>
+        /// Method for updating tag.
+        /// </summary>
+        /// <param name="tagDTO">Updating tag.</param>
         public void UpdateTag(TagDTO tagDTO)
         {
             try

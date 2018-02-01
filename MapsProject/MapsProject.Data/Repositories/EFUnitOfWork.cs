@@ -15,7 +15,6 @@ namespace MapsProject.Data.Repositories
         private TagRepository tagRepository;
         private RoleRepository roleRepository;
         private UserRepository userRepository;
-        //private IRepository<MapObject> mapObjectRepository;
         private bool disposed = false;
 
         /// <summary>
@@ -24,7 +23,7 @@ namespace MapsProject.Data.Repositories
         /// <param name="connectionString">Connection string from MapsProject.WEB</param>
         public EFUnitOfWork(string connectionString)
         {
-             db = new MapObjectContext(connectionString);
+            db = new MapObjectContext(connectionString);
         }
 
         /// <summary>
@@ -42,6 +41,9 @@ namespace MapsProject.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Property to get an instance of the TagRepository class.
+        /// </summary>
         public IRepository<Tag> Tags
         {
             get
@@ -54,11 +56,14 @@ namespace MapsProject.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Property to get an instance of the RoleRepository class.
+        /// </summary>
         public IRepository<Role> Roles
         {
             get
             {
-                if(roleRepository == null)
+                if (roleRepository == null)
                 {
                     roleRepository = new RoleRepository(db);
                 }
@@ -66,11 +71,14 @@ namespace MapsProject.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Property to get an instance of the UserRepository class.
+        /// </summary>
         public IRepository<User> Users
         {
             get
             {
-                if(userRepository == null)
+                if (userRepository == null)
                 {
                     userRepository = new UserRepository(db);
                 }

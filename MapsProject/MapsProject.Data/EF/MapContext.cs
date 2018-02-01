@@ -24,5 +24,8 @@ namespace MapsProject.Data.EF
         /// <param name="connectionString">Connection string from MapsProject.WEB</param>
         public MapObjectContext(string connectionString)
             : base(connectionString) { }
+
+        //Constructor for migrations.
+        //public MapObjectContext() : base("MapContext1") { }
     }
 }

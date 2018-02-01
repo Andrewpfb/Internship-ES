@@ -45,8 +45,14 @@ namespace MapsProject.Data.Models
         [Required]
         public DeleteStatus DeleteStatus { get; set; }
 
+        /// <summary>
+        /// Object's tags.
+        /// </summary>
         public virtual ICollection<Tag> Tags { get; set; }
 
+        /// <summary>
+        /// Init ICollection(Tag) how List(Tag);
+        /// </summary>
         public MapObject()
         {
             Tags = new List<Tag>();

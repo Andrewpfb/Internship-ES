@@ -5,7 +5,6 @@ using MapsProject.Models.Models;
 using MapsProject.WEB.Areas.Administration.Models;
 using MapsProject.WEB.Models;
 using System.Collections.Generic;
-using System;
 
 namespace MapsProject.WEB
 {
@@ -28,7 +27,7 @@ namespace MapsProject.WEB
                     .ForMember(x => x.Tags, opt => opt.ResolveUsing<MapObjectToDTOResolver, ICollection<Tag>>(src => src.Tags));
                     cfg.CreateMap<MapObjectDTO, MapObject>()
                     .ForMember(x => x.DeleteStatus, y => y.Ignore())
-                    .ForMember(x => x.Tags, opt => opt.ResolveUsing<DTOToMapObjectResolver,List<TagDTO>>(src => src.Tags));
+                    .ForMember(x => x.Tags, opt => opt.ResolveUsing<DTOToMapObjectResolver, List<TagDTO>>(src => src.Tags));
 
                     //User to UserDTO and back.
                     cfg.CreateMap<User, UserDTO>()
@@ -81,7 +80,7 @@ namespace MapsProject.WEB
             public ICollection<Tag> Resolve(MapObjectDTO source, MapObject destination, List<TagDTO> sourceMember, ICollection<Tag> destMember, ResolutionContext context)
             {
                 destination.Tags = new List<Tag>();
-                foreach(var tag in source.Tags)
+                foreach (var tag in source.Tags)
                 {
                     destination.Tags.Add(new Tag
                     {
@@ -89,7 +88,7 @@ namespace MapsProject.WEB
                         TagName = tag.TagName
                     });
                 }
-                return destination.Tags as ICollection<Tag>;
+                return destination.Tags;
             }
         }
 

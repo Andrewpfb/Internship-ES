@@ -24,6 +24,7 @@ namespace MapsProject.Service.Services
         /// MapObjectService's constructor.
         /// </summary>
         /// <param name="uow">IUnitOfWork object.</param>
+        /// <param name="ts">ITagService object.</param>
         public MapObjectService(IUnitOfWork uow, ITagService ts)
         {
             Database = uow;
@@ -88,7 +89,7 @@ namespace MapsProject.Service.Services
         /// Method for obtaining all approved objects by tags.
         /// </summary>
         /// <param name="byTag">Sampling tags</param>
-        /// <returns></returns>
+        /// <returns>IEnumerable(MapObjectDTO) object.</returns>
         public IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string tags)
         {
             if (tags == "")

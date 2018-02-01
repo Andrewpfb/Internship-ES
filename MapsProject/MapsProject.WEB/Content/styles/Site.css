@@ -42,3 +42,28 @@ table{
 .info-div-style-default {
     display: none;
 }
+
+.div-width-container {
+    width: 100%;
+}
+.login-div-width-container {
+    width: 50%;
+}
+
+.select-width-container {
+    width: 90%;
+    display: block;
+}
+
+.info-message {
+    display: none;
+    margin-top: 15px;
+}
+
+.btn-width-container {
+    width: 100%;
+}
+
+.table-moderate {
+    display: none;
+}

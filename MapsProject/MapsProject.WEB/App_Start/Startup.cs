@@ -5,9 +5,9 @@ using Owin;
 using System;
 using System.Web.Http;
 
-[assembly: OwinStartup(typeof(MapsProject.WEB.App_Start.Startup))]
+[assembly: OwinStartup(typeof(MapsProject.WEB.Startup))]
 
-namespace MapsProject.WEB.App_Start
+namespace MapsProject.WEB
 {
     public class Startup
     {

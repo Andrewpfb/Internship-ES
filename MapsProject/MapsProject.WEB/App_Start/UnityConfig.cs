@@ -1,6 +1,4 @@
-using MapsProject.Data.EF;
 using MapsProject.Data.Interfaces;
-using MapsProject.Data.Models;
 using MapsProject.Data.Repositories;
 using MapsProject.Service.Interfaces;
 using MapsProject.Service.Services;
@@ -30,10 +28,6 @@ namespace MapsProject.WEB
 
             //UOW
             container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("MapContext1"));
-
-            //Repositories
-            //container.RegisterType<IRepository<MapObject>, MapObjectRepository>();
-            //container.RegisterType<IRepository<MapObject>, MapObjectRepository>(new InjectionConstructor(typeof(MapObjectContext)));
 
             //Service
             container.RegisterType<IMapObjectService, MapObjectService>();

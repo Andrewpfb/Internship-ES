@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace MapsProject.Models.Models
 {
     /// <summary>
-    /// Class for transfer between Data and WEB.
+    /// Class for transfer MapObject between Data and WEB.
     /// </summary>
     public class MapObjectDTO
     {
@@ -33,6 +33,9 @@ namespace MapsProject.Models.Models
         /// </summary>
         public Status Status { get; set; }
 
+        /// <summary>
+        /// Object's tags.
+        /// </summary>
         public List<TagDTO> Tags { get; set; }
     }
 }

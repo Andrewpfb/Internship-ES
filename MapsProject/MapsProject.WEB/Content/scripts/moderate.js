@@ -103,7 +103,7 @@ function approvedPlace(id) {
     $.ajax({
         url: '/api/moderate/' + id,
         type: 'PUT',
-        headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem(tokenKey)},
+        headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem(tokenKey) },
         data: JSON.stringify(place),
         contentType: 'application/json;charset=utf-8',
         success: function (data) {

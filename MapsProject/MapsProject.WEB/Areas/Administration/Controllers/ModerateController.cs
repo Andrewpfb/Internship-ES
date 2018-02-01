@@ -18,6 +18,10 @@ namespace MapsProject.WEB.Areas.Administration.Controllers
     {
         IMapObjectService mapObjectService;
 
+        /// <summary>
+        /// Controller for DI. 
+        /// </summary>
+        /// <param name="mapObjServ">IMapObjectService implementation.</param>
         public ModerateController(IMapObjectService mapObjServ)
         {
             mapObjectService = mapObjServ;

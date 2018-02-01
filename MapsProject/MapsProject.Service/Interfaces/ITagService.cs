@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace MapsProject.Service.Interfaces
 {
+    /// <summary>
+    /// Interface for working with MapsProject.Data Tag.
+    /// </summary>
     public interface ITagService
     {
         /// <summary>

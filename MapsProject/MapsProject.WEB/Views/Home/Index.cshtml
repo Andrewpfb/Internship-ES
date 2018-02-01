@@ -20,9 +20,8 @@
         <table>
             <tr>
                 <td>
-                    <div style="width: 100%">
-                        <select style="width:90%" class="js-example-basic-multiple" name="states[]" multiple="multiple" id="searchSelectTags">
-                        </select>
+                    <div class="div-width-container">
+                        <select class="js-example-basic-multiple select-width-container"style="width: 90%" name="states[]" multiple="multiple" id="searchSelectTags"></select>
                     </div>
                 </td>
             </tr>
@@ -46,7 +45,7 @@
             </tr>
         </table>
 
-        <div class="alert alert-success" role="alert" id="savePlaceInfo" style="display: none; margin-top: 15px;"></div>    
+        <div class="alert alert-success info-message" role="alert" id="savePlaceInfo"></div>
     </div>
 </div>
 
@@ -65,7 +64,7 @@
                     <table cellpadding="2">
                         <tr><td><input type="hidden" id="savePlaceId" /></td><td></td></tr>
                         <tr><td><label>Place name: </label></td><td><input type="text" id="savePlaceName" placeholder="Enter name" /></td></tr>
-                        <tr><td><label>Tags: </label></td><td><select id="saveEditSelectTags" style="width:90%" class="js-example-basic-multiple" name="states[]" multiple="multiple"></select></td></tr>
+                        <tr><td><label>Tags: </label></td><td><select id="saveEditSelectTags" class="js-example-basic-multiple select-width-container" name="states[]" multiple="multiple"></select></td></tr>
                         <tr><td><label>Latitude: </label></td><td><input type="number" step="any" id="savePlaceLatitude" /></td></tr>
                         <tr><td><label>Longitude: </label></td><td><input type="number" step="any" id="savePlaceLongitude" /></td></tr>
                     </table>
