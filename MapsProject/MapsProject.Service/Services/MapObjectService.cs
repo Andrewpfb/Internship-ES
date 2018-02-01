@@ -17,8 +17,8 @@ namespace MapsProject.Service.Services
     /// </summary>
     public class MapObjectService : IMapObjectService
     {
-        private IUnitOfWork database { get; set; }
-        private ITagService tagService { get; set; }
+        private IUnitOfWork Database { get; set; }
+        private ITagService TagService { get; set; }
 
         /// <summary>
         /// MapObjectService's constructor.
@@ -26,8 +26,8 @@ namespace MapsProject.Service.Services
         /// <param name="uow">IUnitOfWork object.</param>
         public MapObjectService(IUnitOfWork uow, ITagService ts)
         {
-            database = uow;
-            tagService = ts;
+            Database = uow;
+            TagService = ts;
         }
 
         /// <summary>
@@ -43,21 +43,21 @@ namespace MapsProject.Service.Services
                 addMapObject.Tags = new List<Tag>();
                 foreach (var tag in mapObjectDTO.Tags)
                 {
-                    var tagFromDb = database.Tags.GetAll().Where(t => t.TagName == tag.TagName);
+                    var tagFromDb = Database.Tags.GetAll().Where(t => t.TagName == tag.TagName);
                     if (tagFromDb.Count() != 0)
                     {
                         addMapObject.Tags.Add(tagFromDb.First());
                     }
                     else
                     {
-                        tagService.AddTag(tag);
-                        var newTag = database.Tags.GetAll().Where(t => t.TagName == tag.TagName);
+                        TagService.AddTag(tag);
+                        var newTag = Database.Tags.GetAll().Where(t => t.TagName == tag.TagName);
                         addMapObject.Tags.Add(newTag.First());
                     }
                 }
                 addMapObject.DeleteStatus = DeleteStatus.Exist;
-                database.MapObjects.Create(addMapObject);
-                database.Save();
+                Database.MapObjects.Create(addMapObject);
+                Database.Save();
             }
             catch (Exception e)
             {
@@ -73,10 +73,10 @@ namespace MapsProject.Service.Services
         {
             try
             {
-                var deleteObject = database.MapObjects.Get(id);
+                var deleteObject = Database.MapObjects.Get(id);
                 deleteObject.DeleteStatus = DeleteStatus.Removed;
-                database.MapObjects.Update(deleteObject);
-                database.Save();
+                Database.MapObjects.Update(deleteObject);
+                Database.Save();
             }
             catch (Exception e)
             {
@@ -94,14 +94,14 @@ namespace MapsProject.Service.Services
             if (tags == "")
             {
                 return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                  database.MapObjects.GetAll()
+                  Database.MapObjects.GetAll()
                   .Where(s => s.Status == Status.Approved)
                   .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
             }
             else
             {
                 List<string> byTags = TagStringHandler.SplitAndTrimTagsString(tags);
-                var mapsObjectByTags = database.Tags.GetAll()
+                var mapsObjectByTags = Database.Tags.GetAll()
                     .Where(s => s.DeleteStatus == DeleteStatus.Exist)
                     .Where(tag => byTags.Contains(tag.TagName))
                     .SelectMany(tag => tag.MapObjects)
@@ -119,7 +119,7 @@ namespace MapsProject.Service.Services
         public IEnumerable<MapObjectDTO> GetAllModerateMapObject()
         {
             return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                database.MapObjects.GetAll()
+                Database.MapObjects.GetAll()
                 .Where(s => s.Status == Status.NeedModerate)
                 .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
         }
@@ -133,7 +133,7 @@ namespace MapsProject.Service.Services
         {
             try
             {
-                var mapObject = database.MapObjects.Get(id);
+                var mapObject = Database.MapObjects.Get(id);
                 if (mapObject.DeleteStatus == DeleteStatus.Exist)
                 {
                     return Mapper.Map<MapObject, MapObjectDTO>(mapObject);
@@ -159,8 +159,8 @@ namespace MapsProject.Service.Services
             {
                 var updateMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
-                database.MapObjects.Update(updateMapObject);
-                database.Save();
+                Database.MapObjects.Update(updateMapObject);
+                Database.Save();
             }
             catch (Exception e)
             {

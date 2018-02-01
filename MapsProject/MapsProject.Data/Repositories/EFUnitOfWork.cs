@@ -13,6 +13,8 @@ namespace MapsProject.Data.Repositories
         private MapObjectContext db;
         private MapObjectRepository mapObjectRepository;
         private TagRepository tagRepository;
+        private RoleRepository roleRepository;
+        private UserRepository userRepository;
         //private IRepository<MapObject> mapObjectRepository;
         private bool disposed = false;
 
@@ -49,6 +51,30 @@ namespace MapsProject.Data.Repositories
                     tagRepository = new TagRepository(db);
                 }
                 return tagRepository;
+            }
+        }
+
+        public IRepository<Role> Roles
+        {
+            get
+            {
+                if(roleRepository == null)
+                {
+                    roleRepository = new RoleRepository(db);
+                }
+                return roleRepository;
+            }
+        }
+
+        public IRepository<User> Users
+        {
+            get
+            {
+                if(userRepository == null)
+                {
+                    userRepository = new UserRepository(db);
+                }
+                return userRepository;
             }
         }
 

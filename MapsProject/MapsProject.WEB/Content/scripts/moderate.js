@@ -3,15 +3,52 @@
     * Contains methods for deleting and confirming objects.
 */
 
+var tokenKey = "tokenInfo";
+
 $(document).ready(function () {
-    loadTable();
+    if (sessionStorage.getItem(tokenKey) != undefined) {
+        $('#loginDiv').hide();
+        $('#TableDiv').show();
+        loadTable(sessionStorage.getItem(tokenKey));
+    }
 });
 
-function loadTable() {
+$('#submit').click(function (e) {
+    e.preventDefault();
+    var loginData = {
+        grant_type: 'password',
+        username: $('#name').val(),
+        password: $('#password').val()
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '/token',
+        data: loginData
+    }).success(function (data) {
+        $('#loginDiv').hide();
+        $('#TableDiv').show();
+        loadTable(data.access_token);
+        sessionStorage.setItem(tokenKey, data.access_token);
+    }).fail(function (data) {
+        $('#errorAuth').text("Auth failed");
+        $('#errorAuth').show('slow');
+        setTimeout(function () { $('#errorAuth').hide('slow'); }, 2000);
+    });
+});
+
+$('#logOut').click(function (e) {
+    e.preventDefault();
+    sessionStorage.removeItem(tokenKey);
+    location.reload();
+});
+
+function loadTable(token) {
     $("#moderateTable").dataTable({
         "ajax": {
-            "url": '/api/moderate',
-            "dataSrc": ''
+            url: '/api/moderate',
+            dataSrc: '',
+            headers: { 'Authorization': 'Bearer ' + token }
         },
         "columns": [
             { data: 'Id' },

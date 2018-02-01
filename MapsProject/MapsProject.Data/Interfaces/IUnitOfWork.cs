@@ -13,6 +13,9 @@ namespace MapsProject.Data.Interfaces
         /// </summary>
         IRepository<MapObject> MapObjects { get; }
         IRepository<Tag> Tags { get; }
+
+        IRepository<Role> Roles { get; }
+        IRepository<User> Users { get; }
         /// <summary>
         /// Save changes in database.
         /// </summary>

@@ -17,7 +17,7 @@ namespace MapsProject.WEB.Areas.Administration
             context.MapRoute(
                 "Administration_default",
                 "Administration/{controller}/{action}/{id}",
-                new {controller = "Auth", action = "Moderate", id = UrlParameter.Optional }
+                new {controller = "Auth", action = "Login", id = UrlParameter.Optional }
             );
         }
     }

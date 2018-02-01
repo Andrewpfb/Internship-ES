@@ -27,6 +27,7 @@ namespace MapsProject.WEB.Areas.Administration.Controllers
         /// A method for obtaining all unapproved objects.
         /// </summary>
         /// <returns>List(MapObjectModerateViewModel) objects.</returns>
+        [Authorize]
         public IEnumerable<MapObjectModerateViewModel> Get()
         {
             IEnumerable<MapObjectDTO> mapObjectsDTOs = mapObjectService.GetAllModerateMapObject();
@@ -46,6 +47,7 @@ namespace MapsProject.WEB.Areas.Administration.Controllers
         /// <param name="mapObject">Approved object.</param>
         /// <returns>If the confirmation is successful, return OkResult(). 
         /// If an exception occurs, then BadRequest().</returns>
+        [Authorize]
         public IHttpActionResult Put(int id, [FromBody]MapObjectViewModel mapObject)
         {
             try

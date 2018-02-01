@@ -1,5 +1,4 @@
 using MapsProject.Data.Interfaces;
-using MapsProject.Data.Models;
 using MapsProject.Data.Repositories;
 using MapsProject.Service.Interfaces;
 using MapsProject.Service.Services;
@@ -36,6 +35,7 @@ namespace MapsProject.WEB
             //Service
             container.RegisterType<IMapObjectService, MapObjectService>();
             container.RegisterType<ITagService, TagService>();
+            container.RegisterType<IUserService, UserService>();
 
             //Resolver
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);

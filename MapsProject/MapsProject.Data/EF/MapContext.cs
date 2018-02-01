@@ -14,6 +14,8 @@ namespace MapsProject.Data.EF
         /// </summary>
         public DbSet<MapObject> MapsObjects { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
 
         /// <summary>
         /// Context class constructor.Accepts the connection string.
