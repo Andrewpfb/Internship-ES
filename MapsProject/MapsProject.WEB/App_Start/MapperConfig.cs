@@ -5,6 +5,7 @@ using MapsProject.Models.Models;
 using MapsProject.WEB.Areas.Administration.Models;
 using MapsProject.WEB.Models;
 using System.Collections.Generic;
+using System;
 
 namespace MapsProject.WEB
 {
@@ -27,7 +28,7 @@ namespace MapsProject.WEB
                     .ForMember(x => x.Tags, opt => opt.ResolveUsing<MapObjectToDTOResolver, ICollection<Tag>>(src => src.Tags));
                     cfg.CreateMap<MapObjectDTO, MapObject>()
                     .ForMember(x => x.DeleteStatus, y => y.Ignore())
-                    .ForMember(x => x.Tags, y => y.Ignore());
+                    .ForMember(x => x.Tags, opt => opt.ResolveUsing<DTOToMapObjectResolver,List<TagDTO>>(src => src.Tags));
 
                     //User to UserDTO and back.
                     cfg.CreateMap<User, UserDTO>()
@@ -57,7 +58,7 @@ namespace MapsProject.WEB
                 });
         }
 
-        //Resolver for MapObject to DTO.
+        //Resolver for MapObject to DTO and back.
         class MapObjectToDTOResolver : IMemberValueResolver<MapObject, MapObjectDTO, ICollection<Tag>, List<TagDTO>>
         {
             public List<TagDTO> Resolve(MapObject source, MapObjectDTO destination, ICollection<Tag> sourceMember, List<TagDTO> destMember, ResolutionContext context)
@@ -72,6 +73,23 @@ namespace MapsProject.WEB
                     });
                 }
                 return destination.Tags;
+            }
+        }
+
+        class DTOToMapObjectResolver : IMemberValueResolver<MapObjectDTO, MapObject, List<TagDTO>, ICollection<Tag>>
+        {
+            public ICollection<Tag> Resolve(MapObjectDTO source, MapObject destination, List<TagDTO> sourceMember, ICollection<Tag> destMember, ResolutionContext context)
+            {
+                destination.Tags = new List<Tag>();
+                foreach(var tag in source.Tags)
+                {
+                    destination.Tags.Add(new Tag
+                    {
+                        Id = tag.Id,
+                        TagName = tag.TagName
+                    });
+                }
+                return destination.Tags as ICollection<Tag>;
             }
         }
 
@@ -150,7 +168,5 @@ namespace MapsProject.WEB
                 return destination.Tags;
             }
         }
-
-
     }
 }

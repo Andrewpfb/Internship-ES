@@ -159,6 +159,7 @@ namespace MapsProject.Service.Services
             {
                 var updateMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
+                updateMapObject.DeleteStatus = DeleteStatus.Exist;
                 Database.MapObjects.Update(updateMapObject);
                 Database.Save();
             }

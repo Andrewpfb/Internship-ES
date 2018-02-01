@@ -219,7 +219,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AuthController.cs" />
-    <Compile Include="Areas\Administration\Models\UserViewModel.cs" />
     <Compile Include="Attribute\AuthorizeAttribute.cs" />
     <Compile Include="AuthProviders\MyAuthorizationServerProvider.cs" />
     <Compile Include="Controllers\TagsController.cs" />

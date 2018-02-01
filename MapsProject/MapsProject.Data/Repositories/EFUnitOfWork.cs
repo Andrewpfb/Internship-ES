@@ -24,7 +24,7 @@ namespace MapsProject.Data.Repositories
         /// <param name="connectionString">Connection string from MapsProject.WEB</param>
         public EFUnitOfWork(string connectionString)
         {
-            db = new MapObjectContext(connectionString);
+             db = new MapObjectContext(connectionString);
         }
 
         /// <summary>

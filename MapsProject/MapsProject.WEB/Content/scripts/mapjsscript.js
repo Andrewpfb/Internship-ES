@@ -174,7 +174,8 @@ function setTagList(val_data) {
     }
 
     $('.js-example-basic-multiple').select2({
-        placeholder: "Select the tags"
+        placeholder: "Select the tags",
+        tags: true
     });
 }
 

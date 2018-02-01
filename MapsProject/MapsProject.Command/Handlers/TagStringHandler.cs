@@ -10,7 +10,8 @@ namespace MapsProject.Command.Handlers
         {
             tags = tags.Trim();
             tags = tags.Replace(" ", String.Empty);
-            var tagsList = tags.Split(';');
+            var tagsList = tags.Split(new[] { ';' },StringSplitOptions.RemoveEmptyEntries);
+
             return tagsList.ToList();
         }
     }
