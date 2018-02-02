@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MapsProject.Command.Handlers;
+using MapsProject.Common.Handlers;
 using MapsProject.Data.Models;
 using MapsProject.Models.Models;
 using MapsProject.WEB.Areas.Administration.Models;
@@ -23,10 +23,10 @@ namespace MapsProject.WEB
                 {
                     //MapObject to DTO and back.
                     cfg.CreateMap<MapObject, MapObjectDTO>()
-                    .ForSourceMember(x => x.DeleteStatus, y => y.Ignore())
+                    .ForSourceMember(x => x.IsDelete, y => y.Ignore())
                     .ForMember(x => x.Tags, opt => opt.ResolveUsing<MapObjectToDTOResolver, ICollection<Tag>>(src => src.Tags));
                     cfg.CreateMap<MapObjectDTO, MapObject>()
-                    .ForMember(x => x.DeleteStatus, y => y.Ignore())
+                    .ForMember(x => x.IsDelete, y => y.Ignore())
                     .ForMember(x => x.Tags, opt => opt.ResolveUsing<DTOToMapObjectResolver, List<TagDTO>>(src => src.Tags));
 
                     //User to UserDTO and back.
@@ -37,10 +37,10 @@ namespace MapsProject.WEB
 
                     //Tag to DTO and back.
                     cfg.CreateMap<Tag, TagDTO>()
-                    .ForSourceMember(x => x.DeleteStatus, y => y.Ignore());
+                    .ForSourceMember(x => x.IsDelete, y => y.Ignore());
                     cfg.CreateMap<TagDTO, Tag>()
                     .ForMember(x => x.MapObjects, y => y.Ignore())
-                    .ForMember(x => x.DeleteStatus, y => y.Ignore())
+                    .ForMember(x => x.IsDelete, y => y.Ignore())
                     .ForSourceMember(x => x.MapObjects, y => y.Ignore());
 
                     //MapObjectDTO to ViewModel and back.

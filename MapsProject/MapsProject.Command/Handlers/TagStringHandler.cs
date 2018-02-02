@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MapsProject.Command.Handlers
+namespace MapsProject.Common.Handlers
 {
     /// <summary>
     /// Class for working with tags.
@@ -17,8 +17,7 @@ namespace MapsProject.Command.Handlers
         public static List<string> SplitAndTrimTagsString(string tags)
         {
             tags = tags.Trim();
-            tags = tags.Replace(" ", String.Empty);
-            var tagsList = tags.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var tagsList = tags.Split(new[] { ';',',','.',':' }, StringSplitOptions.RemoveEmptyEntries);
             return tagsList.ToList();
         }
     }

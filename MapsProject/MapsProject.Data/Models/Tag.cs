@@ -24,19 +24,11 @@ namespace MapsProject.Data.Models
         /// Tag's delete status. Is required.
         /// </summary>
         [Required]
-        public DeleteStatus DeleteStatus { get; set; }
+        public bool IsDelete { get; set; }
 
         /// <summary>
         /// Tag's objects.
         /// </summary>
-        public virtual ICollection<MapObject> MapObjects { get; set; }
-
-        /// <summary>
-        /// Init ICollection(MapObject) how List(MapObject).
-        /// </summary>
-        public Tag()
-        {
-            MapObjects = new List<MapObject>();
-        }
+        public virtual ICollection<MapObject> MapObjects { get; set; } = new List<MapObject>();
     }
 }

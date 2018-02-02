@@ -25,7 +25,9 @@ namespace MapsProject.Data.EF
         public MapObjectContext(string connectionString)
             : base(connectionString) { }
 
-        //Constructor for migrations.
-        //public MapObjectContext() : base("MapContext1") { }
+        /// <summary>
+        /// Constructor for migrations.
+        /// </summary>
+        public MapObjectContext() : base("MapContext1") { }
     }
 }

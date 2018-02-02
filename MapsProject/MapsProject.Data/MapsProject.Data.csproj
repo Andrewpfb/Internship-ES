@@ -66,6 +66,10 @@
     <Compile Include="Migrations\201802011258024_addUserAndRoleAttribute.Designer.cs">
       <DependentUpon>201802011258024_addUserAndRoleAttribute.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802020913429_Replace DeleteStatus to IsDelete.cs" />
+    <Compile Include="Migrations\201802020913429_Replace DeleteStatus to IsDelete.Designer.cs">
+      <DependentUpon>201802020913429_Replace DeleteStatus to IsDelete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\MapObject.cs" />
     <Compile Include="Models\Role.cs" />
@@ -100,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802011258024_addUserAndRoleAttribute.resx">
       <DependentUpon>201802011258024_addUserAndRoleAttribute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802020913429_Replace DeleteStatus to IsDelete.resx">
+      <DependentUpon>201802020913429_Replace DeleteStatus to IsDelete.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -37,7 +37,8 @@ namespace MapsProject.Service.Services
             {
                 var addTag = Mapper
                     .Map<TagDTO, Tag>(tagDTO);
-                addTag.DeleteStatus = DeleteStatus.Exist;
+                //addTag.DeleteStatus = DeleteStatus.Exist;
+                addTag.IsDelete = false;
                 database.Tags.Create(addTag);
                 database.Save();
             }
@@ -56,7 +57,8 @@ namespace MapsProject.Service.Services
             try
             {
                 var deleteTag = database.Tags.Get(id);
-                deleteTag.DeleteStatus = DeleteStatus.Removed;
+                // deleteTag.DeleteStatus = DeleteStatus.Removed;
+                deleteTag.IsDelete = true;
                 database.Tags.Update(deleteTag);
                 database.Save();
             }
@@ -74,7 +76,8 @@ namespace MapsProject.Service.Services
             return Mapper
                 .Map<IEnumerable<Tag>, List<TagDTO>>(
                 database.Tags.GetAll()
-                .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
+                .Where(isDel => isDel.IsDelete == false));
+            //.Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
         }
 
         /// <summary>
@@ -87,7 +90,8 @@ namespace MapsProject.Service.Services
             try
             {
                 var tag = database.Tags.Get(id);
-                if (tag.DeleteStatus == DeleteStatus.Exist)
+                //if (tag.DeleteStatus == DeleteStatus.Exist)
+                if (tag.IsDelete == false)
                 {
                     return Mapper.Map<Tag, TagDTO>(tag);
                 }

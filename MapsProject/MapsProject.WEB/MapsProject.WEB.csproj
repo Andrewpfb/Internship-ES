@@ -324,9 +324,9 @@
     <Content Include="Content\lib\JQuery\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MapsProject.Command\MapsProject.Command.csproj">
+    <ProjectReference Include="..\MapsProject.Command\MapsProject.Common.csproj">
       <Project>{3d765f99-bfe0-478d-ac1e-4bb7c9964c3c}</Project>
-      <Name>MapsProject.Command</Name>
+      <Name>MapsProject.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapsProject.Data\MapsProject.Data.csproj">
       <Project>{ec8590a1-b25f-420c-ab81-d0bbced826f7}</Project>

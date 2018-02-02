@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapProject.Tests", "MapProj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapsProject.Models", "MapsProject.Models\MapsProject.Models.csproj", "{188F6C18-CAE5-4CD7-A4BF-332547EF46A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapsProject.Command", "MapsProject.Command\MapsProject.Command.csproj", "{3D765F99-BFE0-478D-AC1E-4BB7C9964C3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapsProject.Common", "MapsProject.Command\MapsProject.Common.csproj", "{3D765F99-BFE0-478D-AC1E-4BB7C9964C3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

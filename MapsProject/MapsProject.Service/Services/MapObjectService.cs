@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MapsProject.Command.Handlers;
+using MapsProject.Common.Handlers;
 using MapsProject.Data.Interfaces;
 using MapsProject.Data.Models;
 using MapsProject.Models.Enums;
@@ -56,7 +56,8 @@ namespace MapsProject.Service.Services
                         addMapObject.Tags.Add(newTag.First());
                     }
                 }
-                addMapObject.DeleteStatus = DeleteStatus.Exist;
+                //addMapObject.DeleteStatus = DeleteStatus.Exist;
+                addMapObject.IsDelete = false;
                 Database.MapObjects.Create(addMapObject);
                 Database.Save();
             }
@@ -75,7 +76,8 @@ namespace MapsProject.Service.Services
             try
             {
                 var deleteObject = Database.MapObjects.Get(id);
-                deleteObject.DeleteStatus = DeleteStatus.Removed;
+                // deleteObject.DeleteStatus = DeleteStatus.Removed;
+                deleteObject.IsDelete = true;
                 Database.MapObjects.Update(deleteObject);
                 Database.Save();
             }
@@ -97,13 +99,15 @@ namespace MapsProject.Service.Services
                 return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
                   Database.MapObjects.GetAll()
                   .Where(s => s.Status == Status.Approved)
-                  .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
+                  .Where(isDel => isDel.IsDelete == false));
+                //.Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
             }
             else
             {
                 List<string> byTags = TagStringHandler.SplitAndTrimTagsString(tags);
                 var mapsObjectByTags = Database.Tags.GetAll()
-                    .Where(s => s.DeleteStatus == DeleteStatus.Exist)
+                    .Where(isDel => isDel.IsDelete == false)
+                    //.Where(s => s.DeleteStatus == DeleteStatus.Exist)
                     .Where(tag => byTags.Contains(tag.TagName))
                     .SelectMany(tag => tag.MapObjects)
                     .Distinct();
@@ -122,7 +126,8 @@ namespace MapsProject.Service.Services
             return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
                 Database.MapObjects.GetAll()
                 .Where(s => s.Status == Status.NeedModerate)
-                .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
+                .Where(isDel => isDel.IsDelete == false));
+            // .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
         }
 
         /// <summary>
@@ -135,7 +140,8 @@ namespace MapsProject.Service.Services
             try
             {
                 var mapObject = Database.MapObjects.Get(id);
-                if (mapObject.DeleteStatus == DeleteStatus.Exist)
+                // if (mapObject.DeleteStatus == DeleteStatus.Exist)
+                if (mapObject.IsDelete == false)
                 {
                     return Mapper.Map<MapObject, MapObjectDTO>(mapObject);
                 }
@@ -160,7 +166,8 @@ namespace MapsProject.Service.Services
             {
                 var updateMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
-                updateMapObject.DeleteStatus = DeleteStatus.Exist;
+                //updateMapObject.DeleteStatus = DeleteStatus.Exist;
+                updateMapObject.IsDelete = false;
                 Database.MapObjects.Update(updateMapObject);
                 Database.Save();
             }
