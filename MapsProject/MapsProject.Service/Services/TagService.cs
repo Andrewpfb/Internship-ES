@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MapsProject.Data.Interfaces;
 using MapsProject.Data.Models;
-using MapsProject.Models.Enums;
 using MapsProject.Models.Models;
 using MapsProject.Service.Infrastructure;
 using MapsProject.Service.Interfaces;
@@ -37,14 +36,13 @@ namespace MapsProject.Service.Services
             {
                 var addTag = Mapper
                     .Map<TagDTO, Tag>(tagDTO);
-                //addTag.DeleteStatus = DeleteStatus.Exist;
                 addTag.IsDelete = false;
                 database.Tags.Create(addTag);
                 database.Save();
             }
             catch (Exception e)
             {
-                throw new ValidationException("Create complete with error ", e.Message);
+                throw new DatabaseException("Create complete with error ", e.Message);
             }
         }
 
@@ -57,14 +55,13 @@ namespace MapsProject.Service.Services
             try
             {
                 var deleteTag = database.Tags.Get(id);
-                // deleteTag.DeleteStatus = DeleteStatus.Removed;
                 deleteTag.IsDelete = true;
                 database.Tags.Update(deleteTag);
                 database.Save();
             }
             catch (Exception e)
             {
-                throw new ValidationException("Delete complete with error ", e.Message);
+                throw new DatabaseException("Delete complete with error ", e.Message);
             }
         }
         /// <summary>
@@ -73,11 +70,17 @@ namespace MapsProject.Service.Services
         /// <returns>IEnumerable(TagDTO) object.</returns>
         public IEnumerable<TagDTO> GetAllTags()
         {
-            return Mapper
-                .Map<IEnumerable<Tag>, List<TagDTO>>(
-                database.Tags.GetAll()
-                .Where(isDel => isDel.IsDelete == false));
-            //.Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
+            try
+            {
+                return Mapper
+                    .Map<IEnumerable<Tag>, List<TagDTO>>(
+                    database.Tags.GetAll()
+                    .Where(isDel => isDel.IsDelete == false));
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException("Error ", e.Message);
+            }
         }
 
         /// <summary>
@@ -90,19 +93,18 @@ namespace MapsProject.Service.Services
             try
             {
                 var tag = database.Tags.Get(id);
-                //if (tag.DeleteStatus == DeleteStatus.Exist)
                 if (tag.IsDelete == false)
                 {
                     return Mapper.Map<Tag, TagDTO>(tag);
                 }
                 else
                 {
-                    throw new ValidationException("Error ", "Tag was delete");
+                    throw new NotFoundException("Error ", "Tag was delete");
                 }
             }
             catch (Exception e)
             {
-                throw new ValidationException("Error ", e.Message)
+                throw new NotFoundException("Error ", e.Message)
 ;
             }
         }
@@ -122,7 +124,7 @@ namespace MapsProject.Service.Services
             }
             catch (Exception e)
             {
-                throw new ValidationException("Update complete with error ", e.Message);
+                throw new DatabaseException("Update complete with error ", e.Message);
             }
         }
     }

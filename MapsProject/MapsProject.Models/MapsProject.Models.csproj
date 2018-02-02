@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\DeleteStatus.cs" />
     <Compile Include="Enums\Extensions\EnumExtensions.cs" />
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Models\MapObjectDTO.cs" />

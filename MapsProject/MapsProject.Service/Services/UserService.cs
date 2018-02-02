@@ -44,12 +44,12 @@ namespace MapsProject.Service.Services
                 }
                 catch (Exception e)
                 {
-                    throw new ValidationException("Error: ", e.Message);
+                    throw new NotFoundException("Error: ", e.Message);
                 }
             }
             else
             {
-                throw new ValidationException("User doesn't found", "");
+                throw new NotFoundException("User doesn't found", "");
             }
         }
     }

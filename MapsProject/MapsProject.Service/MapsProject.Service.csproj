@@ -68,6 +68,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\AbstractException.cs" />
+    <Compile Include="Infrastructure\DatabaseException.cs" />
+    <Compile Include="Infrastructure\NotFoundException.cs" />
     <Compile Include="Infrastructure\ValidationException.cs" />
     <Compile Include="Interfaces\IMapObjectService.cs" />
     <Compile Include="Interfaces\ITagService.cs" />

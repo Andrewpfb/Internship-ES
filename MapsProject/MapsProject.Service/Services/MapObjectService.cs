@@ -56,14 +56,13 @@ namespace MapsProject.Service.Services
                         addMapObject.Tags.Add(newTag.First());
                     }
                 }
-                //addMapObject.DeleteStatus = DeleteStatus.Exist;
                 addMapObject.IsDelete = false;
                 Database.MapObjects.Create(addMapObject);
                 Database.Save();
             }
             catch (Exception e)
             {
-                throw new ValidationException("Create complete with error ", e.Message);
+                throw new DatabaseException("Create complete with error ", e.Message);
             }
         }
 
@@ -76,14 +75,13 @@ namespace MapsProject.Service.Services
             try
             {
                 var deleteObject = Database.MapObjects.Get(id);
-                // deleteObject.DeleteStatus = DeleteStatus.Removed;
                 deleteObject.IsDelete = true;
                 Database.MapObjects.Update(deleteObject);
                 Database.Save();
             }
             catch (Exception e)
             {
-                throw new ValidationException("Delete complete with error ", e.Message);
+                throw new DatabaseException("Delete complete with error ", e.Message);
             }
         }
 
@@ -94,26 +92,31 @@ namespace MapsProject.Service.Services
         /// <returns>IEnumerable(MapObjectDTO) object.</returns>
         public IEnumerable<MapObjectDTO> GetAllApprovedMapObjects(string tags)
         {
-            if (tags == "")
+            try
             {
-                return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                  Database.MapObjects.GetAll()
-                  .Where(s => s.Status == Status.Approved)
-                  .Where(isDel => isDel.IsDelete == false));
-                //.Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
+                if (tags == "")
+                {
+                    return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
+                      Database.MapObjects.GetAll()
+                      .Where(s => s.Status == Status.Approved)
+                      .Where(isDel => isDel.IsDelete == false));
+                }
+                else
+                {
+                    List<string> byTags = TagStringHandler.SplitAndTrimTagsString(tags);
+                    var mapsObjectByTags = Database.Tags.GetAll()
+                        .Where(isDel => isDel.IsDelete == false)
+                        .Where(tag => byTags.Contains(tag.TagName))
+                        .SelectMany(tag => tag.MapObjects)
+                        .Distinct();
+                    return Mapper
+                        .Map<IEnumerable<MapObject>, IEnumerable<MapObjectDTO>>(mapsObjectByTags
+                        .Where(s => s.Status == Status.Approved));
+                }
             }
-            else
+            catch (Exception e)
             {
-                List<string> byTags = TagStringHandler.SplitAndTrimTagsString(tags);
-                var mapsObjectByTags = Database.Tags.GetAll()
-                    .Where(isDel => isDel.IsDelete == false)
-                    //.Where(s => s.DeleteStatus == DeleteStatus.Exist)
-                    .Where(tag => byTags.Contains(tag.TagName))
-                    .SelectMany(tag => tag.MapObjects)
-                    .Distinct();
-                return Mapper
-                    .Map<IEnumerable<MapObject>, IEnumerable<MapObjectDTO>>(mapsObjectByTags
-                    .Where(s => s.Status == Status.Approved));
+                throw new DatabaseException("Error ", e.Message);
             }
         }
 
@@ -123,11 +126,17 @@ namespace MapsProject.Service.Services
         /// <returns>IEnumerable(MapObjectDTO)</returns>
         public IEnumerable<MapObjectDTO> GetAllModerateMapObject()
         {
-            return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
-                Database.MapObjects.GetAll()
-                .Where(s => s.Status == Status.NeedModerate)
-                .Where(isDel => isDel.IsDelete == false));
-            // .Where(ds => ds.DeleteStatus == DeleteStatus.Exist));
+            try
+            {
+                return Mapper.Map<IEnumerable<MapObject>, List<MapObjectDTO>>(
+                    Database.MapObjects.GetAll()
+                    .Where(s => s.Status == Status.NeedModerate)
+                    .Where(isDel => isDel.IsDelete == false));
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException("Error ", e.Message);
+            }
         }
 
         /// <summary>
@@ -140,19 +149,18 @@ namespace MapsProject.Service.Services
             try
             {
                 var mapObject = Database.MapObjects.Get(id);
-                // if (mapObject.DeleteStatus == DeleteStatus.Exist)
                 if (mapObject.IsDelete == false)
                 {
                     return Mapper.Map<MapObject, MapObjectDTO>(mapObject);
                 }
                 else
                 {
-                    throw new ValidationException("Error ", "Object was delete");
+                    throw new NotFoundException("Error ", "Object was delete");
                 }
             }
             catch (Exception e)
             {
-                throw new ValidationException("Error ", e.Message);
+                throw new NotFoundException("Error ", e.Message);
             }
         }
 
@@ -166,14 +174,13 @@ namespace MapsProject.Service.Services
             {
                 var updateMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
-                //updateMapObject.DeleteStatus = DeleteStatus.Exist;
                 updateMapObject.IsDelete = false;
                 Database.MapObjects.Update(updateMapObject);
                 Database.Save();
             }
             catch (Exception e)
             {
-                throw new ValidationException("Update complete with error ", e.Message);
+                throw new DatabaseException("Update complete with error ", e.Message);
             }
         }
     }
