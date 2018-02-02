@@ -1,83 +1,92 @@
-﻿@{
+﻿@*@{
     ViewBag.Title = "Home Page";
+}*@
+
+@{
+    ViewBag.Title = "Index";
 }
 
-@section css{
-    @Styles.Render("~/Content/select2")
-}
+<body>
+    <user-app>Loading…</user-app>
+</body>
 
-<script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
-<div class="row">
-    <div class="col-md-9">
-        <h2>Google Map</h2>
-        <div id="canvas" class="map"></div>
+
+@*@section css{
+        @Styles.Render("~/Content/select2")
+    }
+
+    <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+    <div class="row">
+        <div class="col-md-9">
+            <h2>Google Map</h2>
+            <div id="canvas" class="map"></div>
+        </div>
+        <div class="col-md-3">
+            <br />
+            <br />
+
+            <h2>Show places by tags</h2>
+            <table>
+                <tr>
+                    <td>
+                        <div class="div-width-container">
+                            <select class="js-example-basic-multiple select-width-container"style="width: 90%" name="states[]" multiple="multiple" id="searchSelectTags"></select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="searchPlacesByTags" class="save-search-place-btn btn btn-primary">Search</button>
+                    </td>
+                </tr>
+            </table>
+            <h2>Search place by adress</h2>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" id="searchPlaceAdress" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="searchPlaceByAdress" class="save-search-place-btn btn btn-primary">Search</button>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="alert alert-success info-message" role="alert" id="savePlaceInfo"></div>
+        </div>
     </div>
-    <div class="col-md-3">
-        <br />
-        <br />
-
-        <h2>Show places by tags</h2>
-        <table>
-            <tr>
-                <td>
-                    <div class="div-width-container">
-                        <select class="js-example-basic-multiple select-width-container"style="width: 90%" name="states[]" multiple="multiple" id="searchSelectTags"></select>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="searchPlacesByTags" class="save-search-place-btn btn btn-primary">Search</button>
-                </td>
-            </tr>
-        </table>
-        <h2>Search place by adress</h2>
-        <table>
-            <tr>
-                <td>
-                    <input type="text" id="searchPlaceAdress" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="searchPlaceByAdress" class="save-search-place-btn btn btn-primary">Search</button>
-                </td>
-            </tr>
-        </table>
-
-        <div class="alert alert-success info-message" role="alert" id="savePlaceInfo"></div>
-    </div>
-</div>
 
 
-<div class="modal fade" id="savePlaceModalWin">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h2 class="modal-title">Place info</h2>
-            </div>
-            <div class="modal-body">
-                <form id="savePlaceForm" action="javascript:void(null);">
-                    <table cellpadding="2">
-                        <tr><td><input type="hidden" id="savePlaceId" /></td><td></td></tr>
-                        <tr><td><label>Place name: </label></td><td><input type="text" id="savePlaceName" placeholder="Enter name" /></td></tr>
-                        <tr><td><label>Tags: </label></td><td><select id="saveEditSelectTags" class="js-example-basic-multiple select-width-container" name="states[]" multiple="multiple"></select></td></tr>
-                        <tr><td><label>Latitude: </label></td><td><input type="number" step="any" id="savePlaceLatitude" /></td></tr>
-                        <tr><td><label>Longitude: </label></td><td><input type="number" step="any" id="savePlaceLongitude" /></td></tr>
-                    </table>
-                    <button id="savePlace" type="submit" class="save-search-place-btn btn btn-primary">Save place</button>
-                </form>
+    <div class="modal fade" id="savePlaceModalWin">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h2 class="modal-title">Place info</h2>
+                </div>
+                <div class="modal-body">
+                    <form id="savePlaceForm" action="javascript:void(null);">
+                        <table cellpadding="2">
+                            <tr><td><input type="hidden" id="savePlaceId" /></td><td></td></tr>
+                            <tr><td><label>Place name: </label></td><td><input type="text" id="savePlaceName" placeholder="Enter name" /></td></tr>
+                            <tr><td><label>Tags: </label></td><td><select id="saveEditSelectTags" class="js-example-basic-multiple select-width-container" name="states[]" multiple="multiple"></select></td></tr>
+                            <tr><td><label>Latitude: </label></td><td><input type="number" step="any" id="savePlaceLatitude" /></td></tr>
+                            <tr><td><label>Longitude: </label></td><td><input type="number" step="any" id="savePlaceLongitude" /></td></tr>
+                        </table>
+                        <button id="savePlace" type="submit" class="save-search-place-btn btn btn-primary">Save place</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-@section Scripts {
-    @Scripts.Render("~/Content/scripts/mapjsscript.js")
-    @Scripts.Render("~/bundles/select2")
-    @Scripts.Render("https://maps.googleapis.com/maps/api/js?key=AIzaSyDIwQLQ2XIYDNt6OQz9ACI89t5UaRf0d9c&callback=initMap");
-}
+    @section Scripts {
+        @Scripts.Render("~/Content/scripts/mapjsscript.js")
+        @Scripts.Render("~/bundles/select2")
+        @Scripts.Render("https://maps.googleapis.com/maps/api/js?key=AIzaSyDIwQLQ2XIYDNt6OQz9ACI89t5UaRf0d9c&callback=initMap");
+    }*@
