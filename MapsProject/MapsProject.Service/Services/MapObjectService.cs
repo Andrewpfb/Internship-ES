@@ -175,6 +175,21 @@ namespace MapsProject.Service.Services
                 var updateMapObject = Mapper
                     .Map<MapObjectDTO, MapObject>(mapObjectDTO);
                 updateMapObject.IsDelete = false;
+                updateMapObject.Tags = new List<Tag>();
+                foreach (var tag in mapObjectDTO.Tags)
+                {
+                    var tagFromDb = Database.Tags.GetAll().Where(t => t.TagName == tag.TagName);
+                    if (tagFromDb.Count() != 0)
+                    {
+                        updateMapObject.Tags.Add(tagFromDb.First());
+                    }
+                    else
+                    {
+                        TagService.AddTag(tag);
+                        var newTag = Database.Tags.GetAll().Where(t => t.TagName == tag.TagName);
+                        updateMapObject.Tags.Add(newTag.First());
+                    }
+                }
                 Database.MapObjects.Update(updateMapObject);
                 Database.Save();
             }
