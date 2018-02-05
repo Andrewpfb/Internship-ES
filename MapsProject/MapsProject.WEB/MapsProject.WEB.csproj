@@ -292,7 +292,6 @@
     <Content Include="Content\lib\Modernizr\modernizr-2.6.2.js" />
     <Content Include="Content\lib\JQuery\respond.js" />
     <Content Include="Content\lib\JQuery\respond.min.js" />
-    <Content Include="systemjs.config.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -307,9 +306,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Administration\Views\Auth\Login.cshtml" />
-    <Content Include="package.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -349,13 +346,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="app\app.component.ts" />
-    <TypeScriptCompile Include="app\app.module.ts" />
-    <TypeScriptCompile Include="app\app.routing.ts" />
-    <TypeScriptCompile Include="app\Components\home.component.ts" />
-    <TypeScriptCompile Include="app\main.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

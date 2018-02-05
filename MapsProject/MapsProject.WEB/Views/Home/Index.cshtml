@@ -1,17 +1,8 @@
-﻿@*@{
+﻿@{
     ViewBag.Title = "Home Page";
-}*@
-
-@{
-    ViewBag.Title = "Index";
 }
 
-<body>
-    <user-app>Loading…</user-app>
-</body>
-
-
-@*@section css{
+@section css{
         @Styles.Render("~/Content/select2")
     }
 
@@ -89,4 +80,4 @@
         @Scripts.Render("~/Content/scripts/mapjsscript.js")
         @Scripts.Render("~/bundles/select2")
         @Scripts.Render("https://maps.googleapis.com/maps/api/js?key=AIzaSyDIwQLQ2XIYDNt6OQz9ACI89t5UaRf0d9c&callback=initMap");
-    }*@
+    }
