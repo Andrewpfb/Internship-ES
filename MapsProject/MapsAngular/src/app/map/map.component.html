@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-md-9">
+    <div>
+      <h1 class="header-general">Google Map</h1>
+    </div>
+
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (mapDblClick)="mapDblClicked($event)" [disableDoubleClickZoom]="true">
+
+      <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.GeoLat" [longitude]="m.GeoLong">
+
+        <agm-info-window>
+          <div class="object-info">
+            <h2>Place: {{m.ObjectName}}</h2>
+            <div>
+              <h4>Tags: {{m.Tags}}</h4>
+            </div>
+          </div>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </div>
+  <div class="col-md-3">
+    <br />
+    <br />
+
+    <h2>Show places by tags</h2>
+    <table>
+      <tr>
+        <td>
+          <div class="div-width-container">
+            <select class="js-example-basic-multiple select-width-container" name="states[]" multiple="multiple" id="searchSelectTags">
+                <option value="AL">Alabama</option>
+              <option value="WY">Wyoming</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button id="searchPlacesByTags" class="save-search-place-btn btn btn-primary">Search</button>
+        </td>
+      </tr>
+    </table>
+    <h2>Search place by adress</h2>
+    <table>
+      <tr>
+        <td>
+          <input type="text" id="searchPlaceAdress" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button id="searchPlaceByAdress" class="save-search-place-btn btn btn-primary">Search</button>
+        </td>
+      </tr>
+    </table>
+
+    <div class="alert alert-success info-message" role="alert" id="savePlaceInfo"></div>
+  </div>
+</div>
