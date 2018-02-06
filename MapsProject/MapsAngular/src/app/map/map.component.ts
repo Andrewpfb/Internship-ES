@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
+import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+
 import { MouseEvent } from '@agm/core';
 
-import { MapService } from './map.service';
-
-import {MapObject} from './mapObject';
+import { MapService } from '../_services/map.service';
+import { MapObject } from '../_models/mapObject';
 
 import 'rxjs/add/operator/map';
-import { dashCaseToCamelCase } from '@angular/compiler/src/util';
-import { collectExternalReferences } from '@angular/compiler/src/output/output_ast';
+import { MatDialog } from '@angular/material';
+
+
 
 @Component({
   selector: 'app-map',
@@ -15,32 +17,38 @@ import { collectExternalReferences } from '@angular/compiler/src/output/output_a
   styleUrls: ['./map.component.css'],
   providers: [MapService]
 })
-export class MapComponent {
+export class MapComponent implements OnInit {
 
-  constructor(private mapService : MapService){}
+  saveGeoLat: number;
+  saveGeoLong: number;
 
-  ngOnInit(){
-    this.mapService.getObjects().subscribe(data => {
-      this.markers = data;
-  });
-  }
+  // array of markers
+  markers;
 
-  zoom: number = 15;
-  
+  // map zoom
+  zoom = 15;
+
   // initial center position for the map
-  lat: number = 53.887895;
-  lng: number = 27.538710;
+  lat = 53.887895;
+  lng = 27.538710;
 
-  clickedMarker(label: string, index: number) {
-    console.log(`clicked the marker: ${label || index}`)
+  constructor(private mapService: MapService, public dialog: MatDialog) { }
+
+  ngOnInit() {
+    this.loadData('');
   }
-  
-  mapDblClicked($event: MouseEvent){
+
+  loadData(byTags: string) {
+    this.mapService.getMapObjects(byTags).subscribe(data => {
+      this.markers = data;
+    });
+  }
+  mapDblClicked($event: MouseEvent) {
     this.markers.push({
       GeoLat: $event.coords.lat,
       GeoLong: $event.coords.lng
     });
+    this.saveGeoLat = $event.coords.lat;
+    this.saveGeoLong = $event.coords.lng;
   }
-
- markers
 }

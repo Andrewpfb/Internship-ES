@@ -1,0 +1,6 @@
+<mat-form-field>
+  <mat-select placeholder="Select tags" [formControl]="tags" multiple [(value)]="selected">
+    <mat-option *ngFor="let tag of tagList" [value]="tag">{{tag}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="getTagsFromSelect()">Search</button>

@@ -1,6 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 .app-container{
     margin-left: 50px;
     margin-right: 50px;
+    margin-top: 50px;
+}
+
+.header-span-style{
+    color: white;
+    font-size: 26px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.span-header-container{
+    margin-top: 10px;
 }

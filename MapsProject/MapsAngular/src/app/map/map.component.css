@@ -4,22 +4,7 @@ agm-map {
   margin: 100px;
   }
 
-.header-general{
-  text-align: center;
-  margin-bottom: 0px;
-}
 .object-info{
   height: 120px;
     width: 250px;
-}
-.info-message{
-  display: none;
-  margin-top: 15px;
-}
-.save-search-place-btn{
-  margin-top: 10px;
-}
-.select-width-container{
-  width: 250%;
-  display: block;
 }

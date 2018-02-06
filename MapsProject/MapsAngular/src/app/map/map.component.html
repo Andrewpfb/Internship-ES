@@ -1,10 +1,9 @@
+<!-- <app-save-modal [(saveGeoLat)]='saveGeoLat'[(saveGeoLong)]='saveGeoLong'></app-save-modal>  -->
+
 <div class="row">
   <div class="col-md-9">
-    <div>
-      <h1 class="header-general">Google Map</h1>
-    </div>
-
-    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (mapDblClick)="mapDblClicked($event)" [disableDoubleClickZoom]="true">
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (mapDblClick)="mapDblClicked($event)"
+      [disableDoubleClickZoom]="true">
 
       <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.GeoLat" [longitude]="m.GeoLong">
 
@@ -20,41 +19,24 @@
     </agm-map>
   </div>
   <div class="col-md-3">
-    <br />
-    <br />
+    <form class="example-form">
+      <h2>Show places by tags</h2>
+      <div class="mat-app-background basic-container">
+        <app-multi-select></app-multi-select>
+      </div>
+    </form>
 
-    <h2>Show places by tags</h2>
-    <table>
-      <tr>
-        <td>
-          <div class="div-width-container">
-            <select class="js-example-basic-multiple select-width-container" name="states[]" multiple="multiple" id="searchSelectTags">
-                <option value="AL">Alabama</option>
-              <option value="WY">Wyoming</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <button id="searchPlacesByTags" class="save-search-place-btn btn btn-primary">Search</button>
-        </td>
-      </tr>
-    </table>
-    <h2>Search place by adress</h2>
-    <table>
-      <tr>
-        <td>
-          <input type="text" id="searchPlaceAdress" />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <button id="searchPlaceByAdress" class="save-search-place-btn btn btn-primary">Search</button>
-        </td>
-      </tr>
-    </table>
 
-    <div class="alert alert-success info-message" role="alert" id="savePlaceInfo"></div>
+    <form class="example-form">
+      <h2>Search place by adress</h2>
+      <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="Enter the adress"></textarea>
+      </mat-form-field>
+    </form>
+    <button mat-raised-button color="primary">Search</button>
   </div>
+
 </div>
+
+
+<!-- <div class="alert alert-success info-message" role="alert" id="savePlaceInfo" [ngStyle]="{'display':display}"></div> -->
