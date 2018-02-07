@@ -6,7 +6,6 @@
       [disableDoubleClickZoom]="true">
 
       <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.GeoLat" [longitude]="m.GeoLong">
-
         <agm-info-window>
           <div class="object-info">
             <h2>Place: {{m.ObjectName}}</h2>
@@ -35,5 +34,5 @@
       <button mat-raised-button color="primary" (click)="getLatLan()">Search</button>
     </form>
   </div>
-
+  <app-save-modal [lat]="saveLat" [lng]="saveLng"></app-save-modal>
 </div>

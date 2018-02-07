@@ -46,6 +46,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
+import { SaveModalComponent, SaveModalDialogComponent } from './save-modal/save-modal.component';
 
 @NgModule({
   exports: [
@@ -87,12 +88,14 @@ export class DemoMaterialModule { }
 
 
 @NgModule({
-
   declarations: [
     AppComponent,
     MapComponent,
-    MultiSelectComponent
+    MultiSelectComponent,
+    SaveModalComponent,
+    SaveModalDialogComponent
   ],
+  entryComponents: [SaveModalComponent, SaveModalDialogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

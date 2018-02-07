@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, Injectable } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 import { MapsAPILoader, MouseEvent } from '@agm/core';
@@ -20,9 +20,13 @@ declare var google: any;
 })
 export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
 
-  saveGeoLat: number;
-  saveGeoLong: number;
+  // Алгоритм добавления объекта на карту такой. Сначала двойной клик на нужное место карты,
+  // потом нажимаем на кнопку PickOne. Откроется окно, в которое передадутся координаты.
+  // Так криво сделано, потому что пока не нашел как вызвать компонент с окном из кода.
+  
   address: number;
+  saveLat: number;
+  saveLng: number;
 
   // array of markers
   markers;
@@ -34,7 +38,7 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
   lat = 53.887895;
   lng = 27.538710;
 
-  constructor(private mapService: MapService, public dialog: MatDialog,
+  constructor(private mapService: MapService,
     private __loader: MapsAPILoader, private __zone: NgZone) {
     super(__loader, __zone);
   }
@@ -53,8 +57,8 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
       GeoLat: $event.coords.lat,
       GeoLong: $event.coords.lng
     });
-    this.saveGeoLat = $event.coords.lat;
-    this.saveGeoLong = $event.coords.lng;
+    this.saveLat = $event.coords.lat;
+    this.saveLng = $event.coords.lng;
   }
 
   getLatLan() {
