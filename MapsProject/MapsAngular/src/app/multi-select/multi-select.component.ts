@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TagService } from '../_services/tag.service';
 import { Tag } from '../_models/tag';
 import { MapComponent } from '../map/map.component';
+
+
 
 @Component({
   selector: 'app-multi-select',
@@ -10,6 +12,7 @@ import { MapComponent } from '../map/map.component';
   styleUrls: ['./multi-select.component.css'],
   providers: [TagService]
 })
+@Injectable()
 export class MultiSelectComponent implements OnInit {
   tags = new FormControl();
   selected = [];
@@ -35,5 +38,4 @@ export class MultiSelectComponent implements OnInit {
     });
     this.mapComponent.loadData(this.tagString);
   }
-
 }

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
-import { MouseEvent } from '@agm/core';
+import { MapsAPILoader, MouseEvent } from '@agm/core';
+import { GoogleMapsAPIWrapper } from '@agm/core/services/google-maps-api-wrapper';
 
 import { MapService } from '../_services/map.service';
 import { MapObject } from '../_models/mapObject';
@@ -9,7 +10,7 @@ import { MapObject } from '../_models/mapObject';
 import 'rxjs/add/operator/map';
 import { MatDialog } from '@angular/material';
 
-
+declare var google: any;
 
 @Component({
   selector: 'app-map',
@@ -17,10 +18,11 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./map.component.css'],
   providers: [MapService]
 })
-export class MapComponent implements OnInit {
+export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
 
   saveGeoLat: number;
   saveGeoLong: number;
+  address: number;
 
   // array of markers
   markers;
@@ -32,7 +34,10 @@ export class MapComponent implements OnInit {
   lat = 53.887895;
   lng = 27.538710;
 
-  constructor(private mapService: MapService, public dialog: MatDialog) { }
+  constructor(private mapService: MapService, public dialog: MatDialog,
+    private __loader: MapsAPILoader, private __zone: NgZone) {
+    super(__loader, __zone);
+  }
 
   ngOnInit() {
     this.loadData('');
@@ -50,5 +55,16 @@ export class MapComponent implements OnInit {
     });
     this.saveGeoLat = $event.coords.lat;
     this.saveGeoLong = $event.coords.lng;
+  }
+
+  getLatLan() {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': this.address }, (results, status) => {
+      console.log(this.markers);
+      this.markers.push({
+        GeoLat: results[0].geometry.location.lat(),
+        GeoLong: results[0].geometry.location.lng()
+      });
+    });
   }
 }
