@@ -61,6 +61,8 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': this.address }, (results, status) => {
       console.log(this.markers);
+      this.lat = results[0].geometry.location.lat();
+      this.lng = results[0].geometry.location.lng();
       this.markers.push({
         GeoLat: results[0].geometry.location.lat(),
         GeoLong: results[0].geometry.location.lng()

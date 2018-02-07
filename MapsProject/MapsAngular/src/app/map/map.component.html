@@ -30,10 +30,10 @@
     <form class="example-form">
       <h2>Search place by adress</h2>
       <mat-form-field class="example-full-width">
-        <textarea [(ngModel)]="address" name="address" matInput placeholder="Enter the adress" ></textarea>
+        <textarea [(ngModel)]="address" name="address" matInput placeholder="Enter the adress"></textarea>
       </mat-form-field>
+      <button mat-raised-button color="primary" (click)="getLatLan()">Search</button>
     </form>
-    <button mat-raised-button color="primary" (click)="getLatLan()">Search</button>
   </div>
 
 </div>
