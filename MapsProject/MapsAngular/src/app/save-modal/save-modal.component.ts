@@ -1,7 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, Inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 import { TagService } from '../_services/tag.service';
 import { MapService } from '../_services/map.service';
@@ -9,26 +11,28 @@ import { ChangeCoordObserverService } from '../_services/change-coord-observer.s
 
 import { Tag } from '../_models/tag';
 import { MapObject } from '../_models/mapObject';
+import { TagComponent } from '../tag/tag.component';
 
 
-let tagsString = '';
 
 @Component({
   selector: 'app-save-modal',
   templateUrl: './save-modal.component.html',
   styleUrls: ['./save-modal.component.css'],
-  providers: [MapService]
+  providers: [MapService, TagComponent]
 })
 export class SaveModalComponent implements OnInit {
 
   name = 'placeName';
-  lat = 52;
-  lng = 52;
+  lat: number;
+  lng: number;
+  tags: string;
   subscription: Subscription;
 
   constructor(
     public dialog: MatDialog,
     private mapService: MapService,
+    private tagComponent: TagComponent,
     private changeCoordObserverService: ChangeCoordObserverService
   ) {
     this.subscription = changeCoordObserverService.changeCoord$.subscribe(
@@ -48,10 +52,8 @@ export class SaveModalComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
       if (result !== undefined) {
-        const mapObj = new MapObject(0, result.name, tagsString, result.lat, result.lng);
+        const mapObj = new MapObject(0, result.name, this.tagComponent.getTags(), result.lat, result.lng);
         this.mapService.addMapObject(mapObj).subscribe(data => {
           console.log('Success');
         });
@@ -61,6 +63,7 @@ export class SaveModalComponent implements OnInit {
 
 }
 
+
 @Component({
   selector: 'app-save-modal-dialog',
   templateUrl: 'save-modal-dialog.html',
@@ -68,15 +71,14 @@ export class SaveModalComponent implements OnInit {
 })
 export class SaveModalDialogComponent implements OnInit {
 
-  tags = new FormControl();
-  selected = [];
-  tagString = '';
-  tagList: Array<string>;
-
+  source = [];
+  tags = '';
   constructor(
     public dialogRef: MatDialogRef<SaveModalDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private tagService: TagService) { this.tagList = new Array<string>(); }
+    private tagService: TagService
+  ) {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -85,17 +87,8 @@ export class SaveModalDialogComponent implements OnInit {
   ngOnInit() {
     this.tagService.getTags().subscribe((data: Tag[]) => {
       data.forEach(element => {
-        this.tagList.push(element.TagName);
+        this.source.push(element);
       });
-    });
-  }
-
-  getTagsFromSelect() {
-    console.log(this.selected);
-    this.tagString = '';
-    this.selected.forEach(element => {
-      console.log(element);
-      tagsString += element + ';';
     });
   }
 }

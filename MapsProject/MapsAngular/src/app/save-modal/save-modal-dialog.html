@@ -1,20 +1,18 @@
 <div class="example-container">
+
   <mat-form-field>
     <input matInput [(ngModel)]="data.name" placeholder="Enter place name">
   </mat-form-field>
+  <app-tag [source]="source"></app-tag>
   <mat-form-field>
-      <mat-select placeholder="Select tags" [formControl]="tags" multiple [(value)]="selected">
-        <mat-option *ngFor="let tag of tagList" [value]="tag">{{tag}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.lat" (ngModelChange)="test($event)" placeholder="lat">
+    <input matInput [(ngModel)]="data.lat" placeholder="lat">
   </mat-form-field>
   <mat-form-field>
     <input matInput [(ngModel)]="data.lng" placeholder="lng">
   </mat-form-field>
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="data" (click)="getTagsFromSelect()" cdkFocusInitial>Ok</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
   </div>
+
 </div>
