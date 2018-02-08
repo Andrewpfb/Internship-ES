@@ -1,9 +1,11 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TagService } from '../_services/tag.service';
-import { Tag } from '../_models/tag';
-import { MapComponent } from '../map/map.component';
 
+import { TagService } from '../_services/tag.service';
+
+import { Tag } from '../_models/tag';
+
+import { MapComponent } from '../map/map.component';
 
 
 @Component({
@@ -14,12 +16,17 @@ import { MapComponent } from '../map/map.component';
 })
 @Injectable()
 export class MultiSelectComponent implements OnInit {
+
+  // variable for select tags
   tags = new FormControl();
   selected = [];
   tagString = '';
   tagList: Array<string>;
 
-  constructor(private tagService: TagService, private mapComponent: MapComponent) {
+  constructor(
+    private tagService: TagService,
+    private mapComponent: MapComponent
+  ) {
     this.tagList = new Array<string>();
   }
 

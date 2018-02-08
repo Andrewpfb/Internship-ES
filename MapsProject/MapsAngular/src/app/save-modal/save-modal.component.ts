@@ -1,12 +1,15 @@
-import { Input, Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MapsAPILoader } from '@agm/core';
+import { Subscription } from 'rxjs/Subscription';
 
 import { TagService } from '../_services/tag.service';
-import { FormControl } from '@angular/forms';
-import { Tag } from '../_models/tag';
 import { MapService } from '../_services/map.service';
+import { ChangeCoordObserverService } from '../_services/change-coord-observer.service';
+
+import { Tag } from '../_models/tag';
 import { MapObject } from '../_models/mapObject';
+
 
 let tagsString = '';
 
@@ -19,10 +22,22 @@ let tagsString = '';
 export class SaveModalComponent implements OnInit {
 
   name = 'placeName';
-  @Input() lat = 52;
-  @Input() lng = 52;
+  lat = 52;
+  lng = 52;
+  subscription: Subscription;
 
-  constructor(public dialog: MatDialog, private mapService: MapService) { }
+  constructor(
+    public dialog: MatDialog,
+    private mapService: MapService,
+    private changeCoordObserverService: ChangeCoordObserverService
+  ) {
+    this.subscription = changeCoordObserverService.changeCoord$.subscribe(
+      coord => {
+        this.lat = coord.Lat;
+        this.lng = coord.Lng;
+        this.openDialog();
+      });
+  }
 
   ngOnInit() { }
 

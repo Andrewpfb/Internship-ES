@@ -5,7 +5,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class TagService {
 
   private url = 'http://localhost:50109/api/tags';
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   getTags() {
     return this.http.get(this.url);

@@ -1,14 +1,15 @@
-import { Component, NgZone, Injectable } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import 'rxjs/add/operator/map';
 
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core/services/google-maps-api-wrapper';
 
 import { MapService } from '../_services/map.service';
-import { MapObject } from '../_models/mapObject';
+import { ChangeCoordObserverService } from '../_services/change-coord-observer.service';
 
-import 'rxjs/add/operator/map';
-import { MatDialog } from '@angular/material';
+import { MapObject } from '../_models/mapObject';
+import { Coord } from '../_models/coord';
 
 declare var google: any;
 
@@ -16,15 +17,11 @@ declare var google: any;
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
-  providers: [MapService]
+  providers: [MapService, ChangeCoordObserverService]
 })
 export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
 
-  // Алгоритм добавления объекта на карту такой. Сначала двойной клик на нужное место карты,
-  // потом нажимаем на кнопку PickOne. Откроется окно, в которое передадутся координаты.
-  // Так криво сделано, потому что пока не нашел как вызвать компонент с окном из кода.
-  // И нельзя добавлять теги, не нашел нормального рабочего контрола.
-
+  // variable for add new object.
   address: number;
   saveLat: number;
   saveLng: number;
@@ -39,8 +36,12 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
   lat = 53.887895;
   lng = 27.538710;
 
-  constructor(private mapService: MapService,
-    private __loader: MapsAPILoader, private __zone: NgZone) {
+  constructor(
+    private mapService: MapService,
+    private changeService: ChangeCoordObserverService,
+    private __loader: MapsAPILoader,
+    private __zone: NgZone
+  ) {
     super(__loader, __zone);
   }
 
@@ -54,23 +55,31 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
     });
   }
   mapDblClicked($event: MouseEvent) {
+    const lat = $event.coords.lat;
+    const lng = $event.coords.lng;
     this.markers.push({
-      GeoLat: $event.coords.lat,
-      GeoLong: $event.coords.lng
+      GeoLat: lat,
+      GeoLong: lng
     });
-    this.saveLat = $event.coords.lat;
-    this.saveLng = $event.coords.lng;
+    this.changeService.coordChange(new Coord(lat, lng));
   }
 
   getLatLan() {
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': this.address }, (results, status) => {
       console.log(this.markers);
-      this.lat = results[0].geometry.location.lat();
-      this.lng = results[0].geometry.location.lng();
+      const geoLat = results[0].geometry.location.lat();
+      const geoLong = results[0].geometry.location.lng();
+      // Set new map center
+      this.lat = geoLat;
+      this.lng = geoLong;
+      // Set coord for add new place
+      this.saveLat = geoLat;
+      this.saveLng = geoLong;
+      // Set marker by coord
       this.markers.push({
-        GeoLat: results[0].geometry.location.lat(),
-        GeoLong: results[0].geometry.location.lng()
+        GeoLat: geoLat,
+        GeoLong: geoLong
       });
     });
   }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+
 import { MapObject } from '../_models/mapObject';
 
 
@@ -7,7 +8,9 @@ import { MapObject } from '../_models/mapObject';
 export class MapService {
 
   private url = 'http://localhost:50109/api/map';
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   getMapObjects(tags: string) {
     if (tags.length === 0) {
