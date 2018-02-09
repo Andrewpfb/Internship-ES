@@ -79,5 +79,19 @@ namespace MapsProject.WEB.Areas.Administration.Controllers
                 return BadRequest();
             }
         }
+
+        [Authorize]
+        public IHttpActionResult Delete(int id)
+        {
+            try
+            {
+                mapObjectService.DeleteMapObject(id);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ import { AgmCoreModule } from '@agm/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { Routes, RouterModule } from '@angular/router';
 
 
 import { A11yModule } from '@angular/cdk/a11y';
@@ -26,14 +27,15 @@ import {
   MatChipsModule,
   MatDatepickerModule,
   MatDialogModule,
+  MatDividerModule,
   MatExpansionModule,
-  MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
   MatInputModule,
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
+  MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatRadioModule,
@@ -43,19 +45,26 @@ import {
   MatSliderModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
 } from '@angular/material';
 
-
-
+import { routing } from './app.routing';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
 import { SaveModalComponent, SaveModalDialogComponent } from './save-modal/save-modal.component';
 import { TagComponent } from './tag/tag.component';
+import { LoginComponent } from './_administration/login/login.component';
+import { ModerateComponent } from './_administration/moderate/moderate.component';
+import { AuthGuard } from './_administration/_guards/auth.guard';
+
+
 
 @NgModule({
   exports: [
@@ -77,16 +86,18 @@ import { TagComponent } from './tag/tag.component';
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatStepperModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatDividerModule,
     MatExpansionModule,
-    MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
     MatMenuModule,
     MatNativeDateModule,
+    MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
@@ -96,9 +107,11 @@ import { TagComponent } from './tag/tag.component';
     MatSliderModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
   ]
 })
 export class DemoMaterialModule { }
@@ -111,7 +124,9 @@ export class DemoMaterialModule { }
     MultiSelectComponent,
     SaveModalComponent,
     SaveModalDialogComponent,
-    TagComponent
+    TagComponent,
+    LoginComponent,
+    ModerateComponent
   ],
   entryComponents: [SaveModalComponent, SaveModalDialogComponent],
   imports: [
@@ -122,12 +137,13 @@ export class DemoMaterialModule { }
     MatNativeDateModule,
     ReactiveFormsModule,
     HttpClientModule,
+    routing,
     NgbModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCwOwKLOzZWKoDnC4iFERxfaOQ5BodAMDU'
     })
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
