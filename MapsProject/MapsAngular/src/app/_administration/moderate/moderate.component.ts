@@ -11,6 +11,9 @@ import { switchMap } from 'rxjs/operators/switchMap';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Router } from '@angular/router';
 import { ModerateDataService } from '../_services/moderate-data.service';
+import { DataSource } from '@angular/cdk/collections';
+import { BehaviorSubject } from 'rxjs';
+import { Data } from '../_models/data';
 
 @Component({
   selector: 'app-moderate',
@@ -20,7 +23,10 @@ import { ModerateDataService } from '../_services/moderate-data.service';
 })
 export class ModerateComponent implements OnInit {
   displayedColumns = ['Id', 'Name', 'Tags', 'Latitude', 'Longitude', 'Status', 'Delete', 'Approve'];
-  dataSource = new MatTableDataSource();
+  // dataSource = new MatTableDataSource();
+  dataSource = ModerateDataSource;
+  moderateDatabase = new ModerateDatabase();
+  data = [];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -41,36 +47,67 @@ export class ModerateComponent implements OnInit {
 
   approvedObject(id) {
     this.dataService.approvedObject(id).subscribe(data => console.log('Approved'));
+    //this.loadDataFromService();
+    //this.loadDataToTable();
   }
 
   ngOnInit() {
-
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-      startWith({}),
-      switchMap(() => {
-        console.log('merge-merge');
-        console.log(this.sort);
-        this.isLoadingResults = true;
-        return this.dataService.getData();
-      }),
-      map(data => {
-        this.isLoadingResults = false;
-        this.resultsLength = data.length;
-        this.dataSource.sort = this.sort;
-        return data;
-      }),
-      catchError(() => {
-        this.isLoadingResults = false;
-        return observableOf([]);
-      })
-      ).subscribe(data => this.dataSource.data = data);
+    this.dataSource = new ModerateDataSource(this.moderateDatabase);
+    //this.loadDataFromService();
+    //this.loadDataToTable();
   }
 
-  Logout() {
+  loadDataFromService() {
+    this.dataService.getData().subscribe(data => {
+      this.data = data;
+    })
+  }
+
+  // loadDataToTable() {
+  //   this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+  //   merge(this.sort.sortChange, this.paginator.page)
+  //     .pipe(
+  //     startWith({}),
+  //     switchMap(() => {
+  //       this.isLoadingResults = true;
+  //       //return this.data;
+  //       return this.dataService.getData();
+  //     }),
+  //     map(data => {
+  //       this.isLoadingResults = false;
+  //       this.resultsLength = data.length;
+  //       this.dataSource.sort = this.sort;
+  //       return data;
+  //     }),
+  //     catchError(() => {
+  //       this.isLoadingResults = false;
+  //       return observableOf([]);
+  //     })
+  //     ).subscribe(data => this.dataSource.data = data);
+  // }
+
+  logout() {
     this.authenticationService.logout();
     this.router.navigate(['']);
   }
+}
+
+export class ModerateDatabase {
+  dataChange: BehaviorSubject<Data[]> = new BehaviorSubject<Data[]>([]);
+  get data(): Data[] { return this.dataChange.value};
+
+  constructor(){}
+}
+
+export class ModerateDataSource extends DataSource<any> {
+  constructor (private moderateService: ModerateDataService){
+    super();
+  }
+
+  connect(): Observable<Data[]>{
+    return this.moderateService.getData();
+  }
+
+  disconnect(){}
 }

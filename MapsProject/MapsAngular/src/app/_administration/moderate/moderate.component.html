@@ -1,62 +1,59 @@
+<h2>Moderate table</h2>
 <div class="example-container mat-elevation-z8">
-  <div class="example-loading-shade"
-       *ngIf="isLoadingResults || isRateLimitReached">
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-  </div>
+    <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
 
-  <mat-table #table [dataSource]="dataSource" class="example-table"
-             matSort matSortActive="Id" matSortDisableClear matSortDirection="asc">
+    <mat-table #table [dataSource]="dataSource" class="example-table" matSort matSortActive="Id" matSortDisableClear matSortDirection="asc">
 
-    <ng-container matColumnDef="Id">
-      <mat-header-cell *matHeaderCellDef
-                       mat-sort-header
-                       >Id</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.Id }}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="Id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.Id }}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="Name">
-      <mat-header-cell *matHeaderCellDef
-                       mat-sort-header
-                       >Name</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.ObjectName }}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="Name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.ObjectName }}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="Tags">
-      <mat-header-cell *matHeaderCellDef>Tags</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.Tags }}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="Tags">
+            <mat-header-cell *matHeaderCellDef>Tags</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.Tags }}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="Latitude">
-      <mat-header-cell *matHeaderCellDef>Latitude</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.GeoLat }}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="Latitude">
+            <mat-header-cell *matHeaderCellDef>Latitude</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.GeoLat }}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="Longitude">
-      <mat-header-cell *matHeaderCellDef>Longitude</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.GeoLong }}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="Longitude">
+            <mat-header-cell *matHeaderCellDef>Longitude</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.GeoLong }}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="Status">
-      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.Status }}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="Status">
+            <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.Status }}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="Delete">
-      <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
-      <mat-cell *matCellDef="let row" (click)="deleteObject(row.Id)"><Button>Delete</Button></mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="Delete">
+            <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+            <mat-cell *matCellDef="let row" (click)="deleteObject(row.Id)">
+                <Button>Delete</Button>
+            </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="Approve">
-      <mat-header-cell *matHeaderCellDef>Approve</mat-header-cell>
-      <mat-cell *matCellDef="let row" (click)="approvedObject(row.Id)"><button>Approved</button></mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="Approve">
+            <mat-header-cell *matHeaderCellDef>Approve</mat-header-cell>
+            <mat-cell *matCellDef="let row" (click)="approvedObject(row.Id)"><button>Approved</button></mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
 
-  <mat-paginator [length]="resultsLength" [pageSize]="30">
-  </mat-paginator>
+    <mat-paginator [length]="resultsLength" [pageSize]="30">
+    </mat-paginator>
 </div>
 
-<button (click)="Logout()">Logout</button>
+<button class="logout-button" mat-button color="primary" (click)="logout()">Logout</button>

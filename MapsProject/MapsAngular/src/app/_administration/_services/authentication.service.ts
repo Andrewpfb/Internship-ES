@@ -32,12 +32,12 @@ export class AuthenticationService {
     for (const key in body) {
       p.push(key + '=' + encodeURIComponent(body[key]));
     }
-    p = p.join('&');
+    let data = p.join('&');
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     });
     // Content-Type
-    return this.http.post('http://localhost:50109/token', p, { headers: headers })
+    return this.http.post('http://localhost:50109/token', data, { headers: headers })
       .map((response: Token) => {
         // login successful if there's a jwt token in the response
         const token = response.access_token;
