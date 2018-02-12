@@ -1,5 +1,9 @@
 /* Structure */
 
+.header{
+    margin-top: 70px;
+}
+
 .example-container {
     margin-top: 25px;
     display: flex;

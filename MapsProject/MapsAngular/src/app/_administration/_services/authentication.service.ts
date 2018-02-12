@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
+
 import { Token } from '../_models/token';
+
 
 @Injectable()
 export class AuthenticationService {
   public token: string;
 
   constructor(private http: HttpClient) {
-    // set token if saved in local storage
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
   }
 
   isAuthenticated(): boolean {
     if (localStorage.getItem('currentUser')) {
-      // logged in so return true
       return true;
     } else {
       return false;
@@ -27,12 +27,12 @@ export class AuthenticationService {
 
   login(username: string, password: string): Observable<boolean> {
     const body = { username: username, password: password, grant_type: 'password' };
-    let p = [];
+    const p = [];
     // tslint:disable-next-line:forin
     for (const key in body) {
       p.push(key + '=' + encodeURIComponent(body[key]));
     }
-    let data = p.join('&');
+    const data = p.join('&');
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     });

@@ -18,14 +18,22 @@ namespace MapsProject.WEB.AuthProviders
             IUserService userService = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserService)) as IUserService;
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            var userInfo = userService.GetUserInfo(context.UserName, context.Password);
-            if (context.UserName == userInfo.Name && context.Password == userInfo.Password)
+            try
             {
-                identity.AddClaim(new Claim(ClaimTypes.Role, userInfo.RoleName));
-                identity.AddClaim(new Claim("username", userInfo.Name));
-                context.Validated(identity);
+                var userInfo = userService.GetUserInfo(context.UserName, context.Password);
+                if (context.UserName == userInfo.Name && context.Password == userInfo.Password)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, userInfo.RoleName));
+                    identity.AddClaim(new Claim("username", userInfo.Name));
+                    context.Validated(identity);
+                }
+                else
+                {
+                    context.SetError("invalid_grant", "Provided username and password is incorrect");
+                    return;
+                }
             }
-            else
+            catch
             {
                 context.SetError("invalid_grant", "Provided username and password is incorrect");
                 return;

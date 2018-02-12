@@ -13,7 +13,7 @@ export class TagComponent {
   static tags = '';
   @ViewChild('chipInput') chipInput: MatInput;
 
-  test;
+  error = '';
 
   @Input() source: Tag[] = [];
   @Input() _value: Tag[] = [];
@@ -70,9 +70,23 @@ export class TagComponent {
     }
     this.value = this._value;
     this.chipInput['nativeElement'].blur();
+    console.log('before:');
+    console.log(TagComponent.tags);
+    const delTag = tag.TagName + ';';
+    TagComponent.tags = TagComponent.tags.replace(delTag, '');
+    console.log('after');
+    console.log(TagComponent.tags);
   }
 
   displayFn(value: any): string {
+    // console.log(value);
+    // if (value && 'length' in value && value.length !== 0) {
+    //   console.log('empty');
+    //   this.error = '';
+    // } else {
+    //   console.log('no empty');
+    //   this.error = 'Enter your tags or select from existing';
+    // }
     return value && typeof value === 'object' ? value.text : value;
   }
 

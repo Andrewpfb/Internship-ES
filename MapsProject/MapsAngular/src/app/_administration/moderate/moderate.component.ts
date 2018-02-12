@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { merge } from 'rxjs/observable/merge';
 import { of as observableOf } from 'rxjs/observable/of';
@@ -12,6 +13,8 @@ import { switchMap } from 'rxjs/operators/switchMap';
 
 import { AuthenticationService } from '../_services/authentication.service';
 import { ModerateDataService } from '../_services/moderate-data.service';
+import { ComponentCanDeactivate } from '../_guards/leave-moderate-page.guard';
+import { Observable } from 'rxjs/Rx';
 
 
 @Component({
@@ -20,7 +23,7 @@ import { ModerateDataService } from '../_services/moderate-data.service';
   styleUrls: ['./moderate.component.css'],
   providers: [AuthenticationService, ModerateDataService]
 })
-export class ModerateComponent implements OnInit {
+export class ModerateComponent implements OnInit, ComponentCanDeactivate {
   displayedColumns = ['Id', 'Name', 'Tags', 'Latitude', 'Longitude', 'Status', 'Delete', 'Approve'];
   dataSource = new MatTableDataSource();
 
@@ -30,10 +33,22 @@ export class ModerateComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  leaved = true;
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): boolean | Observable<boolean> {
+    if (this.leaved) {
+      this.authenticationService.logout();
+      return true;
+    }
+    return false;
+  }
+
   constructor(
     private authenticationService: AuthenticationService,
     private dataService: ModerateDataService,
-    private router: Router) {
+    private router: Router,
+    public dialog: MatDialog) {
   }
 
   deleteObject(id) {
@@ -47,6 +62,26 @@ export class ModerateComponent implements OnInit {
     this.dataService.approvedObject(id).subscribe(data => {
       console.log('Approved');
       this.loadData();
+    });
+  }
+
+  openDialog(id, action): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { action: action }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('confirm');
+      console.log(result);
+      if (result !== undefined) {
+        if (action === 'delete') {
+          this.deleteObject(id);
+        }
+        if (action === 'approve') {
+          this.approvedObject(id);
+        }
+      }
     });
   }
 
@@ -81,4 +116,20 @@ export class ModerateComponent implements OnInit {
     this.authenticationService.logout();
     this.router.navigate(['']);
   }
+}
+
+@Component({
+  selector: 'confirm-dialog',
+  templateUrl: 'confirm-dialog.html',
+})
+export class ConfirmDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }

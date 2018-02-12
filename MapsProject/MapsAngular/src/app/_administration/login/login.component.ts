@@ -12,8 +12,6 @@ import { AuthenticationService } from '../_services/authentication.service';
 })
 export class LoginComponent implements OnInit {
 
-  username = '';
-  password = '';
   model: any = {};
   loading = false;
   error = '';
@@ -27,7 +25,6 @@ export class LoginComponent implements OnInit {
     if (this.authenticationService.isAuthenticated()) {
       this.router.navigate(['/moderate']);
     }
-    // this.authenticationService.logout();
   }
 
   login() {
@@ -40,6 +37,9 @@ export class LoginComponent implements OnInit {
           this.error = 'Username or password is incorrect';
           this.loading = false;
         }
+      }, error => {
+        this.error = 'Username or password is incorrect';
+        this.loading = false;
       });
   }
 

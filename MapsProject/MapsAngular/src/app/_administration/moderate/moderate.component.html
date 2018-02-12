@@ -1,4 +1,4 @@
-<h2>Moderate table</h2>
+<h2 class="header">Moderate table</h2>
 <div class="example-container mat-elevation-z8">
     <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
         <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
@@ -38,14 +38,16 @@
 
         <ng-container matColumnDef="Delete">
             <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
-            <mat-cell *matCellDef="let row" (click)="deleteObject(row.Id)">
-                <Button>Delete</Button>
+            <mat-cell *matCellDef="let row" (click)="openDialog(row.Id, 'delete')">
+                <button mat-raised-button color="primary">Delete</button>
             </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="Approve">
             <mat-header-cell *matHeaderCellDef>Approve</mat-header-cell>
-            <mat-cell *matCellDef="let row" (click)="approvedObject(row.Id)"><button>Approved</button></mat-cell>
+            <mat-cell *matCellDef="let row" (click)="openDialog(row.Id, 'approve')">
+                <button mat-raised-button color="primary">Approved</button>
+            </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -56,4 +58,4 @@
     </mat-paginator>
 </div>
 
-<button class="logout-button" mat-button color="primary" (click)="logout()">Logout</button>
+<button class="logout-button" mat-raised-button color="primary" (click)="logout()">Logout</button>

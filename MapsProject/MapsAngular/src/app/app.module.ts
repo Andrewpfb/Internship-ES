@@ -61,8 +61,9 @@ import { MultiSelectComponent } from './multi-select/multi-select.component';
 import { SaveModalComponent, SaveModalDialogComponent } from './save-modal/save-modal.component';
 import { TagComponent } from './tag/tag.component';
 import { LoginComponent } from './_administration/login/login.component';
-import { ModerateComponent } from './_administration/moderate/moderate.component';
+import { ModerateComponent, ConfirmDialogComponent } from './_administration/moderate/moderate.component';
 import { AuthGuard } from './_administration/_guards/auth.guard';
+import { LeaveModeratePageGuard } from './_administration/_guards/leave-moderate-page.guard';
 
 
 
@@ -126,9 +127,10 @@ export class DemoMaterialModule { }
     SaveModalDialogComponent,
     TagComponent,
     LoginComponent,
-    ModerateComponent
+    ModerateComponent,
+    ConfirmDialogComponent
   ],
-  entryComponents: [SaveModalComponent, SaveModalDialogComponent],
+  entryComponents: [SaveModalComponent, SaveModalDialogComponent, ModerateComponent, ConfirmDialogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -143,7 +145,7 @@ export class DemoMaterialModule { }
       apiKey: 'AIzaSyCwOwKLOzZWKoDnC4iFERxfaOQ5BodAMDU'
     })
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, LeaveModeratePageGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
