@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col-md-9">
+<mat-grid-list cols="12" rowHeight="190px" class="main-grid">
+  <mat-grid-tile [rowspan]="4" [colspan]="9">
     <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" (mapDblClick)="mapDblClicked($event)"
       [disableDoubleClickZoom]="true">
 
@@ -14,16 +14,16 @@
         </agm-info-window>
       </agm-marker>
     </agm-map>
-  </div>
-  <div class="col-md-3">
+  </mat-grid-tile>
+  <mat-grid-tile class="search-form" [rowspan]="1" [colspan]="3">
     <form class="example-form">
       <h2>Show places by tags</h2>
       <div class="mat-app-background basic-container">
         <app-multi-select></app-multi-select>
       </div>
     </form>
-
-
+  </mat-grid-tile>
+  <mat-grid-tile class="search-form" [rowspan]="1" [colspan]="3">
     <form class="example-form">
       <h2>Search place by adress</h2>
       <mat-form-field class="example-full-width">
@@ -31,6 +31,6 @@
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="getLatLan()">Search</button>
     </form>
-  </div>
+  </mat-grid-tile>
   <app-save-modal></app-save-modal>
-</div>
+</mat-grid-list>

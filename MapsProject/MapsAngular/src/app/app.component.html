@@ -1,2 +1,16 @@
-<router-outlet></router-outlet>
+<div class="header">
+    <mat-sidenav-container #sidenav class="sidenav-style">
+        <mat-toolbar color="primary" class="top-toolbar">
+            <a mat-button routerLink=".">Google Maps Angular application</a>
+        </mat-toolbar>
+        <div class="inner-sidenav-content">
+            <div class="content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <mat-toolbar color="primary" class="down-toolbar">
+                <p>&copy; Google Maps Angular application</p>
+        </mat-toolbar>
+    </mat-sidenav-container>
 
+</div>

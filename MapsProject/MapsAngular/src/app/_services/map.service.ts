@@ -23,9 +23,6 @@ export class MapService {
   }
 
   addMapObject(mapObject: MapObject) {
-    console.log(mapObject.ObjectName);
-    console.log(mapObject.GeoLat);
-    console.log(mapObject.GeoLong);
     return this.http.post(this.url, mapObject);
   }
 

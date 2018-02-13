@@ -1,19 +1,20 @@
 <div class="example-container">
 
   <mat-form-field>
-    <input matInput [(ngModel)]="data.name" placeholder="Enter place name" required>
+    <input type="text" matInput [(ngModel)]="data.name" placeholder="Enter place name" required>
   </mat-form-field>
-  <app-tag [source]="source"></app-tag>
+  <form class="person-form" #personEditForm="ngForm" [formGroup]="form" novalidate>
+    <app-tag [source]="source" formControlName="tags"></app-tag>
+  </form>
   <mat-form-field>
-    <input matInput [(ngModel)]="data.lat" placeholder="lat" required>
+    <input type="number" matInput [(ngModel)]="data.lat" placeholder="lat" required>
   </mat-form-field>
   <mat-form-field>
-    <input matInput [(ngModel)]="data.lng" placeholder="lng" required>
+    <input type="number" matInput [(ngModel)]="data.lng" placeholder="lng" required>
   </mat-form-field>
   <mat-error *ngIf="data.error">{{data.error}}</mat-error>
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
     <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
   </div>
-
 </div>

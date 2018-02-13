@@ -10,11 +10,12 @@ import { catchError } from 'rxjs/operators/catchError';
 import { map } from 'rxjs/operators/map';
 import { startWith } from 'rxjs/operators/startWith';
 import { switchMap } from 'rxjs/operators/switchMap';
+import { Observable } from 'rxjs/Rx';
 
 import { AuthenticationService } from '../_services/authentication.service';
 import { ModerateDataService } from '../_services/moderate-data.service';
+
 import { ComponentCanDeactivate } from '../_guards/leave-moderate-page.guard';
-import { Observable } from 'rxjs/Rx';
 
 
 @Component({
@@ -45,35 +46,33 @@ export class ModerateComponent implements OnInit, ComponentCanDeactivate {
   }
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private dataService: ModerateDataService,
     private router: Router,
-    public dialog: MatDialog) {
+    private dialog: MatDialog,
+    private dataService: ModerateDataService,
+    private authenticationService: AuthenticationService
+  ) {
   }
 
   deleteObject(id) {
     this.dataService.deleteData(id).subscribe(data => {
-      console.log('Delete');
       this.loadData();
     });
   }
 
   approvedObject(id) {
     this.dataService.approvedObject(id).subscribe(data => {
-      console.log('Approved');
       this.loadData();
     });
   }
 
   openDialog(id, action): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
+      width: '400px',
+      height: '200px',
       data: { action: action }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('confirm');
-      console.log(result);
       if (result !== undefined) {
         if (action === 'delete') {
           this.deleteObject(id);
@@ -87,6 +86,10 @@ export class ModerateComponent implements OnInit, ComponentCanDeactivate {
 
   ngOnInit() {
     this.loadData();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   loadData() {

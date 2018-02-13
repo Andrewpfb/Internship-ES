@@ -1,49 +1,71 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, ChangeDetectionStrategy, forwardRef } from '@angular/core';
 import { MatAutocompleteSelectedEvent, MatInput } from '@angular/material';
+import {
+  FormControl,
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NG_VALIDATORS
+} from '@angular/forms';
 
 import { Tag } from '../_models/tag';
-import { element } from 'protractor';
+
+const CUSTOM_INPUT_VALIDATORS: any = {
+  provide: NG_VALIDATORS,
+  useExisting: forwardRef(() => TagComponent),
+  multi: true
+};
+const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => TagComponent),
+  multi: true
+};
 
 @Component({
   selector: 'app-tag',
-  templateUrl: './tag.component.html'
+  templateUrl: './tag.component.html',
+  providers: [
+    CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR
+  ]
 })
-export class TagComponent {
+export class TagComponent implements ControlValueAccessor {
 
-  static tags = '';
   @ViewChild('chipInput') chipInput: MatInput;
-
-  error = '';
 
   @Input() source: Tag[] = [];
   @Input() _value: Tag[] = [];
   get value(): Tag[] { return this._value; }
   set value(v: Tag[]) {
     this._value = v;
-    this._value.forEach(tag => {
-      TagComponent.tags += tag.TagName + ';';
-    });
+    this.onChange(this._value);
   }
 
-  getTags() {
-    const tagsArray = TagComponent.tags.split(';');
-    TagComponent.tags = '';
-    const uniqueArray = tagsArray.filter(function (item, pos) {
-      return tagsArray.indexOf(item) === pos;
-    });
-    let returnTagsString = '';
-    uniqueArray.forEach(tagName => {
-      if (tagName === '') { } else {
-        returnTagsString += tagName + ';';
-      }
-    });
-    return returnTagsString;
+  onChange = (_: any): void => {
+    console.log('change');
+  }
+  onTouched = (_: any): void => {
+    console.log('touch');
+  }
+
+
+  writeValue(v: Tag[]): void {
+    this._value = v;
   }
 
   sourceFiltered(): Tag[] {
-    const key = 'Id';
+    const key = 'ID';
     const reducedIds = this._value.map((o) => o[key]);
     return this.source.filter((obj: any) => reducedIds.indexOf(obj[key]) === -1);
+  }
+
+  registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
+
+  validate(c: FormControl): any {
+    return (this._value) ? undefined : {
+      tinyError: {
+        valid: false
+      }
+    };
   }
 
   add(event: MatAutocompleteSelectedEvent): void {
@@ -54,9 +76,7 @@ export class TagComponent {
   }
 
   addNew(input: MatInput): void {
-    // create a tmp id for interaction until the api has assigned a new one
-    const newId: number = Math.floor(Math.random() * (100000 - 10000 + 1)) + 10000;
-    const newTag: Tag = { ID: newId, TagName: input.value };
+    const newTag: Tag = { ID: 0, TagName: input.value };
     this._value.push(newTag);
     this.value = this._value;
     this.chipInput['nativeElement'].value = '';
@@ -70,23 +90,9 @@ export class TagComponent {
     }
     this.value = this._value;
     this.chipInput['nativeElement'].blur();
-    console.log('before:');
-    console.log(TagComponent.tags);
-    const delTag = tag.TagName + ';';
-    TagComponent.tags = TagComponent.tags.replace(delTag, '');
-    console.log('after');
-    console.log(TagComponent.tags);
   }
 
   displayFn(value: any): string {
-    // console.log(value);
-    // if (value && 'length' in value && value.length !== 0) {
-    //   console.log('empty');
-    //   this.error = '';
-    // } else {
-    //   console.log('no empty');
-    //   this.error = 'Enter your tags or select from existing';
-    // }
     return value && typeof value === 'object' ? value.text : value;
   }
 

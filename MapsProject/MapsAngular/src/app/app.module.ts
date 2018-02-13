@@ -65,6 +65,8 @@ import { ModerateComponent, ConfirmDialogComponent } from './_administration/mod
 import { AuthGuard } from './_administration/_guards/auth.guard';
 import { LeaveModeratePageGuard } from './_administration/_guards/leave-moderate-page.guard';
 
+import { AuthenticationService } from './_administration/_services/authentication.service';
+
 
 
 @NgModule({
@@ -145,7 +147,7 @@ export class DemoMaterialModule { }
       apiKey: 'AIzaSyCwOwKLOzZWKoDnC4iFERxfaOQ5BodAMDU'
     })
   ],
-  providers: [AuthGuard, LeaveModeratePageGuard],
+  providers: [AuthGuard, LeaveModeratePageGuard, AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

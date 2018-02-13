@@ -46,7 +46,7 @@
         <ng-container matColumnDef="Approve">
             <mat-header-cell *matHeaderCellDef>Approve</mat-header-cell>
             <mat-cell *matCellDef="let row" (click)="openDialog(row.Id, 'approve')">
-                <button mat-raised-button color="primary">Approved</button>
+                <button mat-raised-button color="primary">Approve</button>
             </mat-cell>
         </ng-container>
 
@@ -54,7 +54,7 @@
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
 
-    <mat-paginator [length]="resultsLength" [pageSize]="30">
+    <mat-paginator [length]="resultsLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
     </mat-paginator>
 </div>
 

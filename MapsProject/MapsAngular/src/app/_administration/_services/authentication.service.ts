@@ -12,7 +12,9 @@ import { Token } from '../_models/token';
 export class AuthenticationService {
   public token: string;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient
+  ) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
   }

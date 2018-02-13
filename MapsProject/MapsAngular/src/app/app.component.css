@@ -1,0 +1,29 @@
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100vw
+}
+
+.sidenav-style {
+    height: 100%;
+    width: 100%;
+}
+
+.top-toolbar {
+    min-height: 64px;
+}
+
+.down-toolbar {
+    min-height: 64px;
+    position: fixed;
+    bottom: 0;
+    left: 0
+}
+
+.content {
+    margin-left: 1em
+}

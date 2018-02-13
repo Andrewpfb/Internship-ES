@@ -26,6 +26,8 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
   saveLat: number;
   saveLng: number;
 
+  lastMarker;
+
   // array of markers
   markers;
 
@@ -57,6 +59,10 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
   mapDblClicked($event: MouseEvent) {
     const lat = $event.coords.lat;
     const lng = $event.coords.lng;
+    if (this.lastMarker) {
+      this.markers.pop();
+    }
+    this.lastMarker = { GeoLat: lat, GeoLong: lng };
     this.markers.push({
       GeoLat: lat,
       GeoLong: lng
@@ -76,6 +82,10 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
       // Set coord for add new place
       this.saveLat = geoLat;
       this.saveLng = geoLong;
+      if (this.lastMarker) {
+        this.markers.pop();
+      }
+      this.lastMarker = { GeoLat: geoLat, GeoLong: geoLong };
       // Set marker by coord
       this.markers.push({
         GeoLat: geoLat,
