@@ -21,7 +21,7 @@ namespace MapsProject.WEB.AuthProviders
             try
             {
                 var userInfo = userService.GetUserInfo(context.UserName, context.Password);
-                if (context.UserName == userInfo.Name && context.Password == userInfo.Password)
+                if (userInfo!=null)
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, userInfo.RoleName));
                     identity.AddClaim(new Claim("username", userInfo.Name));

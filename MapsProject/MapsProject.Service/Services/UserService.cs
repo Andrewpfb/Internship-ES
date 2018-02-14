@@ -34,7 +34,7 @@ namespace MapsProject.Service.Services
         public UserDTO GetUserInfo(string name, string hashPass)
         {
             var user = Database.Users.GetAll()
-                .Where(n => n.Name == name & n.Password == hashPass);
+                .Where(n => n.Name == name & n.Password == hashPass.GetHashCode().ToString());
             if (user.Count() != 0)
             {
                 try
