@@ -98,8 +98,6 @@ export class MapComponent extends GoogleMapsAPIWrapper implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('confirm');
-      console.log(this.tags);
       if (result !== undefined) {
         const mapObj = new MapObject(
           0,
