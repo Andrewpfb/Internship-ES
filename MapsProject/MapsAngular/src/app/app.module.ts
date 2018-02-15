@@ -56,9 +56,8 @@ import {
 import { routing } from './app.routing';
 
 import { AppComponent } from './app.component';
-import { MapComponent } from './map/map.component';
+import { MapComponent, SaveModalDialogComponent } from './map/map.component';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
-import { SaveModalComponent, SaveModalDialogComponent } from './save-modal/save-modal.component';
 import { TagComponent } from './tag/tag.component';
 import { LoginComponent } from './_administration/login/login.component';
 import { ModerateComponent, ConfirmDialogComponent } from './_administration/moderate/moderate.component';
@@ -66,6 +65,7 @@ import { AuthGuard } from './_administration/_guards/auth.guard';
 import { LeaveModeratePageGuard } from './_administration/_guards/leave-moderate-page.guard';
 
 import { AuthenticationService } from './_administration/_services/authentication.service';
+import { ChangeTagObserverService } from './_services/change-tag-observer.service';
 
 
 
@@ -125,14 +125,13 @@ export class DemoMaterialModule { }
     AppComponent,
     MapComponent,
     MultiSelectComponent,
-    SaveModalComponent,
     SaveModalDialogComponent,
     TagComponent,
     LoginComponent,
     ModerateComponent,
     ConfirmDialogComponent
   ],
-  entryComponents: [SaveModalComponent, SaveModalDialogComponent, ModerateComponent, ConfirmDialogComponent],
+  entryComponents: [SaveModalDialogComponent, ModerateComponent, ConfirmDialogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -147,7 +146,7 @@ export class DemoMaterialModule { }
       apiKey: 'AIzaSyCwOwKLOzZWKoDnC4iFERxfaOQ5BodAMDU'
     })
   ],
-  providers: [AuthGuard, LeaveModeratePageGuard, AuthenticationService],
+  providers: [AuthGuard, LeaveModeratePageGuard, AuthenticationService, ChangeTagObserverService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
