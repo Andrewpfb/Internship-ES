@@ -29,7 +29,8 @@ namespace MapsProject.Data.Migrations
                 GeoLong = 27.537167072296143,
                 Status = MapsProject.Models.Enums.Status.Approved,
                 IsDelete = false,
-                Tags = new List<Tag>()
+                Tags = new List<Tag>(),
+                TimeStamp = DateTime.Now
             };
             MapObject mapObject2 = new MapObject
             {
@@ -39,7 +40,8 @@ namespace MapsProject.Data.Migrations
                 GeoLat = 53.888685085306754,
                 Status = MapsProject.Models.Enums.Status.NeedModerate,
                 IsDelete = true,
-                Tags = new List<Tag>()
+                Tags = new List<Tag>(),
+                TimeStamp = DateTime.Now
             };
             MapObject mapObject3 = new MapObject
             {
@@ -49,7 +51,8 @@ namespace MapsProject.Data.Migrations
                 GeoLat = 53.891998259925408,
                 Status = MapsProject.Models.Enums.Status.Approved,
                 IsDelete = false,
-                Tags = new List<Tag>()
+                Tags = new List<Tag>(),
+                TimeStamp = DateTime.Now
             };
             MapObject mapObject4 = new MapObject
             {
@@ -59,7 +62,8 @@ namespace MapsProject.Data.Migrations
                 GeoLat = 53.886256943254722,
                 Status = MapsProject.Models.Enums.Status.Approved,
                 IsDelete = false,
-                Tags = new List<Tag>()
+                Tags = new List<Tag>(),
+                TimeStamp = DateTime.Now
             };
 
             Tag tag1 = new Tag

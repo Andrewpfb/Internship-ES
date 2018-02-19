@@ -1,4 +1,5 @@
 ﻿using MapsProject.Models.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MapsProject.WEB.Models
@@ -43,5 +44,7 @@ namespace MapsProject.WEB.Models
         /// </summary>
         [Required]
         public Status Status { get; set; }
+
+        public DateTime TimeStamp { get; set; }
     }
 }

@@ -280,7 +280,6 @@
     <Content Include="Content\lib\Select2\js\select2.min.js" />
     <Content Include="Content\scripts\mapjsscript.js" />
     <Content Include="Content\scripts\moderate.js" />
-    <Content Include="data.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

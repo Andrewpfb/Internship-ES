@@ -5,6 +5,7 @@ using MapsProject.Models.Models;
 using MapsProject.Service.Interfaces;
 using MapsProject.WEB.Areas.Administration.Models;
 using MapsProject.WEB.Models;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -63,6 +64,7 @@ namespace MapsProject.WEB.Areas.Administration.Controllers
                     // We find the object in the database, load it, change its status and save it.
                     if (mapObject.Status == Status.Approved)
                     {
+                        mapObject.TimeStamp = DateTime.Now;
                         mapObject = Mapper
                             .Map<MapObjectDTO, MapObjectViewModel>(mapObjectService.GetMapObject(id));
                         mapObject.Status = Status.Approved;

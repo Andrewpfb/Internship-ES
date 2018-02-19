@@ -1,4 +1,5 @@
 ﻿using MapsProject.Models.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace MapsProject.Models.Models
@@ -37,5 +38,7 @@ namespace MapsProject.Models.Models
         /// Object's tags.
         /// </summary>
         public List<TagDTO> Tags { get; set; }
+
+        public DateTime TimeStamp { get; set; }
     }
 }

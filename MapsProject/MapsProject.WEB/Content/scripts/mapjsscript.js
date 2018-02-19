@@ -52,6 +52,60 @@ function initMap() {
         $('#savePlaceModalWin').modal('show');
         e.preventDefault();
     });
+
+    //var polygonCoords = [
+    //    new google.maps.LatLng(-58.5717277526855, 6.75720977783203),
+    //    new google.maps.LatLng(-58.5143966674805, 6.7439661026001),
+    //    new google.maps.LatLng(-58.536449432373, 6.73580884933472),
+    //    new google.maps.LatLng(-58.5831718444824, 6.72692441940308),
+    //    new google.maps.LatLng(-58.6032447814941, 6.44053840637207),
+    //    new google.maps.LatLng(-52.5602645874023, 5.29054975509644),
+    //    new google.maps.LatLng(-52.7203712463379, 5.28919172286987),
+    //    new google.maps.LatLng(-52.5695495605469, 5.28308486938477),
+    //    new google.maps.LatLng(-52.7073707580566, 5.28301048278809 ),
+    //    new google.maps.LatLng(-52.7248916625977, 5.27624607086182),
+    //    new google.maps.LatLng(-52.5549964904785, 5.27327871322632),
+    //    new google.maps.LatLng(-52.3008117675781, 4.95884084701538),
+    //    new google.maps.LatLng(-52.317626953125, 4.95810031890869),
+    //    new google.maps.LatLng(-52.2659454345703, 4.94687938690186),
+    //    new google.maps.LatLng(-52.261604309082, 4.94159841537476),
+    //    new google.maps.LatLng(-52.165885925293, 4.89228534698486),
+    //    new google.maps.LatLng(-52.1708526611328, 4.88959312438965 ),
+    //    new google.maps.LatLng(-50.2029151916504, 0.616409301757813),
+    //    new google.maps.LatLng(-58.5717277526855, 6.75720977783203)
+    //];
+    var polygonCoords = [
+        new google.maps.LatLng(6.75720977783203,-58.5717277526855),
+        new google.maps.LatLng(6.7439661026001,-58.5143966674805),
+        new google.maps.LatLng(6.73580884933472,-58.536449432373),
+        new google.maps.LatLng(6.72692441940308,-58.5831718444824),
+        new google.maps.LatLng(6.44053840637207, -58.6032447814941),
+        new google.maps.LatLng(6.75720977783203, -58.5717277526855)  //del
+        //new google.maps.LatLng(5.29054975509644,-52.5602645874023),
+        //new google.maps.LatLng(5.28919172286987,-52.7203712463379),
+        //new google.maps.LatLng(5.28308486938477,-52.5695495605469),
+        //new google.maps.LatLng(5.28301048278809,-52.7073707580566),
+        //new google.maps.LatLng(5.27624607086182,-52.7248916625977),
+        //new google.maps.LatLng(5.27327871322632,-52.5549964904785),
+        //new google.maps.LatLng(4.95884084701538,-52.3008117675781),
+        //new google.maps.LatLng(4.95810031890869,-52.317626953125),
+        //new google.maps.LatLng(4.94687938690186,-52.2659454345703),
+        //new google.maps.LatLng(4.94159841537476,-52.261604309082),
+        //new google.maps.LatLng(4.89228534698486,-52.165885925293),
+        //new google.maps.LatLng(4.88959312438965,-52.1708526611328),
+        //new google.maps.LatLng(0.616409301757813,-50.2029151916504),
+        //new google.maps.LatLng(6.75720977783203,-58.5717277526855)
+    ];
+    var polygon = new google.maps.Polyline({
+        path: polygonCoords, // Координаты
+        strokeColor: "#FF0000", // Цвет обводки
+        strokeOpacity: 0.8, // Прозрачность обводки
+        strokeWeight: 2, // Ширина обводки
+        fillColor: "#FF0000", // Цвет заливки
+        fillOpacity: 0.35 // Прозрачность заливки
+    });
+
+    polygon.setMap(map);
 }
 
 function getMapDataByServer(tags) {

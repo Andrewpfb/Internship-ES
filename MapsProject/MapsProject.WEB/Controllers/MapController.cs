@@ -63,6 +63,7 @@ namespace MapsProject.WEB.Controllers
         {
             try
             {
+                mapObject.TimeStamp = DateTime.Now;
                 var addMapObject = Mapper.Map<MapObjectViewModel, MapObjectDTO>(mapObject);
                 mapObjectService.AddMapObject(addMapObject);
                 return Ok();
@@ -86,6 +87,7 @@ namespace MapsProject.WEB.Controllers
             {
                 if (id == mapObject.Id)
                 {
+                    mapObject.TimeStamp = DateTime.Now;
                     var updateMapObject = Mapper
                         .Map<MapObjectViewModel, MapObjectDTO>(mapObject);
                     mapObjectService.UpdateMapObject(updateMapObject);

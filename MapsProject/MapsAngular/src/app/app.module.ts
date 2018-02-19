@@ -66,6 +66,7 @@ import { LeaveModeratePageGuard } from './_administration/_guards/leave-moderate
 
 import { AuthenticationService } from './_administration/_services/authentication.service';
 import { ChangeTagObserverService } from './_services/change-tag-observer.service';
+import { CustomDatePipe } from './_pipes/custom-date.pipe';
 
 
 
@@ -129,7 +130,8 @@ export class DemoMaterialModule { }
     TagComponent,
     LoginComponent,
     ModerateComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    CustomDatePipe
   ],
   entryComponents: [SaveModalDialogComponent, ModerateComponent, ConfirmDialogComponent],
   imports: [

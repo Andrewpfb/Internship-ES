@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201802020913429_Replace DeleteStatus to IsDelete.Designer.cs">
       <DependentUpon>201802020913429_Replace DeleteStatus to IsDelete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802191206021_add timestamp.cs" />
+    <Compile Include="Migrations\201802191206021_add timestamp.Designer.cs">
+      <DependentUpon>201802191206021_add timestamp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\MapObject.cs" />
     <Compile Include="Models\Role.cs" />
@@ -107,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802020913429_Replace DeleteStatus to IsDelete.resx">
       <DependentUpon>201802020913429_Replace DeleteStatus to IsDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802191206021_add timestamp.resx">
+      <DependentUpon>201802191206021_add timestamp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
